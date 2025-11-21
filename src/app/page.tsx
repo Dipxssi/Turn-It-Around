@@ -109,7 +109,7 @@ const valueBlock = {
 
 export default function Home() {
   return (
-    <div className="bg-white text-black">
+    <div className="bg-white text-[#2c3e50]">
       <header className="bg-[#2c3e50] pb-16 pt-6 text-white shadow-[0_10px_30px_rgba(12,20,33,0.35)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 text-sm uppercase tracking-[0.4em] text-white/80 md:px-8 lg:px-12">
           <div className="flex items-center gap-3">
@@ -166,6 +166,7 @@ export default function Home() {
           />
           <div className="relative z-10 max-w-4xl px-6 text-center text-white sm:px-10">
             <div className="inline-flex items-center gap-3 rounded-full border border-[#f39c12]/70 bg-white/5 px-5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-white">
+              <span className="h-2 w-2 rounded-full bg-[#f39c12]" />
               Empowering organizations to lead, grow, and thrive
             </div>
             <p className="mt-6 text-sm font-semibold uppercase tracking-[0.45em] text-white/80">Have a vision to grow?</p>
@@ -270,7 +271,7 @@ export default function Home() {
           <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 lg:flex-row lg:items-end lg:justify-between lg:px-12">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-[#1f3347]">Our promise</p>
-              <h2 className="mt-3 text-[3rem] font-semibold text-black md:text-[3.5rem]">
+              <h2 className="mt-3 text-[3rem] font-semibold text-[#2c3e50] md:text-[3.5rem]">
                 What it is like to work with TurnItAround.
               </h2>
             </div>
@@ -337,14 +338,16 @@ export default function Home() {
               {testimonials.concat(testimonials).map((testimonial, index) => (
                 <figure
                   key={`${testimonial.author}-${index}`}
-                  className="relative w-[520px] rounded-2xl border border-[#f39c12]/30 bg-[#fffaf3] p-10 shadow-[0_18px_45px_rgba(24,34,50,0.16)]"
+                  className="relative w-[520px] overflow-visible rounded-2xl border border-[#f39c12]/30 bg-[#fffaf3] p-10 shadow-[0_18px_45px_rgba(24,34,50,0.16)]"
                 >
-                  <Quote className="absolute -top-6 left-6 h-12 w-12 text-[#f39c12]/60" />
+                  <Quote className="mb-4 block h-12 w-12 text-[#f39c12]/70" />
                   <p className="text-lg leading-relaxed text-[#2c3e50]">
                     {testimonial.quote}
                   </p>
-                  <figcaption className="mt-6 text-sm uppercase tracking-[0.25em] text-[#6b7280]">
-                    {testimonial.author} · {testimonial.role}
+                  <figcaption className="mt-6 flex items-center justify-center gap-2 text-sm uppercase tracking-[0.25em] text-[#6b7280]">
+                    <span>{testimonial.author}</span>
+                    <span className="text-[#f39c12]">•</span>
+                    <span>{testimonial.role}</span>
                   </figcaption>
                 </figure>
               ))}
