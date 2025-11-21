@@ -25,8 +25,8 @@ export function ApproachShowcase({ steps }: Props) {
   }, [steps.length]);
 
   return (
-    <section id="approach" className="w-full bg-white py-20">
-      <div className="relative flex w-full overflow-hidden bg-slate-100 shadow-[0_20px_50px_rgba(15,23,42,0.15)] min-h-[520px]">
+    <section id="approach" className="w-full bg-[#2c3e50] py-20 text-white">
+      <div className="relative flex w-full overflow-hidden bg-[#0f1f33] shadow-[0_25px_60px_rgba(5,10,20,0.45)] min-h-[520px]">
         {steps.map((step, index) => (
           <Image
             key={step.title}
@@ -40,7 +40,7 @@ export function ApproachShowcase({ steps }: Props) {
             }`}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#040a14]/80 via-[#1b2a42]/65 to-transparent" />
         <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col gap-12 px-8 py-20 text-white lg:flex-row lg:items-end lg:gap-16">
           <div className="flex-1 space-y-3">
             <p className="text-lg uppercase tracking-[0.55em] text-white/85">Our Approach</p>
@@ -64,8 +64,8 @@ export function ApproachShowcase({ steps }: Props) {
                 <button
                   key={index}
                   onClick={() => setActiveIndex(index)}
-                  className={`h-2 w-10 rounded-full transition ${
-                    activeIndex === index ? "bg-white" : "bg-white/40"
+                  className={`h-2.5 w-12 rounded-full transition ${
+                    activeIndex === index ? "bg-[#f39c12]" : "bg-white/40"
                   }`}
                 />
               ))}

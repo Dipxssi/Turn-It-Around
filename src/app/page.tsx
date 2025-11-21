@@ -6,6 +6,7 @@ import {
   Layers3,
   LineChart,
   LineChart as LineChartIcon,
+  Quote,
   Shield,
   ShieldCheck,
   Target,
@@ -154,8 +155,8 @@ export default function Home() {
             aria-hidden="true"
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#141f2c]/90 via-[#1f2a3d]/75 to-[#2c3e50]/60" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a1320]/80 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-[#1e3a5f]/85" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a1320]/60 via-transparent to-transparent" />
           <div
             className="pointer-events-none absolute inset-0 opacity-30"
             style={{
@@ -164,8 +165,7 @@ export default function Home() {
             }}
           />
           <div className="relative z-10 max-w-4xl px-6 text-center text-white sm:px-10">
-            <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-white">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
+            <div className="inline-flex items-center gap-3 rounded-full border border-[#f39c12]/70 bg-white/5 px-5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-white">
               Empowering organizations to lead, grow, and thrive
             </div>
             <p className="mt-6 text-sm font-semibold uppercase tracking-[0.45em] text-white/80">Have a vision to grow?</p>
@@ -177,7 +177,7 @@ export default function Home() {
               and organizations.
             </h1>
             <p className="mt-6 text-lg text-[#f8f9fa]/90">Empowering Organizations to Lead, Grow, and Thrive</p>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <div className="mt-8 flex flex-wrap justify-center gap-6">
               <a
                 href="#services"
                 className="inline-flex items-center rounded-none bg-[#f39c12] px-10 py-3 text-base font-semibold text-white transition hover:bg-[#e67e22]"
@@ -200,7 +200,7 @@ export default function Home() {
         <section className="-mt-10 px-0 lg:-mt-16">
           <div className="bg-[#f8f9fa] py-24 text-[#2c3e50]">
             <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 lg:flex-row lg:items-center lg:px-12">
-              <div className="relative flex-1 overflow-hidden rounded-[32px] border border-slate-200 shadow-[0_35px_65px_rgba(28,44,65,0.15)] min-h-[520px]">
+              <div className="relative flex-1 overflow-hidden rounded-[32px] border border-[#f39c12]/25 shadow-[0_40px_70px_rgba(23,35,52,0.25)] min-h-[520px]">
                 <Image
                   src="/values.png"
                   alt="Teams collaborating"
@@ -210,7 +210,7 @@ export default function Home() {
                 />
               </div>
               <div className="relative flex-1 space-y-6 rounded-[32px] border border-slate-200 bg-white px-8 py-12 shadow-[0_30px_60px_rgba(20,30,48,0.12)] lg:px-12">
-                <span className="absolute inset-x-0 top-0 h-2 rounded-t-[32px] bg-[#f39c12]" />
+                <span className="absolute inset-x-0 top-0 h-4 rounded-t-[32px] bg-[#f39c12]" />
                 <p className="text-3xl font-semibold uppercase tracking-[0.5em] text-[#2c3e50]">
                   {valueBlock.heading}
                 </p>
@@ -218,8 +218,8 @@ export default function Home() {
                 <p className="text-xl italic text-[#4a5568]">{valueBlock.body}</p>
                 <div className="flex gap-4 text-sm uppercase tracking-[0.3em] text-[#718096]">
                   {[Shield, LineChartIcon, UsersRound].map((Icon, idx) => (
-                    <div key={`value-icon-${idx}`} className="rounded-full border border-[#f39c12]/20 bg-[#fff8ef] p-3">
-                      <Icon className="h-6 w-6 text-[#f39c12]" />
+                    <div key={`value-icon-${idx}`} className="rounded-full border border-[#f39c12]/30 bg-[#fff4e3] p-4 shadow-inner">
+                      <Icon className="h-7 w-7 text-[#f39c12]" />
                     </div>
                   ))}
                 </div>
@@ -244,11 +244,11 @@ export default function Home() {
                 <a
                   key={service.title}
                   href="#contact"
-                    className="group flex h-full flex-col items-center gap-4 rounded-[28px] border border-[#2c3e50]/40 bg-white p-8 text-center shadow-[0_15px_35px_rgba(28,46,68,0.08)] transition hover:-translate-y-1 hover:border-[#f39c12] hover:shadow-[0_25px_40px_rgba(32,45,68,0.15)]"
+                    className="group flex h-full flex-col items-center gap-4 rounded-[28px] border border-[#2c3e50]/40 bg-white p-8 text-center shadow-[0_15px_35px_rgba(28,46,68,0.08)] transition-all duration-300 hover:-translate-y-2 hover:border-[#f39c12] hover:shadow-[0_25px_40px_rgba(32,45,68,0.15)]"
                 >
-                    <span className="h-1 w-12 rounded-full bg-[#f39c12]/70 transition-all group-hover:w-20" />
-                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-[#2c3e50]/20 bg-[#f8f9fa]">
-                      <Icon className="h-9 w-9 text-[#2c3e50]" strokeWidth={1.5} />
+                    <span className="h-1 w-12 rounded-full bg-[#f39c12]/70 transition-all duration-300 group-hover:w-24" />
+                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-[#2c3e50]/20 bg-[#fff7ec] transition-all duration-300 group-hover:bg-white">
+                      <Icon className="h-10 w-10 text-[#2c3e50]" strokeWidth={1.5} />
                   </div>
                     <div className="text-2xl font-semibold text-[#2c3e50]">{String(index + 1).padStart(2, "0")}</div>
                     <div className="text-xs font-semibold uppercase tracking-[0.3em] text-[#718096]">{service.focus}</div>
@@ -289,7 +289,9 @@ export default function Home() {
                   className="flex-1 border border-[#dfe6ef] bg-white p-8 text-left text-[#2c3e50] shadow-[0_25px_55px_rgba(25,37,52,0.12)] transition hover:-translate-y-1 hover:border-[#f39c12]"
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className="h-6 w-6 text-[#f39c12]" strokeWidth={1.5} />
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#fff5e6] text-[#f39c12] shadow-inner">
+                      <Icon className="h-6 w-6" strokeWidth={1.5} />
+                    </span>
                     <h3 className="text-2xl font-semibold text-[#2c3e50]">{item.title}</h3>
                   </div>
                   <p className="mt-3 text-base text-[#4a5568]">{item.detail}</p>
@@ -317,11 +319,11 @@ export default function Home() {
               Toolkits, templates, and training pathways you can reuse long after the engagement.
             </li>
           </ul>
-          <div className="mt-10 rounded-2xl border border-dashed border-slate-300 p-6 text-center">
-            <p className="text-sm uppercase tracking-[0.3em] text-slate-500">Need rapid response?</p>
-            <p className="mt-3 text-3xl font-semibold text-black">+254 751 216 699</p>
-            <p className="text-slate-400">or</p>
-            <p className="text-xl font-semibold text-black">+254 789 217 201</p>
+          <div className="mt-10 rounded-2xl border border-dashed border-[#f39c12]/50 bg-[#fff7ec] p-6 text-center shadow-sm">
+            <p className="text-sm uppercase tracking-[0.3em] text-[#c07a0f]">Need rapid response?</p>
+            <p className="mt-3 text-3xl font-semibold text-[#2c3e50]">+254 751 216 699</p>
+            <p className="text-slate-500">or</p>
+            <p className="text-xl font-semibold text-[#2c3e50]">+254 789 217 201</p>
           </div>
           </div>
         </section>
@@ -335,14 +337,13 @@ export default function Home() {
               {testimonials.concat(testimonials).map((testimonial, index) => (
                 <figure
                   key={`${testimonial.author}-${index}`}
-                  className="w-[520px] rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_15px_35px_rgba(28,40,56,0.12)]"
+                  className="relative w-[520px] rounded-2xl border border-[#f39c12]/30 bg-[#fffaf3] p-10 shadow-[0_18px_45px_rgba(24,34,50,0.16)]"
                 >
-                  <p className="text-lg leading-relaxed text-slate-700">
-                    <span className="text-3xl text-[#f39c12]">&ldquo;</span>
+                  <Quote className="absolute -top-6 left-6 h-12 w-12 text-[#f39c12]/60" />
+                  <p className="text-lg leading-relaxed text-[#2c3e50]">
                     {testimonial.quote}
-                    <span className="text-3xl text-[#f39c12]">&rdquo;</span>
                   </p>
-                  <figcaption className="mt-4 text-sm uppercase tracking-[0.25em] text-slate-500">
+                  <figcaption className="mt-6 text-sm uppercase tracking-[0.25em] text-[#6b7280]">
                     {testimonial.author} · {testimonial.role}
                   </figcaption>
                 </figure>
@@ -353,7 +354,13 @@ export default function Home() {
         </section>
 
         <section id="contact" className="px-0 py-24">
-          <div className="mx-auto max-w-6xl rounded-[32px] bg-[#2c3e50] px-6 py-16 text-center text-white shadow-[0_30px_80px_rgba(10,15,25,0.55)] md:px-12">
+          <div
+            className="relative mx-auto max-w-6xl overflow-hidden rounded-[32px] bg-[#2c3e50] px-6 py-16 text-center text-white shadow-[0_30px_80px_rgba(10,15,25,0.55)] md:px-12"
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, rgba(243,156,18,0.15), transparent 45%), radial-gradient(circle at 20% 20%, rgba(255,255,255,0.08), transparent 40%)",
+            }}
+          >
             <p className="text-sm uppercase tracking-[0.4em] text-[#f8f9fa]">Let&apos;s work together</p>
             <h2 className="mt-4 text-3xl font-semibold text-white md:text-4xl">Have a vision to grow? Join the changemakers.</h2>
             <p className="mx-auto mt-4 max-w-3xl text-lg text-white/80">
@@ -368,7 +375,7 @@ export default function Home() {
               </a>
               <a
                 href="tel:+254751216699"
-                className="rounded-none border border-white/40 px-8 py-3 text-base font-semibold text-white transition hover:border-[#f39c12] hover:text-[#f39c12]"
+                className="rounded-none border border-[#f39c12] px-8 py-3 text-base font-semibold text-white transition hover:bg-[#f39c12] hover:text-[#2c3e50]"
               >
                 +254 751 216 699
               </a>
@@ -377,7 +384,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-[#f39c12]/30 bg-[#172230] py-10 text-[#f8f9fa]/70">
+      <footer className="border-t-2 border-[#f39c12]/40 bg-[#172230] py-10 text-[#f8f9fa]/70">
         <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 text-sm md:flex-row md:items-center md:justify-between">
           <div className="flex items-center gap-3 text-white">
             <Image src="/logo.png" alt="TBS Limited logo" width={56} height={36} className="h-10 w-auto object-contain" />
