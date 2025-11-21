@@ -109,8 +109,8 @@ const valueBlock = {
 export default function Home() {
   return (
     <div className="bg-white text-black">
-      <header className="pb-16 pt-8">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 text-sm uppercase tracking-wide text-slate-600 md:px-8 lg:px-12">
+      <header className="bg-[#2c3e50] pb-16 pt-6 text-white shadow-[0_10px_30px_rgba(12,20,33,0.35)]">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 text-sm uppercase tracking-[0.4em] text-white/80 md:px-8 lg:px-12">
           <div className="flex items-center gap-3">
             <Image
               src="/logo.png"
@@ -122,22 +122,22 @@ export default function Home() {
             />
           </div>
           <div className="hidden gap-6 md:flex">
-            <a className="hover:text-amber-600" href="#services">
+            <a className="transition hover:text-[#f39c12] hover:underline hover:decoration-[#f39c12] hover:underline-offset-4" href="#services">
               Services
             </a>
-            <a className="hover:text-amber-600" href="#approach">
+            <a className="transition hover:text-[#f39c12] hover:underline hover:decoration-[#f39c12] hover:underline-offset-4" href="#approach">
               Approach
             </a>
-            <a className="hover:text-amber-600" href="#promise">
+            <a className="transition hover:text-[#f39c12] hover:underline hover:decoration-[#f39c12] hover:underline-offset-4" href="#promise">
               Promise
             </a>
-            <a className="hover:text-amber-600" href="#contact">
+            <a className="transition hover:text-[#f39c12] hover:underline hover:decoration-[#f39c12] hover:underline-offset-4" href="#contact">
               Contact
             </a>
           </div>
           <a
             href="mailto:hello@turnitaroundbusiness.com"
-            className="border border-slate-300 px-5 py-2 text-xs font-semibold uppercase tracking-widest text-slate-700 transition hover:border-[#1f3347] hover:text-[#1f3347]"
+            className="rounded-none bg-[#f39c12] px-5 py-2 text-xs font-semibold uppercase tracking-[0.4em] text-[#2c3e50] transition hover:bg-[#e67e22]"
           >
             Talk to us
           </a>
@@ -154,32 +154,39 @@ export default function Home() {
             aria-hidden="true"
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#141f2c]/90 via-[#1f2a3d]/75 to-[#2c3e50]/60" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a1320]/80 via-transparent to-transparent" />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-30"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 10% 20%, rgba(243,156,18,0.25), transparent 35%), radial-gradient(circle at 80% 10%, rgba(243,156,18,0.2), transparent 30%), radial-gradient(circle at 50% 80%, rgba(243,156,18,0.15), transparent 35%)",
+            }}
+          />
           <div className="relative z-10 max-w-4xl px-6 text-center text-white sm:px-10">
-            <div className="inline-flex items-center gap-3 rounded-full bg-white/15 px-5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-white">
+            <div className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/10 px-5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-white">
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
               Empowering organizations to lead, grow, and thrive
             </div>
             <p className="mt-6 text-sm font-semibold uppercase tracking-[0.45em] text-white/80">Have a vision to grow?</p>
-            <h1 className="mt-4 text-4xl font-semibold leading-tight md:text-5xl lg:text-[3.75rem] lg:leading-[1.05]">
+            <h1 className="mt-4 text-4xl font-bold leading-tight text-white md:text-5xl lg:text-[3.75rem] lg:leading-[1.05]">
               Join the changemakers
               <br />
               building impactful businesses
               <br />
               and organizations.
             </h1>
-            <p className="mt-6 text-lg text-white/85">Empowering Organizations to Lead, Grow, and Thrive</p>
+            <p className="mt-6 text-lg text-[#f8f9fa]/90">Empowering Organizations to Lead, Grow, and Thrive</p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <a
                 href="#services"
-                className="inline-flex items-center bg-[#1f3347] px-10 py-3 text-base font-semibold text-white transition hover:bg-[#27435f]"
+                className="inline-flex items-center rounded-none bg-[#f39c12] px-10 py-3 text-base font-semibold text-white transition hover:bg-[#e67e22]"
               >
                 Learn More
               </a>
               <a
                 href="#services"
-                className="inline-flex items-center border border-slate-300 px-10 py-3 text-base font-semibold text-slate-900 transition hover:border-[#1f3347] hover:text-[#1f3347]"
+                className="inline-flex items-center rounded-none border border-white/20 bg-white/90 px-10 py-3 text-base font-semibold text-[#2c3e50] transition hover:border-[#f39c12] hover:bg-[#f39c12] hover:text-white"
               >
                 View Services
               </a>
@@ -191,9 +198,9 @@ export default function Home() {
 
       <main className="space-y-24 bg-white pb-24 pt-0">
         <section className="-mt-10 px-0 lg:-mt-16">
-          <div className="bg-white py-20 text-black">
+          <div className="bg-[#f8f9fa] py-24 text-[#2c3e50]">
             <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 lg:flex-row lg:items-center lg:px-12">
-              <div className="relative flex-1 overflow-hidden rounded-[32px] border border-slate-200 shadow-lg min-h-[520px]">
+              <div className="relative flex-1 overflow-hidden rounded-[32px] border border-slate-200 shadow-[0_35px_65px_rgba(28,44,65,0.15)] min-h-[520px]">
                 <Image
                   src="/values.png"
                   alt="Teams collaborating"
@@ -202,16 +209,17 @@ export default function Home() {
                   className="object-cover"
                 />
               </div>
-              <div className="flex-1 space-y-6 px-6 py-10 text-black lg:px-12">
-                <p className="text-3xl font-semibold uppercase tracking-[0.6em] text-black">
+              <div className="relative flex-1 space-y-6 rounded-[32px] border border-slate-200 bg-white px-8 py-12 shadow-[0_30px_60px_rgba(20,30,48,0.12)] lg:px-12">
+                <span className="absolute inset-x-0 top-0 h-2 rounded-t-[32px] bg-[#f39c12]" />
+                <p className="text-3xl font-semibold uppercase tracking-[0.5em] text-[#2c3e50]">
                   {valueBlock.heading}
                 </p>
-                <h2 className="text-[3.75rem] font-semibold leading-tight">{valueBlock.title}:</h2>
-                <p className="text-xl italic text-slate-700">{valueBlock.body}</p>
-                <div className="flex gap-4 text-sm uppercase tracking-[0.3em] text-slate-600">
+                <h2 className="text-[3.25rem] font-semibold leading-tight text-[#2c3e50]">{valueBlock.title}:</h2>
+                <p className="text-xl italic text-[#4a5568]">{valueBlock.body}</p>
+                <div className="flex gap-4 text-sm uppercase tracking-[0.3em] text-[#718096]">
                   {[Shield, LineChartIcon, UsersRound].map((Icon, idx) => (
-                    <div key={`value-icon-${idx}`} className="rounded-full border border-slate-300 p-3">
-                      <Icon className="h-6 w-6" />
+                    <div key={`value-icon-${idx}`} className="rounded-full border border-[#f39c12]/20 bg-[#fff8ef] p-3">
+                      <Icon className="h-6 w-6 text-[#f39c12]" />
                     </div>
                   ))}
                 </div>
@@ -220,11 +228,11 @@ export default function Home() {
           </div>
         </section>
         <section id="services" className="px-0">
-          <div className="bg-white py-20 text-black">
+          <div className="bg-white py-24 text-[#2c3e50]">
             <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.4em] text-[#1f3347]">Carefully designed</p>
-              <h2 className="text-4xl font-semibold md:text-5xl text-black">Our Services</h2>
-              <p className="max-w-3xl text-base text-slate-600">
+              <p className="text-sm font-semibold uppercase tracking-[0.5em] text-[#2c3e50]/70">Carefully designed</p>
+              <h2 className="text-4xl font-semibold text-[#2c3e50] md:text-5xl">Our Services</h2>
+              <p className="max-w-3xl text-base text-[#4a5568]">
                 We layer strategic insight, operational rigor, and financial stewardship so you can scale with confidence.
               </p>
             </div>
@@ -236,15 +244,16 @@ export default function Home() {
                 <a
                   key={service.title}
                   href="#contact"
-                    className="group flex h-full flex-col items-center gap-4 rounded-[28px] border border-slate-200 bg-white p-8 text-center shadow-sm transition hover:-translate-y-1 hover:border-[#1f3347] hover:shadow-lg"
+                    className="group flex h-full flex-col items-center gap-4 rounded-[28px] border border-[#2c3e50]/40 bg-white p-8 text-center shadow-[0_15px_35px_rgba(28,46,68,0.08)] transition hover:-translate-y-1 hover:border-[#f39c12] hover:shadow-[0_25px_40px_rgba(32,45,68,0.15)]"
                 >
-                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50">
-                      <Icon className="h-9 w-9 text-[#1f3347]" strokeWidth={1.5} />
+                    <span className="h-1 w-12 rounded-full bg-[#f39c12]/70 transition-all group-hover:w-20" />
+                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-[#2c3e50]/20 bg-[#f8f9fa]">
+                      <Icon className="h-9 w-9 text-[#2c3e50]" strokeWidth={1.5} />
                   </div>
-                    <div className="text-2xl font-semibold text-[#1f3347]">{String(index + 1).padStart(2, "0")}</div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">{service.focus}</div>
-                    <h3 className="text-2xl font-semibold text-black">{service.title}</h3>
-                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#1f3347]">
+                    <div className="text-2xl font-semibold text-[#2c3e50]">{String(index + 1).padStart(2, "0")}</div>
+                    <div className="text-xs font-semibold uppercase tracking-[0.3em] text-[#718096]">{service.focus}</div>
+                    <h3 className="text-2xl font-semibold text-[#2c3e50]">{service.title}</h3>
+                  <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#2c3e50]">
                     Learn more
                     <span aria-hidden="true">→</span>
                   </span>
@@ -257,7 +266,7 @@ export default function Home() {
 
         <ApproachShowcase steps={approach} />
 
-        <section id="promise" className="bg-white px-0 py-20 text-black">
+        <section id="promise" className="bg-[#f8f9fa] px-0 py-24 text-[#2c3e50]">
           <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 lg:flex-row lg:items-end lg:justify-between lg:px-12">
             <div>
               <p className="text-sm uppercase tracking-[0.3em] text-[#1f3347]">Our promise</p>
@@ -277,13 +286,13 @@ export default function Home() {
                 return (
                 <article
                   key={`${item.title}-${idx}`}
-                  className="flex-1 border border-slate-200 bg-white p-8 text-left text-black shadow-lg"
+                  className="flex-1 border border-[#dfe6ef] bg-white p-8 text-left text-[#2c3e50] shadow-[0_25px_55px_rgba(25,37,52,0.12)] transition hover:-translate-y-1 hover:border-[#f39c12]"
                 >
                   <div className="flex items-center gap-3">
-                    <Icon className="h-6 w-6 text-[#1f3347]" strokeWidth={1.5} />
-                    <h3 className="text-2xl font-semibold text-black">{item.title}</h3>
+                    <Icon className="h-6 w-6 text-[#f39c12]" strokeWidth={1.5} />
+                    <h3 className="text-2xl font-semibold text-[#2c3e50]">{item.title}</h3>
                   </div>
-                  <p className="mt-3 text-base text-slate-600">{item.detail}</p>
+                  <p className="mt-3 text-base text-[#4a5568]">{item.detail}</p>
                 </article>
                 );
               })}
@@ -291,19 +300,20 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-6 py-20 md:px-8 lg:px-12">
-          <p className="text-lg uppercase tracking-[0.4em] text-[#1f3347]">Why leaders choose us</p>
+        <section className="bg-white px-0 py-20">
+          <div className="mx-auto max-w-6xl px-6 md:px-8 lg:px-12">
+          <p className="text-lg uppercase tracking-[0.4em] text-[#2c3e50]">Why leaders choose us</p>
           <ul className="mt-6 space-y-6 text-lg text-slate-800">
             <li className="flex items-start gap-3">
-              <span className="mt-2 h-3 w-3 rounded-full bg-[#1f3347]" />
+              <span className="mt-2 h-3 w-3 rounded-full bg-[#f39c12]" />
               Advisory rigor comparable to global audit firms, delivered with boutique care.
             </li>
             <li className="flex items-start gap-3">
-              <span className="mt-2 h-3 w-3 rounded-full bg-[#1f3347]" />
+              <span className="mt-2 h-3 w-3 rounded-full bg-[#f39c12]" />
               End-to-end support across auditing, tax, outsourced accounting, and leadership enablement.
             </li>
             <li className="flex items-start gap-3">
-              <span className="mt-2 h-3 w-3 rounded-full bg-[#1f3347]" />
+              <span className="mt-2 h-3 w-3 rounded-full bg-[#f39c12]" />
               Toolkits, templates, and training pathways you can reuse long after the engagement.
             </li>
           </ul>
@@ -313,22 +323,24 @@ export default function Home() {
             <p className="text-slate-400">or</p>
             <p className="text-xl font-semibold text-black">+254 789 217 201</p>
           </div>
+          </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-6 py-20 md:px-8 lg:px-12">
-          <p className="text-sm uppercase tracking-[0.3em] text-[#1f3347]">Client voices</p>
-          <h2 className="mt-4 text-3xl font-semibold text-black">Partners who stay for the journey.</h2>
+        <section className="bg-[#f8f9fa] px-0 py-20">
+          <div className="mx-auto max-w-6xl px-6 md:px-8 lg:px-12">
+          <p className="text-sm uppercase tracking-[0.35em] text-[#2c3e50]">Client voices</p>
+          <h2 className="mt-4 text-3xl font-semibold text-[#2c3e50]">Partners who stay for the journey.</h2>
           <div className="mt-10 overflow-hidden">
             <div className="flex gap-6 animate-[promiseMarquee_18s_linear_infinite] min-w-max">
               {testimonials.concat(testimonials).map((testimonial, index) => (
                 <figure
                   key={`${testimonial.author}-${index}`}
-                  className="w-[520px] rounded-2xl border border-slate-200 bg-slate-50 p-8 shadow-sm"
+                  className="w-[520px] rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_15px_35px_rgba(28,40,56,0.12)]"
                 >
                   <p className="text-lg leading-relaxed text-slate-700">
-                    <span className="text-3xl text-[#1f3347]">&ldquo;</span>
+                    <span className="text-3xl text-[#f39c12]">&ldquo;</span>
                     {testimonial.quote}
-                    <span className="text-3xl text-[#1f3347]">&rdquo;</span>
+                    <span className="text-3xl text-[#f39c12]">&rdquo;</span>
                   </p>
                   <figcaption className="mt-4 text-sm uppercase tracking-[0.25em] text-slate-500">
                     {testimonial.author} · {testimonial.role}
@@ -337,25 +349,26 @@ export default function Home() {
               ))}
             </div>
           </div>
+          </div>
         </section>
 
-        <section id="contact" className="mx-auto max-w-6xl px-6 md:px-8 lg:px-12">
-          <div className="rounded-3xl border border-slate-200 bg-white p-10 text-center shadow-sm">
-            <p className="text-sm uppercase tracking-[0.3em] text-[#1f3347]">Let&apos;s work together</p>
-            <h2 className="mt-4 text-3xl font-semibold text-black md:text-4xl">Have a vision to grow? Join the changemakers.</h2>
-            <p className="mx-auto mt-4 max-w-3xl text-lg text-slate-600">
+        <section id="contact" className="px-0 py-24">
+          <div className="mx-auto max-w-6xl rounded-[32px] bg-[#2c3e50] px-6 py-16 text-center text-white shadow-[0_30px_80px_rgba(10,15,25,0.55)] md:px-12">
+            <p className="text-sm uppercase tracking-[0.4em] text-[#f8f9fa]">Let&apos;s work together</p>
+            <h2 className="mt-4 text-3xl font-semibold text-white md:text-4xl">Have a vision to grow? Join the changemakers.</h2>
+            <p className="mx-auto mt-4 max-w-3xl text-lg text-white/80">
               Share your brief and we will respond within two business days with a tailored scope, proposed facilitation team, and a roadmap to unlock capacity.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <a
                 href="mailto:hello@turnitaroundbusiness.com"
-                className="bg-[#1f3347] px-8 py-3 text-base font-semibold text-white transition hover:bg-[#27435f]"
+                className="rounded-none bg-[#f39c12] px-8 py-3 text-base font-semibold text-white transition hover:bg-[#e67e22]"
               >
                 hello@turnitaroundbusiness.com
               </a>
               <a
                 href="tel:+254751216699"
-                className="border border-slate-300 px-8 py-3 text-base font-semibold text-black transition hover:border-[#1f3347] hover:text-[#1f3347]"
+                className="rounded-none border border-white/40 px-8 py-3 text-base font-semibold text-white transition hover:border-[#f39c12] hover:text-[#f39c12]"
               >
                 +254 751 216 699
               </a>
@@ -364,20 +377,24 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t border-slate-200 bg-white py-8">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 text-sm text-slate-600 md:flex-row md:items-center md:justify-between">
-          <p>© {new Date().getFullYear()} Turn it Around Business. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a href="https://www.turnitaroundbusiness.com/" className="hover:text-[#1f3347]">
+      <footer className="border-t border-[#f39c12]/30 bg-[#172230] py-10 text-[#f8f9fa]/70">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-6 text-sm md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-3 text-white">
+            <Image src="/logo.png" alt="TBS Limited logo" width={56} height={36} className="h-10 w-auto object-contain" />
+            <span className="font-semibold uppercase tracking-[0.35em]">Turn It Around</span>
+          </div>
+          <div className="flex gap-6 text-white">
+            <a href="https://www.turnitaroundbusiness.com/" className="transition hover:text-[#f39c12]">
               Website
             </a>
-            <a href="https://www.linkedin.com" className="hover:text-[#1f3347]">
+            <a href="https://www.linkedin.com" className="transition hover:text-[#f39c12]">
               LinkedIn
             </a>
-            <a href="https://gmkaccountants.com/" className="hover:text-[#1f3347]">
+            <a href="https://gmkaccountants.com/" className="transition hover:text-[#f39c12]">
               Inspiration
             </a>
           </div>
+          <p className="text-xs text-white/50">© {new Date().getFullYear()} Turn it Around Business. All rights reserved.</p>
         </div>
       </footer>
     </div>
