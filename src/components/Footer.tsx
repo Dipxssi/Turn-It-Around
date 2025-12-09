@@ -62,8 +62,19 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="mt-8 text-center text-xs text-[#f8f9fa]/50">
-        © {new Date().getFullYear()} Turn it Around Business. All rights reserved.
+      <div className="mt-8 text-center text-xs text-[#f8f9fa]/50 space-y-1">
+        <p>© {new Date().getFullYear()} Turn it Around Business. All rights reserved.</p>
+        <p>
+          Developed and maintained by{" "}
+          <a
+            href="https://diginowsolutions.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#f39c12] hover:text-[#f8f9fa]"
+          >
+            DigiNowSolutions
+          </a>
+        </p>
       </div>
     </footer>
   );

@@ -211,7 +211,9 @@ export default function AboutUs() {
                 return (
                   <div
                     key={idx}
-                    ref={(el) => (approachRefs.current[idx] = el)}
+                    ref={(el) => {
+                      approachRefs.current[idx] = el;
+                    }}
                     className={`opacity-0 will-change-transform bg-white/95 backdrop-blur-sm rounded-2xl p-8 shadow-xl ${
                       approachVisible[idx]
                         ? idx % 2 === 0
