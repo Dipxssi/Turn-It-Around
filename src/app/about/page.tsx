@@ -11,12 +11,14 @@ export default function AboutUs() {
   const missionRef = useRef<HTMLDivElement | null>(null);
   const visionRef = useRef<HTMLDivElement | null>(null);
   const approachRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const whoWeAreTextRef = useRef<HTMLDivElement | null>(null);
 
   const [missionVisible, setMissionVisible] = useState(false);
   const [visionVisible, setVisionVisible] = useState(false);
   const [missionBounce, setMissionBounce] = useState(false);
   const [visionBounce, setVisionBounce] = useState(false);
   const [approachVisible, setApproachVisible] = useState<boolean[]>([]);
+  const [whoWeAreTextVisible, setWhoWeAreTextVisible] = useState(false);
 
   const approachSections = [
     {
@@ -79,6 +81,9 @@ export default function AboutUs() {
           if (entry.target === visionRef.current && entry.isIntersecting) {
             setVisionVisible(true);
           }
+          if (entry.target === whoWeAreTextRef.current && entry.isIntersecting) {
+            setWhoWeAreTextVisible(true);
+          }
           const idx = approachRefs.current.findIndex((node) => node === entry.target);
           if (idx !== -1 && entry.isIntersecting) {
             setApproachVisible((prev) => {
@@ -94,6 +99,7 @@ export default function AboutUs() {
 
     if (missionRef.current) observer.observe(missionRef.current);
     if (visionRef.current) observer.observe(visionRef.current);
+    if (whoWeAreTextRef.current) observer.observe(whoWeAreTextRef.current);
     approachRefs.current.forEach((node) => node && observer.observe(node));
 
     return () => observer.disconnect();
@@ -121,13 +127,23 @@ export default function AboutUs() {
             style={{ backgroundImage: "url('/about.png')" }}
           />
           <div className="absolute inset-0 bg-black/40" />
-          <div className="relative z-10 mx-auto max-w-4xl px-6 text-center space-y-6 opacity-0" style={{ animation: "fadeIn 0.8s ease-out forwards" }}>
+          <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
             <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-gray-100 drop-shadow-sm">
               <span className="text-gray-100">Who</span>{" "}
               <span className="text-amber-600">We</span>{" "}
               <span className="text-gray-100">Are</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-200 leading-relaxed max-w-4xl mx-auto">
+          </div>
+        </section>
+        
+        {/* Who We Are Text */}
+        <section className="px-0 py-6 bg-white">
+          <div ref={whoWeAreTextRef} className="mx-auto max-w-3xl px-6">
+            <p className={`text-xl md:text-2xl text-[#333333] leading-[1.6] text-left transition-all duration-700 ${
+              whoWeAreTextVisible 
+                ? "opacity-100 translate-y-0" 
+                : "opacity-0 translate-y-8"
+            }`}>
               Turnitaround Business Solutions (TBS) is a strategic advisory and capacity-building firm dedicated to strengthening NGOs, social enterprises, SMEs, and mission-driven businesses through robust systems, sustainable operational structures, and transparent financial frameworks.
             </p>
           </div>

@@ -64,8 +64,8 @@ export function PromiseCards({ items }: Props) {
   }, []);
 
   return (
-    <div ref={sectionRef} className="mt-12 px-6 lg:px-12">
-      <div className="mx-auto grid w-full grid-cols-1 gap-8 md:grid-cols-2">
+    <div ref={sectionRef} className="mt-12">
+      <div className="mx-auto max-w-6xl grid w-full grid-cols-1 gap-8 px-6 md:grid-cols-2 md:px-8 lg:px-12">
         {items.map((item, idx) => {
           const isVisible = visibleCards.has(idx);
           const bullets = bulletsByTitle[item.title];

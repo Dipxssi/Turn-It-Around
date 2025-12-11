@@ -55,14 +55,14 @@ export function Footer() {
         <div className="flex-1 space-y-2">
           <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-white">Contact</h4>
           <div className="flex flex-col gap-2 text-sm">
-            <a href="mailto:hello@turnitaroundbusiness.com" className="hover:text-[#f39c12]">hello@turnitaroundbusiness.com</a>
             <a href="tel:+254751216699" className="hover:text-[#f39c12]">+254 751 216 699</a>
+            <a href="tel:+2540789217201" className="hover:text-[#f39c12]">+254 0789 217 201</a>
             <a href="mailto:info@turnitaroundbusiness.com" className="hover:text-[#f39c12]">info@turnitaroundbusiness.com</a>
             <p className="text-[#f8f9fa]/60">Utalii House, 2nd Floor, Tower 3 Waiyaki Way, Westlands. Nairobi, Kenya.</p>
           </div>
         </div>
       </div>
-      <div className="mt-8 text-center text-xs text-[#f8f9fa]/50 space-y-1">
+      <div className="mt-8 mx-auto max-w-6xl px-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-[#f8f9fa]/50">
         <p>© {new Date().getFullYear()} Turn it Around Business. All rights reserved.</p>
         <p>
           Developed and maintained by{" "}

@@ -151,14 +151,19 @@ export default function Home() {
                 "radial-gradient(circle at 10% 20%, rgba(243,156,18,0.25), transparent 35%), radial-gradient(circle at 80% 10%, rgba(243,156,18,0.2), transparent 30%), radial-gradient(circle at 50% 80%, rgba(243,156,18,0.15), transparent 35%)",
             }}
           />
-          <div className="relative z-10 max-w-6xl px-8 text-center text-white sm:px-12 pb-24">
+          <div className="relative z-10 max-w-5xl px-8 text-center text-white sm:px-12 pb-24">
             <div className="inline-flex items-center gap-3 rounded-full border border-[#f39c12]/70 bg-white/5 px-5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-white">
               <span className="h-2 w-2 rounded-full bg-[#f39c12]" />
               Empowering organizations to lead, grow, and thrive
             </div>
-            <h1 className="mt-4 text-4xl font-bold leading-tight text-white md:text-5xl lg:text-[3.75rem] lg:leading-[1.05]">
-              Strategic advisory, capacity building, and financial management for NGOs, SMEs and businesses ready to grow, scale and thrive.
-            </h1>
+            <div className="mt-6 space-y-4">
+              <h1 className="text-2xl font-medium leading-relaxed text-white md:text-3xl lg:text-4xl lg:leading-relaxed">
+                <span className="font-bold">Strategic advisory</span>, capacity building, and financial management
+              </h1>
+              <p className="text-lg font-normal leading-relaxed text-white/90 md:text-xl lg:text-2xl lg:leading-relaxed">
+                for NGOs, SMEs and businesses ready to grow, scale and thrive.
+              </p>
+            </div>
             <div className="mt-10 flex flex-wrap justify-center gap-6">
               <a
                 href="#contact"
@@ -231,9 +236,9 @@ export default function Home() {
               {services.map((service, index) => {
                 const Icon = service.icon;
                 return (
-                <a
+                <Link
                   key={service.title}
-                  href="#contact"
+                  href="/services"
                     className="group flex h-full flex-col items-center gap-4 rounded-2xl border border-[#2c3e50]/40 bg-white p-6 text-center shadow-[0_10px_25px_rgba(28,46,68,0.06)] transition-all duration-300 hover:-translate-y-2 hover:border-[#f39c12] hover:shadow-[0_20px_50px_rgba(32,45,68,0.2)] animate-[fadeInUp_0.6s_ease-out_forwards] opacity-0"
                     style={{
                       animationDelay: `${index * 0.15}s`,
@@ -251,17 +256,17 @@ export default function Home() {
                     Learn more
                     <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
                   </span>
-                </a>
+                </Link>
                 );
               })}
             </div>
             <div className="mx-auto mt-16 text-center">
-              <a
-                href="#services"
+              <Link
+                href="/services"
                 className="inline-flex items-center rounded-none border-2 border-[#f39c12] bg-transparent px-10 py-3 text-base font-semibold text-[#2c3e50] transition hover:bg-[#f39c12] hover:text-white"
               >
                 View All Our Comprehensive Solutions
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -270,8 +275,13 @@ export default function Home() {
         <section className="bg-white px-0 py-24">
           <div className="mx-auto max-w-6xl px-6 md:px-8 lg:px-12">
             <div className="text-center">
-              <h2 className="text-4xl font-semibold text-[#2c3e50] md:text-5xl">
-                Partners in Your Progress: The Turnitaround Advantage
+              <h2 className="text-[#2c3e50]">
+                <div className="text-2xl font-semibold md:text-3xl">
+                  Partners in Your Progress
+                </div>
+                <div className="text-4xl font-semibold md:text-5xl mt-2">
+                  The Turnitaround Advantage
+                </div>
               </h2>
             </div>
           </div>
