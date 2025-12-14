@@ -131,7 +131,7 @@ export default function Home() {
     <div id="top" className="bg-white text-[#2c3e50]">
       <Navbar />
 
-        <section className="relative isolate mt-8 flex min-h-[80vh] w-full items-center justify-center overflow-hidden rounded-none">
+        <section className="relative isolate mt-4 md:mt-8 flex min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] w-full items-center justify-center overflow-hidden rounded-none">
           <video
             src="/videos/home.mp4"
             autoPlay
@@ -151,29 +151,30 @@ export default function Home() {
                 "radial-gradient(circle at 10% 20%, rgba(243,156,18,0.25), transparent 35%), radial-gradient(circle at 80% 10%, rgba(243,156,18,0.2), transparent 30%), radial-gradient(circle at 50% 80%, rgba(243,156,18,0.15), transparent 35%)",
             }}
           />
-          <div className="relative z-10 max-w-5xl px-8 text-center text-white sm:px-12 pb-24">
-            <div className="inline-flex items-center gap-3 rounded-full border border-[#f39c12]/70 bg-white/5 px-5 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.4em] text-white">
-              <span className="h-2 w-2 rounded-full bg-[#f39c12]" />
-              Empowering organizations to lead, grow, and thrive
+          <div className="relative z-10 w-[90%] max-w-[1800px] mx-auto px-4 text-center text-white lg:px-12 pb-12 md:pb-24">
+            <div className="inline-flex items-center gap-2 md:gap-3 rounded-full border border-[#f39c12]/70 bg-white/5 px-3 py-1 md:px-5 text-[0.65rem] md:text-[0.7rem] font-semibold uppercase tracking-[0.3em] md:tracking-[0.4em] text-white">
+              <span className="h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-[#f39c12]" />
+              <span className="hidden sm:inline">Empowering organizations to lead, grow, and thrive</span>
+              <span className="sm:hidden">Empowering organizations</span>
             </div>
-            <div className="mt-6 space-y-4">
-              <h1 className="text-2xl font-medium leading-relaxed text-white md:text-3xl lg:text-4xl lg:leading-relaxed">
+            <div className="mt-4 md:mt-6 space-y-3 md:space-y-4">
+              <h1 className="text-xl font-medium leading-tight text-white sm:text-2xl md:text-3xl lg:text-4xl lg:leading-relaxed">
                 <span className="font-bold">Strategic advisory</span>, capacity building, and financial management
               </h1>
-              <p className="text-lg font-normal leading-relaxed text-white/90 md:text-xl lg:text-2xl lg:leading-relaxed">
+              <p className="text-base font-normal leading-relaxed text-white/90 sm:text-lg md:text-xl lg:text-2xl lg:leading-relaxed px-2">
                 for NGOs, SMEs and businesses ready to grow, scale and thrive.
               </p>
             </div>
-            <div className="mt-10 flex flex-wrap justify-center gap-6">
+            <div className="mt-6 md:mt-10 flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-6 px-4">
               <a
                 href="#contact"
-                className="inline-flex items-center rounded-none bg-[#f39c12] px-12 py-3 text-base font-semibold text-white transition hover:bg-[#e67e22] shadow-md"
+                className="inline-flex items-center justify-center rounded-none bg-[#f39c12] px-8 py-2.5 md:px-12 md:py-3 text-sm md:text-base font-semibold text-white transition hover:bg-[#e67e22] shadow-md"
               >
                 Get Started
               </a>
               <a
                 href="#contact"
-                className="inline-flex items-center rounded-none border border-white/20 bg-white/90 px-12 py-3 text-base font-semibold text-[#2c3e50] transition hover:border-[#f39c12] hover:bg-[#f39c12] hover:text-white shadow-md"
+                className="inline-flex items-center justify-center rounded-none border border-white/20 bg-white/90 px-8 py-2.5 md:px-12 md:py-3 text-sm md:text-base font-semibold text-[#2c3e50] transition hover:border-[#f39c12] hover:bg-[#f39c12] hover:text-white shadow-md"
               >
                 Book a Consultation
               </a>
@@ -190,26 +191,27 @@ export default function Home() {
           </div>
         </section>
 
-      <main className="space-y-24 bg-white pb-24 pt-0">
-        <section className="-mt-10 px-0 lg:-mt-16">
-          <div className="bg-gradient-to-b from-[#f8f9fa] to-[#f1f3f6] py-24 text-[#2c3e50]">
-            <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 lg:flex-row lg:items-center lg:gap-12 lg:px-12">
-              <div className="relative flex-1 overflow-hidden rounded-2xl border border-[#f39c12]/25 shadow-[0_30px_60px_rgba(23,35,52,0.18)] min-h-[420px]">
+      <main className="bg-white pb-24 pt-0">
+        <section className="-mt-6 px-0 md:-mt-10 lg:-mt-16">
+          <div className="bg-gradient-to-b from-[#f8f9fa] to-[#f1f3f6] py-12 md:py-16 lg:py-20 text-[#2c3e50]">
+            <div className="mx-auto flex w-[90%] max-w-[1800px] flex-col gap-6 md:gap-8 px-4 lg:flex-row lg:items-center lg:gap-8 lg:px-12 xl:px-16">
+              <div className="relative flex-[1.1] overflow-hidden rounded-xl md:rounded-2xl border border-[#f39c12]/25 shadow-[0_30px_60px_rgba(23,35,52,0.18)] min-h-[300px] sm:min-h-[400px] md:min-h-[500px] lg:min-h-[600px] xl:min-h-[650px]">
                 <Image
                   src="/values.png"
                   alt="Teams collaborating"
                   fill
-                  sizes="(min-width: 1024px) 580px, 100vw"
-                  className="object-cover"
+                  sizes="(min-width: 1024px) 800px, 100vw"
+                  className="object-cover object-top"
+                  style={{ objectPosition: "center top" }}
                 />
               </div>
-              <div className="relative flex-1 self-center space-y-6 rounded-2xl border border-slate-200 bg-white px-10 py-14 shadow-[0_30px_60px_rgba(20,30,48,0.12)] lg:px-14">
-                <span className="absolute inset-x-0 top-0 h-3 rounded-t-2xl bg-[#f39c12]" />
-                <p className="text-2xl font-semibold uppercase tracking-[0.35em] text-[#2c3e50]">
+              <div className="relative flex-1 self-center space-y-4 md:space-y-6 rounded-xl md:rounded-2xl border border-slate-200 bg-white px-4 py-8 md:px-8 md:py-10 lg:px-12 lg:py-14 xl:px-16 shadow-[0_30px_60px_rgba(20,30,48,0.12)]">
+                <span className="absolute inset-x-0 top-0 h-2 md:h-3 rounded-t-xl md:rounded-t-2xl bg-[#f39c12]" />
+                <p className="text-lg md:text-xl lg:text-2xl font-semibold uppercase tracking-[0.25em] md:tracking-[0.35em] text-[#2c3e50]">
                   {valueBlock.heading}
                 </p>
-                <h2 className="text-[3.5rem] font-semibold leading-tight text-[#2c3e50] mt-2">{valueBlock.title}:</h2>
-                <p className="text-xl italic text-[#4a5568] max-w-2xl">
+                <h2 className="text-3xl md:text-4xl lg:text-[3.5rem] font-semibold leading-tight text-[#2c3e50] mt-1 md:mt-2">{valueBlock.title}:</h2>
+                <p className="text-base md:text-lg lg:text-xl italic text-[#4a5568]">
                   {valueBlock.body}
                 </p>
                 <div className="flex gap-5 text-sm uppercase tracking-[0.25em] text-[#718096]">
@@ -226,32 +228,32 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section id="services" className="px-0">
-          <div className="bg-white py-24 text-[#2c3e50]">
-            <div className="mx-auto flex max-w-5xl flex-col items-center gap-4 text-center">
-              <h2 className="text-5xl font-bold text-[#2c3e50] md:text-6xl">What We Do</h2>
+        <section id="services" className="px-0 py-16">
+          <div className="bg-white text-[#2c3e50]">
+            <div className="mx-auto flex w-[90%] max-w-[1800px] flex-col items-center gap-3 md:gap-4 px-4 text-center lg:px-12">
+              <h2 className="text-3xl font-bold text-[#2c3e50] sm:text-4xl md:text-5xl lg:text-6xl">What We Do</h2>
             </div>
 
-            <div className="mx-auto mt-16 grid w-full gap-8 px-6 sm:grid-cols-2 lg:grid-cols-3 md:px-8 lg:px-12">
+            <div className="mx-auto mt-8 md:mt-12 lg:mt-16 grid w-[90%] max-w-[1800px] gap-4 md:gap-6 lg:gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3 lg:px-12">
               {services.map((service, index) => {
                 const Icon = service.icon;
                 return (
                 <Link
                   key={service.title}
                   href="/services"
-                    className="group flex h-full flex-col items-center gap-4 rounded-2xl border border-[#2c3e50]/40 bg-white p-6 text-center shadow-[0_10px_25px_rgba(28,46,68,0.06)] transition-all duration-300 hover:-translate-y-2 hover:border-[#f39c12] hover:shadow-[0_20px_50px_rgba(32,45,68,0.2)] animate-[fadeInUp_0.6s_ease-out_forwards] opacity-0"
+                    className="group flex h-full flex-col items-center gap-3 md:gap-4 rounded-xl md:rounded-2xl border border-[#2c3e50]/40 bg-white p-4 md:p-6 text-center shadow-[0_10px_25px_rgba(28,46,68,0.06)] transition-all duration-300 hover:-translate-y-2 hover:border-[#f39c12] hover:shadow-[0_20px_50px_rgba(32,45,68,0.2)] animate-[fadeInUp_0.6s_ease-out_forwards] opacity-0"
                     style={{
                       animationDelay: `${index * 0.15}s`,
                     }}
                 >
                     <span className="h-1 w-12 rounded-full bg-[#f39c12]/70 transition-all duration-300 group-hover:w-24" />
-                    <div className="flex h-20 w-20 items-center justify-center rounded-2xl border border-[#2c3e50]/20 bg-[#fff7ec] transition-all duration-300 group-hover:bg-white group-hover:scale-110 group-hover:rotate-3">
-                      <Icon className="h-10 w-10 text-[#2c3e50] transition-transform duration-300 group-hover:scale-110" strokeWidth={1.5} />
-                  </div>
-                    <div className="text-2xl font-semibold text-[#2c3e50] transition-transform duration-300 group-hover:scale-110">{String(index + 1).padStart(2, "0")}</div>
-                    <div className="text-xs font-semibold uppercase tracking-[0.3em] text-[#4a5568]">{service.focus}</div>
-                    <h3 className="text-2xl font-semibold text-[#2c3e50] transition-colors duration-300 group-hover:text-[#f39c12]">{service.title}</h3>
-                    <p className="mt-2 text-base leading-relaxed text-[#4a5568] max-w-[280px]">{service.description}</p>
+                    <div className="flex h-16 w-16 md:h-20 md:w-20 items-center justify-center rounded-xl md:rounded-2xl border border-[#2c3e50]/20 bg-[#fff7ec] transition-all duration-300 group-hover:bg-white group-hover:scale-110 group-hover:rotate-3">
+                      <Icon className="h-8 w-8 md:h-10 md:w-10 text-[#2c3e50] transition-transform duration-300 group-hover:scale-110" strokeWidth={1.5} />
+                    </div>
+                    <div className="text-xl md:text-2xl font-semibold text-[#2c3e50] transition-transform duration-300 group-hover:scale-110">{String(index + 1).padStart(2, "0")}</div>
+                    <div className="text-[10px] md:text-xs font-semibold uppercase tracking-[0.25em] md:tracking-[0.3em] text-[#4a5568]">{service.focus}</div>
+                    <h3 className="text-lg md:text-xl lg:text-2xl font-semibold text-[#2c3e50] transition-colors duration-300 group-hover:text-[#f39c12]">{service.title}</h3>
+                    <p className="mt-1 md:mt-2 text-sm md:text-base leading-relaxed text-[#4a5568] max-w-[280px]">{service.description}</p>
                   <span className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#2c3e50] transition-all duration-300 group-hover:text-[#f39c12] group-hover:gap-3">
                     Learn more
                     <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">→</span>
@@ -260,20 +262,21 @@ export default function Home() {
                 );
               })}
             </div>
-            <div className="mx-auto mt-16 text-center">
+            <div className="mx-auto mt-6 md:mt-8 text-center pb-0">
               <Link
                 href="/services"
-                className="inline-flex items-center rounded-none border-2 border-[#f39c12] bg-transparent px-10 py-3 text-base font-semibold text-[#2c3e50] transition hover:bg-[#f39c12] hover:text-white"
+                className="inline-flex items-center rounded-none border-2 border-[#f39c12] bg-transparent px-6 py-2 md:px-10 md:py-3 text-sm md:text-base font-semibold text-[#2c3e50] transition hover:bg-[#f39c12] hover:text-white"
               >
-                View All Our Comprehensive Solutions
+                <span className="hidden sm:inline">View All Our Comprehensive Solutions</span>
+                <span className="sm:hidden">View All Solutions</span>
               </Link>
             </div>
           </div>
         </section>
 
         {/* Partners in Your Progress Section */}
-        <section className="bg-white px-0 py-24">
-          <div className="mx-auto max-w-6xl px-6 md:px-8 lg:px-12">
+        <section className="bg-white px-0 py-16">
+          <div className="mx-auto w-[90%] max-w-[1800px] px-4 lg:px-12">
             <div className="text-center">
               <h2 className="text-[#2c3e50]">
                 <div className="text-2xl font-semibold md:text-3xl">
@@ -293,11 +296,11 @@ export default function Home() {
         {/* Featured Services Mini Cards */}
         <FeaturedServices services={featuredServices} />
 
-        <section id="promise" className="bg-white px-0 py-24 text-[#2c3e50]">
-          <div className="mx-auto max-w-6xl px-6 md:px-8 lg:px-12">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-semibold text-[#2c3e50] md:text-5xl">Our Promise</h2>
-              <p className="mt-4 text-xl text-[#4a5568]">
+        <section id="promise" className="bg-white px-0 py-12 md:py-16 text-[#2c3e50]">
+          <div className="mx-auto w-[90%] max-w-[1800px] px-4 lg:px-12">
+            <div className="text-center mb-8 md:mb-12">
+              <h2 className="text-2xl font-semibold text-[#2c3e50] sm:text-3xl md:text-4xl lg:text-5xl">Our Promise</h2>
+              <p className="mt-2 md:mt-4 text-base md:text-lg lg:text-xl text-[#4a5568]">
                 Empowering Vision. Strengthening Systems. Sustaining Success.
               </p>
             </div>
@@ -305,11 +308,11 @@ export default function Home() {
           <PromiseCards items={promise} />
         </section>
 
-        <section className="bg-[#f8f9fa] px-0 py-20">
-          <div className="mx-auto max-w-6xl px-6 md:px-8 lg:px-12">
-          <p className="text-sm uppercase tracking-[0.35em] text-[#2c3e50]">results and trust</p>
-          <p className="text-sm uppercase tracking-[0.35em] text-[#2c3e50] mt-2">clients feedback</p>
-          <h2 className="mt-4 text-3xl font-semibold text-[#2c3e50]">Partners who stay for the journey.</h2>
+        <section className="bg-[#f8f9fa] px-0 py-12 md:py-16">
+          <div className="mx-auto w-[90%] max-w-[1800px] px-4 lg:px-12">
+          <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#2c3e50]">results and trust</p>
+          <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#2c3e50] mt-1 md:mt-2">clients feedback</p>
+          <h2 className="mt-3 md:mt-4 text-xl md:text-2xl lg:text-3xl font-semibold text-[#2c3e50]">Partners who stay for the journey.</h2>
           <div className="mt-10 overflow-hidden">
             <div className="flex gap-6 animate-[promiseMarquee_12s_linear_infinite] min-w-max">
               {testimonials.concat(testimonials).map((testimonial, index) => (
@@ -333,14 +336,14 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="contact" className="px-4 py-24 flex justify-center">
+        <section id="contact" className="px-0 py-12 md:py-16 flex justify-center">
           <div
-            className="relative w-full max-w-6xl overflow-hidden rounded-[32px] bg-gradient-to-br from-[#2b3b52] via-[#223044] to-[#1b2535] px-6 py-10 text-white shadow-[0_30px_80px_rgba(10,15,25,0.55)] md:px-12"
+            className="relative w-[90%] max-w-[1800px] overflow-hidden rounded-2xl md:rounded-[32px] bg-gradient-to-br from-[#2b3b52] via-[#223044] to-[#1b2535] px-4 py-8 md:px-6 md:py-10 text-white shadow-[0_30px_80px_rgba(10,15,25,0.55)] lg:px-12"
           >
-            <div className="grid gap-10 md:grid-cols-2 md:items-start">
-              <div className="space-y-4">
-                <h2 className="text-3xl font-semibold md:text-4xl">Contact Us</h2>
-                <p className="text-base md:text-lg text-white/80 text-left max-w-xl">
+            <div className="grid gap-6 md:gap-10 md:grid-cols-2 md:items-start">
+              <div className="space-y-3 md:space-y-4">
+                <h2 className="text-2xl font-semibold md:text-3xl lg:text-4xl">Contact Us</h2>
+                <p className="text-sm md:text-base lg:text-lg text-white/80 text-left max-w-xl">
                   In today's fast-changing business world, staying competitive requires agility and innovation.
                   Turnitaround Business Solution is your trusted partner in driving transformation, growth, and sustainable success.
                 </p>
@@ -354,11 +357,11 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-white p-6 shadow-[0_20px_50px_-15px_rgba(10,15,25,0.35)]">
-                <form className="space-y-5">
-                  <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl md:rounded-2xl bg-white p-4 md:p-6 shadow-[0_20px_50px_-15px_rgba(10,15,25,0.35)]">
+                <form className="space-y-4 md:space-y-5">
+                  <div className="grid gap-3 md:gap-4 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-[#2c3e50] mb-1.5">
+                      <label htmlFor="name" className="block text-xs md:text-sm font-medium text-[#2c3e50] mb-1 md:mb-1.5">
                         Name
                       </label>
                       <input
@@ -366,12 +369,12 @@ export default function Home() {
                         id="name"
                         name="name"
                         required
-                        className="w-full rounded-lg border border-[#dfe3eb] bg-white px-4 py-3 text-[#2c3e50] placeholder-[#9aa6b8] focus:border-[#f39c12] focus:outline-none focus:ring-2 focus:ring-[#f39c12]/30"
+                        className="w-full rounded-lg border border-[#dfe3eb] bg-white px-3 py-2 md:px-4 md:py-3 text-sm md:text-base text-[#2c3e50] placeholder-[#9aa6b8] focus:border-[#f39c12] focus:outline-none focus:ring-2 focus:ring-[#f39c12]/30"
                         placeholder="Your Name"
                       />
                     </div>
                     <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-[#2c3e50] mb-1.5">
+                      <label htmlFor="email" className="block text-xs md:text-sm font-medium text-[#2c3e50] mb-1 md:mb-1.5">
                         Email
                       </label>
                       <input
@@ -379,13 +382,13 @@ export default function Home() {
                         id="email"
                         name="email"
                         required
-                        className="w-full rounded-lg border border-[#dfe3eb] bg-white px-4 py-3 text-[#2c3e50] placeholder-[#9aa6b8] focus:border-[#f39c12] focus:outline-none focus:ring-2 focus:ring-[#f39c12]/30"
+                        className="w-full rounded-lg border border-[#dfe3eb] bg-white px-3 py-2 md:px-4 md:py-3 text-sm md:text-base text-[#2c3e50] placeholder-[#9aa6b8] focus:border-[#f39c12] focus:outline-none focus:ring-2 focus:ring-[#f39c12]/30"
                         placeholder="your.email@example.com"
                       />
                     </div>
                   </div>
                   <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-[#2c3e50] mb-1.5">
+                    <label htmlFor="subject" className="block text-xs md:text-sm font-medium text-[#2c3e50] mb-1 md:mb-1.5">
                       Subject
                     </label>
                     <input
@@ -393,26 +396,26 @@ export default function Home() {
                       id="subject"
                       name="subject"
                       required
-                      className="w-full rounded-lg border border-[#dfe3eb] bg-white px-4 py-3 text-[#2c3e50] placeholder-[#9aa6b8] focus:border-[#f39c12] focus:outline-none focus:ring-2 focus:ring-[#f39c12]/30"
+                      className="w-full rounded-lg border border-[#dfe3eb] bg-white px-3 py-2 md:px-4 md:py-3 text-sm md:text-base text-[#2c3e50] placeholder-[#9aa6b8] focus:border-[#f39c12] focus:outline-none focus:ring-2 focus:ring-[#f39c12]/30"
                       placeholder="Subject"
                     />
                   </div>
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-[#2c3e50] mb-1.5">
+                    <label htmlFor="message" className="block text-xs md:text-sm font-medium text-[#2c3e50] mb-1 md:mb-1.5">
                       Message
                     </label>
                     <textarea
                       id="message"
                       name="message"
-                      rows={5}
+                      rows={4}
                       required
-                      className="w-full rounded-lg border border-[#dfe3eb] bg-white px-4 py-3 text-[#2c3e50] placeholder-[#9aa6b8] focus:border-[#f39c12] focus:outline-none focus:ring-2 focus:ring-[#f39c12]/30 resize-none"
+                      className="w-full rounded-lg border border-[#dfe3eb] bg-white px-3 py-2 md:px-4 md:py-3 text-sm md:text-base text-[#2c3e50] placeholder-[#9aa6b8] focus:border-[#f39c12] focus:outline-none focus:ring-2 focus:ring-[#f39c12]/30 resize-none"
                       placeholder="Your message..."
                     />
                   </div>
                   <button
                     type="submit"
-                    className="w-full inline-flex items-center justify-center rounded-lg bg-[#f39c12] px-6 py-3 text-base font-semibold text-white transition hover:bg-[#e67e22] shadow-[0_10px_30px_-12px_rgba(243,156,18,0.8)]"
+                    className="w-full inline-flex items-center justify-center rounded-lg bg-[#f39c12] px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-semibold text-white transition hover:bg-[#e67e22] shadow-[0_10px_30px_-12px_rgba(243,156,18,0.8)]"
                   >
                     Send Message
                   </button>

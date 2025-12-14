@@ -64,8 +64,8 @@ export function PromiseCards({ items }: Props) {
   }, []);
 
   return (
-    <div ref={sectionRef} className="mt-12">
-      <div className="mx-auto max-w-6xl grid w-full grid-cols-1 gap-8 px-6 md:grid-cols-2 md:px-8 lg:px-12">
+    <div ref={sectionRef} className="mt-6 md:mt-12">
+      <div className="mx-auto w-[90%] max-w-[1800px] grid grid-cols-1 gap-4 md:gap-6 lg:gap-8 px-4 md:grid-cols-2 lg:px-12">
         {items.map((item, idx) => {
           const isVisible = visibleCards.has(idx);
           const bullets = bulletsByTitle[item.title];
@@ -75,14 +75,14 @@ export function PromiseCards({ items }: Props) {
             <article
               key={`${item.title}-${idx}`}
               data-index={idx}
-              className={`flex h-full flex-col overflow-hidden rounded-2xl bg-white text-left text-[#2c3e50] shadow-[0_10px_32px_rgba(17,24,39,0.12)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_18px_38px_rgba(17,24,39,0.16)] opacity-0 translate-y-6 ${
+              className={`flex h-full flex-col overflow-hidden rounded-xl md:rounded-2xl bg-white text-left text-[#2c3e50] shadow-[0_10px_32px_rgba(17,24,39,0.12)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_18px_38px_rgba(17,24,39,0.16)] opacity-0 translate-y-6 ${
                 isVisible ? "opacity-100 translate-y-0" : ""
               }`}
               style={{
                 transitionDelay: `${idx * 150}ms`,
               }}
             >
-              <div className="relative w-full h-48 overflow-hidden">
+              <div className="relative w-full h-40 md:h-48 overflow-hidden">
                 <Image
                   src={item.image}
                   alt={item.title}
@@ -100,8 +100,8 @@ export function PromiseCards({ items }: Props) {
                   aria-hidden="true"
                 />
               </div>
-              <div className="p-10 space-y-4">
-                <h3 className="text-2xl font-semibold text-[#1f2937]">{item.title}</h3>
+              <div className="p-6 md:p-8 lg:p-10 space-y-3 md:space-y-4">
+                <h3 className="text-lg md:text-xl lg:text-2xl font-semibold text-[#1f2937]">{item.title}</h3>
                 {bullets ? (
                   <>
                     <p className="text-base text-[#4b5563]">
