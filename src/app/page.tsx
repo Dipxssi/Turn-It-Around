@@ -131,7 +131,7 @@ export default function Home() {
     <div id="top" className="bg-white text-[#2c3e50]">
       <Navbar />
 
-        <section className="relative isolate mt-4 md:mt-8 flex min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] w-full items-center justify-center overflow-hidden rounded-none">
+        <section className="relative isolate mt-4 md:mt-8 flex min-h-[70vh] sm:min-h-[75vh] md:min-h-[80vh] w-full items-center justify-center overflow-hidden rounded-none pb-20 md:pb-24">
           <video
             src="/videos/home.mp4"
             autoPlay
@@ -151,7 +151,7 @@ export default function Home() {
                 "radial-gradient(circle at 10% 20%, rgba(243,156,18,0.25), transparent 35%), radial-gradient(circle at 80% 10%, rgba(243,156,18,0.2), transparent 30%), radial-gradient(circle at 50% 80%, rgba(243,156,18,0.15), transparent 35%)",
             }}
           />
-          <div className="relative z-10 w-[90%] max-w-[1800px] mx-auto px-4 text-center text-white lg:px-12 pb-12 md:pb-24">
+          <div className="relative z-10 w-[90%] max-w-[1800px] mx-auto px-4 text-center text-white lg:px-12 pb-16 md:pb-20">
             <div className="inline-flex items-center gap-2 md:gap-3 rounded-full border border-[#f39c12]/70 bg-white/5 px-3 py-1 md:px-5 text-[0.65rem] md:text-[0.7rem] font-semibold uppercase tracking-[0.3em] md:tracking-[0.4em] text-white">
               <span className="h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-[#f39c12]" />
               <span className="hidden sm:inline">Empowering organizations to lead, grow, and thrive</span>
@@ -182,9 +182,9 @@ export default function Home() {
           </div>
           
           {/* Trust Bar - Moving Text */}
-          <div className="absolute bottom-0 left-0 right-0 z-10 overflow-hidden border-t border-white/10 bg-[#1e3a5f]/60 py-4">
+          <div className="absolute bottom-0 left-0 right-0 z-10 overflow-hidden border-t border-white/10 bg-[#1e3a5f]/60 py-3 md:py-4">
             <div className="flex justify-center px-4">
-              <p className="text-base font-medium text-white/90 text-center md:text-lg">
+              <p className="text-xs sm:text-sm md:text-base font-medium text-white/90 text-center">
                 Trusted by NGOs, SMEs, Foundations, Social Enterprises & Development Partners Across the Region.
               </p>
             </div>

@@ -2,11 +2,12 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [resourcesDropdownOpen, setResourcesDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -37,19 +38,22 @@ export function Navbar() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      // Don't close if mobile menu is open (mobile menu handles its own closing)
+      if (mobileMenuOpen) return;
+      
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setResourcesDropdownOpen(false);
       }
     };
 
-    if (resourcesDropdownOpen) {
+    if (resourcesDropdownOpen && !mobileMenuOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [resourcesDropdownOpen]);
+  }, [resourcesDropdownOpen, mobileMenuOpen]);
 
   return (
     <header className="bg-[#2c3e50] pb-8 pt-4 text-white shadow-[0_10px_30px_rgba(12,20,33,0.35)] md:pb-16 md:pt-6">
@@ -150,7 +154,7 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-white/10 mt-4 pt-4 pb-4">
+        <div className="md:hidden border-t border-white/10 mt-4 pt-4 pb-4 z-50 relative">
           <div className="mx-auto max-w-6xl px-4 space-y-3">
             {navLinks.map((link) => {
               const active = isActive(link.href);
@@ -171,7 +175,10 @@ export function Navbar() {
             })}
             <div className="pt-2 border-t border-white/10">
               <button
-                onClick={() => setResourcesDropdownOpen(!resourcesDropdownOpen)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setResourcesDropdownOpen(!resourcesDropdownOpen);
+                }}
                 className={`block w-full text-left py-2 text-sm uppercase tracking-[0.3em] transition ${
                   isResourcesActive
                     ? "text-[#f39c12] underline decoration-[#f39c12] underline-offset-4"
@@ -183,17 +190,19 @@ export function Navbar() {
               {resourcesDropdownOpen && (
                 <div className="mt-2 ml-4 space-y-2">
                   {resourcesLinks.map((link) => (
-                    <Link
+                    <button
                       key={link.href}
-                      href={link.href}
-                      onClick={() => {
-                        setResourcesDropdownOpen(false);
-                        setMobileMenuOpen(false);
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // Navigate first, then close menus
+                        window.location.href = link.href;
                       }}
-                      className="block py-1.5 text-sm normal-case tracking-normal text-white/70 hover:text-[#f39c12] transition"
+                      className="block w-full text-left py-1.5 text-sm normal-case tracking-normal text-white/70 hover:text-[#f39c12] transition cursor-pointer"
                     >
                       {link.label}
-                    </Link>
+                    </button>
                   ))}
                 </div>
               )}
