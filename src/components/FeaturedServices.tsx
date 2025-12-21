@@ -171,14 +171,14 @@ export function FeaturedServices({ services }: Props) {
                   />
                 </div>
                 <h4
-                  className={`text-xs md:text-sm lg:text-base font-semibold transition-colors duration-500 text-center ${
+                  className={`text-lg md:text-xl lg:text-2xl font-semibold transition-colors duration-500 text-center ${
                     isActive ? "text-[#d87a00]" : "text-[#2c3e50]"
                   }`}
                 >
                   {service.title}
                 </h4>
                 {description && (
-                  <p className="text-xs lg:text-sm leading-relaxed text-[#4b5563] max-w-[220px]">
+                  <p className="text-sm md:text-base leading-relaxed text-[#4b5563] max-w-[280px]">
                     {description}
                   </p>
                 )}

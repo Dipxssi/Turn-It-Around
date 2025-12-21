@@ -45,20 +45,26 @@ function BlogContent() {
       <Navbar />
 
       {/* Hero Section - Same for all types */}
-      <section className="relative overflow-hidden bg-[#0f1c2e] px-0 py-12 md:py-16 text-white min-h-[30vh] md:min-h-[40vh]">
+      <section className="relative overflow-hidden px-0 py-12 md:py-16 text-white min-h-[30vh] md:min-h-[40vh]">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('/blogs.png')" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0f1c2e]/88 via-[#0f1c2e]/82 to-[#0f1c2e]/70" />
+        {/* Subtle gradient overlay - darker at top where text sits, more transparent at bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1e3a5f]/50 via-[#1e3a5f]/30 to-transparent" />
         <div className="relative mx-auto flex w-[90%] max-w-[1800px] flex-col gap-3 md:gap-4 text-left px-4 lg:px-12">
-          <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#f39c12]">Resources</p>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3rem] font-bold leading-tight lg:leading-[1.1]">
-            {getPageTitle()}
-          </h1>
-          <p className="text-sm md:text-base lg:text-lg text-white/80 max-w-3xl">
-            Explore our collection of {getPageTitle().toLowerCase()} covering governance, financial management, strategy, growth, and compliance to help mission-driven teams thrive.
-          </p>
+          {/* Semi-transparent dark box behind text with backdrop blur - only behind text area */}
+          <div className="relative backdrop-blur-sm bg-[#1e3a5f]/40 rounded-xl p-6 md:p-8 border border-white/10 shadow-2xl max-w-4xl">
+            <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#f39c12] font-semibold drop-shadow-md">
+              Resources
+            </p>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3rem] font-extrabold leading-tight lg:leading-[1.1] mt-2 md:mt-3 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.7)]">
+              {getPageTitle()}
+            </h1>
+            <p className="text-sm md:text-base lg:text-lg text-white font-medium max-w-3xl mt-3 md:mt-4 drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)] [text-shadow:_1px_1px_2px_rgba(0,0,0,0.7)]">
+              Explore our collection of {getPageTitle().toLowerCase()} covering governance, financial management, strategy, growth, and compliance to help mission-driven teams thrive.
+            </p>
+          </div>
         </div>
       </section>
 

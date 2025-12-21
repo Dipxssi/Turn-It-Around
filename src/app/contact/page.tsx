@@ -13,7 +13,7 @@ export default function ContactPage() {
     <div id="top" className="bg-white text-[#2c3e50]">
       <Navbar />
 
-      <section className="px-4 py-16 flex justify-center">
+      <section className="px-4 pt-24 pb-16 md:pt-28 flex justify-center">
         <div className="relative w-full max-w-6xl overflow-hidden rounded-[32px] bg-gradient-to-br from-[#2b3b52] via-[#223044] to-[#1b2535] px-6 py-10 text-white shadow-[0_30px_80px_rgba(10,15,25,0.55)] md:px-12">
           <div className="grid gap-10 md:grid-cols-2 md:items-start">
             <div className="space-y-4">

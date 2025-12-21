@@ -56,7 +56,7 @@ export function Navbar() {
   }, [resourcesDropdownOpen, mobileMenuOpen]);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#2c3e50] pb-8 pt-4 text-white shadow-[0_10px_30px_rgba(12,20,33,0.35)] md:pb-16 md:pt-6">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#2c3e50] pb-3 pt-1.5 text-white shadow-[0_10px_30px_rgba(12,20,33,0.35)] md:pb-6 md:pt-2">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 text-sm uppercase tracking-[0.4em] text-white/80 md:px-8 lg:px-12">
         <Link href="/" className="flex items-center gap-2 md:gap-3">
           <Image
@@ -65,7 +65,7 @@ export function Navbar() {
             width={72}
             height={32}
             priority
-            className="h-8 w-auto object-contain md:h-12"
+            className="h-6 w-auto object-contain md:h-8"
           />
         </Link>
         

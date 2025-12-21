@@ -130,7 +130,7 @@ export default function Home() {
     <div id="top" className="bg-white text-[#2c3e50] overflow-x-hidden">
       <Navbar />
 
-        <section className="relative isolate mt-[120px] md:mt-[140px] flex min-h-[70vh] sm:min-h-[75vh] md:min-h-[80vh] w-full items-center justify-center overflow-hidden rounded-none pb-20 md:pb-24">
+        <section className="relative isolate mt-[60px] md:mt-[70px] flex min-h-[70vh] sm:min-h-[75vh] md:min-h-[80vh] w-full items-center justify-center overflow-hidden rounded-none pb-20 md:pb-24">
           <video
             src="/videos/home.mp4"
             autoPlay
@@ -150,21 +150,26 @@ export default function Home() {
                 "radial-gradient(circle at 10% 20%, rgba(243,156,18,0.25), transparent 35%), radial-gradient(circle at 80% 10%, rgba(243,156,18,0.2), transparent 30%), radial-gradient(circle at 50% 80%, rgba(243,156,18,0.15), transparent 35%)",
             }}
           />
-          <div className="relative z-10 w-[90%] max-w-[1800px] mx-auto px-6 sm:px-4 text-center text-white lg:px-12 pb-20 md:pb-24">
+          <div className="relative z-10 w-[90%] max-w-[1800px] mx-auto px-6 sm:px-4 text-center text-white lg:px-12 pt-8 md:pt-12 pb-8 md:pb-12">
             <div className="inline-flex items-center gap-2 md:gap-3 rounded-full border border-[#f39c12]/70 bg-white/5 px-3 py-1 md:px-5 text-[0.65rem] md:text-[0.7rem] font-semibold uppercase tracking-[0.3em] md:tracking-[0.4em] text-white">
               <span className="h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-[#f39c12]" />
               <span className="hidden sm:inline">Empowering organizations to lead, grow, and thrive</span>
               <span className="sm:hidden">Empowering organizations</span>
             </div>
-            <div className="mt-4 md:mt-6 space-y-3 md:space-y-4">
-              <h1 className="text-lg font-medium leading-tight text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl lg:leading-relaxed">
-                <span className="font-bold">Strategic advisory</span>, capacity building, and financial management
+            <div className="mt-4 md:mt-6">
+              <h1 className="text-xl font-medium leading-tight text-white sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl">
+                <div className="mb-4 md:mb-5">
+                  <span className="font-bold">Strategic advisory</span>, capacity building
+                </div>
+                <div className="mb-4 md:mb-5">
+                  and financial management
+                </div>
+                <div className="text-white/90 font-normal">
+                  for NGOs, SMEs and businesses ready to grow, scale and thrive.
+                </div>
               </h1>
-              <p className="text-base font-normal leading-relaxed text-white/90 sm:text-lg md:text-xl lg:text-2xl xl:text-3xl lg:leading-relaxed px-2">
-                for NGOs, SMEs and businesses ready to grow, scale and thrive.
-              </p>
             </div>
-            <div className="mt-1 md:mt-2 flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-6 px-4">
+            <div className="mt-14 md:mt-20 mb-0 pb-0 flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-4 px-4">
               <a
                 href="#contact"
                 className="inline-flex items-center justify-center rounded-none bg-[#f39c12] px-8 py-2.5 md:px-12 md:py-3 text-sm md:text-base font-semibold text-white transition hover:bg-[#e67e22] shadow-md"
