@@ -313,21 +313,21 @@ export default function Home() {
           <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#2c3e50]">results and trust</p>
           <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#2c3e50] mt-1 md:mt-2">clients feedback</p>
           <h2 className="mt-3 md:mt-4 text-xl md:text-2xl lg:text-3xl font-semibold text-[#2c3e50]">Partners who stay for the journey.</h2>
-          <div className="mt-10">
-            <div className="flex flex-wrap justify-center gap-6">
+          <div className="mt-6 md:mt-10">
+            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
               {testimonials.map((testimonial, index) => (
                 <figure
                   key={`${testimonial.author}-${index}`}
-                  className="relative w-full max-w-[520px] overflow-visible rounded-2xl border border-[#f39c12]/30 bg-[#fffaf3] p-6 md:p-10 shadow-[0_18px_45px_rgba(24,34,50,0.16)]"
+                  className="relative w-full sm:w-[calc(100%-2rem)] md:w-full md:max-w-[520px] overflow-visible rounded-xl md:rounded-2xl border border-[#f39c12]/30 bg-[#fffaf3] p-4 sm:p-6 md:p-10 shadow-[0_10px_30px_rgba(24,34,50,0.12)] md:shadow-[0_18px_45px_rgba(24,34,50,0.16)]"
                 >
-                  <Quote className="mb-4 block h-10 w-10 md:h-12 md:w-12 text-[#f39c12]/70" />
-                  <p className="text-base md:text-lg leading-relaxed text-[#2c3e50]">
+                  <Quote className="mb-3 md:mb-4 block h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 text-[#f39c12]/70" />
+                  <p className="text-sm sm:text-base md:text-lg leading-relaxed text-[#2c3e50] px-1 sm:px-0">
                     {testimonial.quote}
                   </p>
-                  <figcaption className="mt-6 flex items-center justify-center gap-2 text-xs md:text-sm uppercase tracking-[0.25em] text-[#6b7280]">
+                  <figcaption className="mt-4 md:mt-6 flex flex-wrap items-center justify-center gap-1.5 md:gap-2 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.25em] text-[#6b7280]">
                     <span>{testimonial.author}</span>
                     <span className="text-[#f39c12]">•</span>
-                    <span>{testimonial.role}</span>
+                    <span className="text-center">{testimonial.role}</span>
                   </figcaption>
                 </figure>
               ))}

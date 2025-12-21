@@ -1,7 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // 🔑 Required for Hosting Africa (static hosting)
+  output: "export",
+
+  // 🔑 Required because next/image optimization
+  // does NOT work on shared hosting
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -15,7 +21,6 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.plane.so",
       },
-      // Add more domains as needed
       {
         protocol: "https",
         hostname: "images.unsplash.com",
