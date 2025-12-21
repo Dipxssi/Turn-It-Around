@@ -114,12 +114,6 @@ export function Navbar() {
 
         {/* Mobile Menu Button */}
         <div className="flex items-center gap-3 md:hidden">
-          <Link
-            href="/contact"
-            className="rounded-none bg-[#f39c12] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-[#2c3e50] transition hover:bg-[#e67e22]"
-          >
-            Contact
-          </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 text-white focus:outline-none"
@@ -206,6 +200,15 @@ export function Navbar() {
                   ))}
                 </div>
               )}
+            </div>
+            <div className="pt-2 border-t border-white/10">
+              <Link
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block w-full text-center rounded-none bg-[#f39c12] px-4 py-2.5 text-sm font-semibold uppercase tracking-[0.3em] text-[#2c3e50] transition hover:bg-[#e67e22]"
+              >
+                Contact
+              </Link>
             </div>
           </div>
         </div>
