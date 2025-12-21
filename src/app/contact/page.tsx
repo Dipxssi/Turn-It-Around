@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { BackToTop } from "@/components/BackToTop";
 
 const contactInfo = {
   address: "Utalii House, 2nd Floor, Tower 3 Waiyaki Way, Westlands. Nairobi, Kenya.",
@@ -118,7 +117,6 @@ export default function ContactPage() {
       </section>
 
       <Footer />
-      <BackToTop />
     </div>
   );
 }

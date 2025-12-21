@@ -24,7 +24,6 @@ import { PartnersShowcase } from "@/components/PartnersShowcase";
 import { FeaturedServices } from "@/components/FeaturedServices";
 import { PromiseCards } from "@/components/PromiseCards";
 import { Navbar } from "@/components/Navbar";
-import { BackToTop } from "@/components/BackToTop";
 import { Footer } from "@/components/Footer";
 
 const services = [
@@ -128,10 +127,10 @@ const valueBlock = {
 
 export default function Home() {
   return (
-    <div id="top" className="bg-white text-[#2c3e50]">
+    <div id="top" className="bg-white text-[#2c3e50] overflow-x-hidden">
       <Navbar />
 
-        <section className="relative isolate mt-4 md:mt-8 flex min-h-[70vh] sm:min-h-[75vh] md:min-h-[80vh] w-full items-center justify-center overflow-hidden rounded-none pb-20 md:pb-24">
+        <section className="relative isolate mt-[120px] md:mt-[140px] flex min-h-[70vh] sm:min-h-[75vh] md:min-h-[80vh] w-full items-center justify-center overflow-hidden rounded-none pb-20 md:pb-24">
           <video
             src="/videos/home.mp4"
             autoPlay
@@ -151,21 +150,21 @@ export default function Home() {
                 "radial-gradient(circle at 10% 20%, rgba(243,156,18,0.25), transparent 35%), radial-gradient(circle at 80% 10%, rgba(243,156,18,0.2), transparent 30%), radial-gradient(circle at 50% 80%, rgba(243,156,18,0.15), transparent 35%)",
             }}
           />
-          <div className="relative z-10 w-[90%] max-w-[1800px] mx-auto px-4 text-center text-white lg:px-12 pb-16 md:pb-20">
+          <div className="relative z-10 w-[90%] max-w-[1800px] mx-auto px-6 sm:px-4 text-center text-white lg:px-12 pb-20 md:pb-24">
             <div className="inline-flex items-center gap-2 md:gap-3 rounded-full border border-[#f39c12]/70 bg-white/5 px-3 py-1 md:px-5 text-[0.65rem] md:text-[0.7rem] font-semibold uppercase tracking-[0.3em] md:tracking-[0.4em] text-white">
               <span className="h-1.5 w-1.5 md:h-2 md:w-2 rounded-full bg-[#f39c12]" />
               <span className="hidden sm:inline">Empowering organizations to lead, grow, and thrive</span>
               <span className="sm:hidden">Empowering organizations</span>
             </div>
             <div className="mt-4 md:mt-6 space-y-3 md:space-y-4">
-              <h1 className="text-xl font-medium leading-tight text-white sm:text-2xl md:text-3xl lg:text-4xl lg:leading-relaxed">
+              <h1 className="text-lg font-medium leading-tight text-white sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl lg:leading-relaxed">
                 <span className="font-bold">Strategic advisory</span>, capacity building, and financial management
               </h1>
-              <p className="text-base font-normal leading-relaxed text-white/90 sm:text-lg md:text-xl lg:text-2xl lg:leading-relaxed px-2">
+              <p className="text-base font-normal leading-relaxed text-white/90 sm:text-lg md:text-xl lg:text-2xl xl:text-3xl lg:leading-relaxed px-2">
                 for NGOs, SMEs and businesses ready to grow, scale and thrive.
               </p>
             </div>
-            <div className="mt-6 md:mt-10 flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-6 px-4">
+            <div className="mt-1 md:mt-2 flex flex-col sm:flex-row flex-wrap justify-center gap-3 md:gap-6 px-4">
               <a
                 href="#contact"
                 className="inline-flex items-center justify-center rounded-none bg-[#f39c12] px-8 py-2.5 md:px-12 md:py-3 text-sm md:text-base font-semibold text-white transition hover:bg-[#e67e22] shadow-md"
@@ -313,21 +312,44 @@ export default function Home() {
           <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#2c3e50]">results and trust</p>
           <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#2c3e50] mt-1 md:mt-2">clients feedback</p>
           <h2 className="mt-3 md:mt-4 text-xl md:text-2xl lg:text-3xl font-semibold text-[#2c3e50]">Partners who stay for the journey.</h2>
-          <div className="mt-6 md:mt-10">
-            <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+          {/* Mobile View - Static */}
+          <div className="mt-6 md:hidden">
+            <div className="flex flex-wrap justify-center gap-4">
               {testimonials.map((testimonial, index) => (
                 <figure
                   key={`${testimonial.author}-${index}`}
-                  className="relative w-full sm:w-[calc(100%-2rem)] md:w-full md:max-w-[520px] overflow-visible rounded-xl md:rounded-2xl border border-[#f39c12]/30 bg-[#fffaf3] p-4 sm:p-6 md:p-10 shadow-[0_10px_30px_rgba(24,34,50,0.12)] md:shadow-[0_18px_45px_rgba(24,34,50,0.16)]"
+                  className="relative w-full sm:w-[calc(100%-2rem)] overflow-visible rounded-xl border border-[#f39c12]/30 bg-[#fffaf3] p-4 sm:p-6 shadow-[0_10px_30px_rgba(24,34,50,0.12)]"
                 >
-                  <Quote className="mb-3 md:mb-4 block h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 text-[#f39c12]/70" />
-                  <p className="text-sm sm:text-base md:text-lg leading-relaxed text-[#2c3e50] px-1 sm:px-0">
+                  <Quote className="mb-3 block h-8 w-8 sm:h-10 sm:w-10 text-[#f39c12]/70" />
+                  <p className="text-sm sm:text-base leading-relaxed text-[#2c3e50] px-1 sm:px-0">
                     {testimonial.quote}
                   </p>
-                  <figcaption className="mt-4 md:mt-6 flex flex-wrap items-center justify-center gap-1.5 md:gap-2 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.25em] text-[#6b7280]">
+                  <figcaption className="mt-4 flex flex-wrap items-center justify-center gap-1.5 text-[10px] sm:text-xs uppercase tracking-[0.2em] text-[#6b7280]">
                     <span>{testimonial.author}</span>
                     <span className="text-[#f39c12]">•</span>
                     <span className="text-center">{testimonial.role}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop View - Animated Marquee */}
+          <div className="mt-10 hidden md:block overflow-hidden">
+            <div className="flex gap-6 animate-[promiseMarquee_12s_linear_infinite] min-w-max">
+              {testimonials.concat(testimonials).map((testimonial, index) => (
+                <figure
+                  key={`${testimonial.author}-${index}`}
+                  className="relative w-[520px] flex-shrink-0 overflow-visible rounded-2xl border border-[#f39c12]/30 bg-[#fffaf3] p-10 shadow-[0_18px_45px_rgba(24,34,50,0.16)]"
+                >
+                  <Quote className="mb-4 block h-12 w-12 text-[#f39c12]/70" />
+                  <p className="text-lg leading-relaxed text-[#2c3e50]">
+                    {testimonial.quote}
+                  </p>
+                  <figcaption className="mt-6 flex items-center justify-center gap-2 text-sm uppercase tracking-[0.25em] text-[#6b7280]">
+                    <span>{testimonial.author}</span>
+                    <span className="text-[#f39c12]">•</span>
+                    <span>{testimonial.role}</span>
                   </figcaption>
                 </figure>
               ))}
@@ -427,7 +449,6 @@ export default function Home() {
       </main>
 
       <Footer />
-      <BackToTop />
     </div>
   );
 }

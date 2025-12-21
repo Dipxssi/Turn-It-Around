@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { BackToTop } from "@/components/BackToTop";
 import { Target, Eye, Globe, BarChart3, Shield, TrendingUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -327,7 +326,6 @@ export default function AboutUs() {
       </main>
 
       <Footer />
-      <BackToTop />
     </div>
   );
 }

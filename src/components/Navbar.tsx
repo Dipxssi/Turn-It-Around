@@ -56,7 +56,7 @@ export function Navbar() {
   }, [resourcesDropdownOpen, mobileMenuOpen]);
 
   return (
-    <header className="bg-[#2c3e50] pb-8 pt-4 text-white shadow-[0_10px_30px_rgba(12,20,33,0.35)] md:pb-16 md:pt-6">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#2c3e50] pb-8 pt-4 text-white shadow-[0_10px_30px_rgba(12,20,33,0.35)] md:pb-16 md:pt-6">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 text-sm uppercase tracking-[0.4em] text-white/80 md:px-8 lg:px-12">
         <Link href="/" className="flex items-center gap-2 md:gap-3">
           <Image

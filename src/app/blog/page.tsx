@@ -4,7 +4,6 @@ import { useState, Suspense, useEffect } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { BackToTop } from "@/components/BackToTop";
 
 const filterCategories = [
   "Governance Training",
@@ -108,7 +107,6 @@ function BlogContent() {
       </section>
 
       <Footer />
-      <BackToTop />
     </div>
   );
 }
