@@ -3,7 +3,7 @@ name: Deploy to Host Africa
 on:
   push:
     branches:
-      - main  # ⚠️ Check: If your branch is named 'master', change this to 'master'
+      - master  # ⚠️ Check: If your branch is named 'master', change this to 'master'
 
 jobs:
   deploy:
