@@ -1,0 +1,10 @@
+DirectoryIndex index.html
+RewriteEngine On
+
+# Skip existing files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Route everything else to index.html
+RewriteRule ^ index.html [L]
+

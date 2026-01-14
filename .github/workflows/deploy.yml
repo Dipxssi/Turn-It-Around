@@ -1,0 +1,38 @@
+name: Deploy to Host Africa
+
+on:
+  push:
+    branches:
+      - main  # ⚠️ Check: If your branch is named 'master', change this to 'master'
+
+jobs:
+  deploy:
+    name: 🚀 Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛑 Get latest code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Project
+        run: npm run build
+        # This creates the 'out' folder because you have output: 'export' in your config
+
+      - name: 📂 Sync files to Host Africa
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./out/             # The folder Next.js builds your site into
+          server-dir: ./                # ⚠️ IMPORTANT: We use ./ because your FTP user is already locked inside public_html
+          dangerous-clean-slate: true   # This ensures old files are removed so your site stays clean

@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // 🔑 Required for Hosting Africa (static hosting)
   output: "export",
+  trailingSlash: true,
 
   // 🔑 Required because next/image optimization
   // does NOT work on shared hosting
