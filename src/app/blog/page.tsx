@@ -2,8 +2,21 @@
 
 import { useState, Suspense, useEffect } from "react";
 import { useSearchParams, usePathname } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import {
+  getAllContent,
+  filterContentByType,
+  filterContentByCategory,
+  type ContentItem,
+  exportContentAsJSON,
+  getLocalContent,
+  deleteLocalContent,
+} from "@/lib/content";
+import { ConfirmModal } from "@/components/ConfirmModal";
+import staticContentData from "../../../data/content.json";
 
 const filterCategories = [
   "Governance Training",
@@ -15,19 +28,260 @@ const filterCategories = [
   "Grant & Donor Reporting",
   "M&E System Strengthening",
   "Program Reviews & Turnaround",
+  "Success Story",
+  "NGO Transformation",
+  "SME Growth",
+  "Financial Turnaround",
+  "Capacity Building",
+  "Industry News",
+  "Regulatory Updates",
+  "Best Practices",
+  "Financial Trends",
+  "Governance",
+  "Compliance",
 ];
+
+const categoryMapByType: Record<string, string[]> = {
+  blog: [
+    "Governance Training",
+    "Strategic Planning",
+    "Organizational Development",
+    "Financial Audits Support",
+    "Outsourced Accounting",
+    "Virtual CFO & Financial Leadership",
+    "Grant & Donor Reporting",
+    "M&E System Strengthening",
+    "Program Reviews & Turnaround",
+  ],
+  "case-study": [
+    "Success Story",
+    "NGO Transformation",
+    "SME Growth",
+    "Financial Turnaround",
+    "Capacity Building",
+    "Strategic Planning",
+  ],
+  insight: [
+    "Industry News",
+    "Regulatory Updates",
+    "Best Practices",
+    "Financial Trends",
+    "Governance",
+    "Compliance",
+  ],
+};
+
+function ContentCard({
+  item,
+  onDelete,
+  isLocalContent,
+}: {
+  item: ContentItem;
+  onDelete?: (id: string) => void;
+  isLocalContent?: boolean;
+}) {
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onDelete && isLocalContent) {
+      onDelete(item.id);
+    }
+  };
+
+  return (
+    <div className="group relative bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+      <Link
+        href={`/blog/view?id=${item.id}`}
+        className="block"
+      >
+      {item.imageUrl && (
+        <div className="relative h-48 w-full overflow-hidden">
+          <Image
+            src={item.imageUrl}
+            alt={item.title}
+            fill
+            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            unoptimized
+          />
+        </div>
+      )}
+      <div className="p-6">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="px-3 py-1 bg-[#f39c12]/10 text-[#f39c12] text-xs font-semibold rounded-full">
+            {item.category}
+          </span>
+        </div>
+        <h3 className="text-xl font-bold text-[#2c3e50] mb-2 group-hover:text-[#f39c12] transition">
+          {item.title}
+        </h3>
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+          {item.excerpt}
+        </p>
+        <div className="flex items-center justify-between text-xs text-gray-500">
+          <span>By {item.author}</span>
+          <span>{formatDate(item.createdAt)}</span>
+        </div>
+        {item.tags && item.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-4 pt-4 border-t border-gray-100">
+            {item.tags.slice(0, 3).map((tag, idx) => (
+              <span
+                key={idx}
+                className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+      </Link>
+      {/* Delete Button - Only show for local content */}
+      {isLocalContent && onDelete && (
+        <button
+          onClick={handleDeleteClick}
+          className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600 z-10"
+          title="Delete this content"
+        >
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+        </button>
+      )}
+    </div>
+  );
+}
 
 function BlogContent() {
   const searchParams = useSearchParams();
   const type = searchParams.get("type") || "blog";
   const [selectedFilter, setSelectedFilter] = useState<string>("");
+  const [allContent, setAllContent] = useState<ContentItem[]>([]);
+  const [displayedContent, setDisplayedContent] = useState<ContentItem[]>([]);
+  const [localContentIds, setLocalContentIds] = useState<Set<string>>(new Set());
+  const [deleteModal, setDeleteModal] = useState<{
+    isOpen: boolean;
+    id: string | null;
+  }>({ isOpen: false, id: null });
+  const [notification, setNotification] = useState<{
+    message: string;
+    type: "success" | "error";
+  } | null>(null);
+
+  // Load and combine content
+  useEffect(() => {
+    const staticContent = staticContentData as ContentItem[];
+    const localContent = getLocalContent();
+    const localIds = new Set(localContent.map((item) => item.id));
+    setLocalContentIds(localIds);
+    const combined = getAllContent(staticContent);
+    setAllContent(combined);
+  }, []);
+
+  // Filter content when type or filter changes
+  useEffect(() => {
+    let filtered = filterContentByType(
+      allContent,
+      type as "blog" | "case-study" | "insight"
+    );
+
+    if (selectedFilter) {
+      filtered = filterContentByCategory(filtered, selectedFilter);
+    }
+
+    setDisplayedContent(filtered);
+  }, [allContent, type, selectedFilter]);
 
   // Reset filter and scroll to top when component mounts or type changes
   useEffect(() => {
     setSelectedFilter("");
-    // Scroll to top when type changes
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [type]);
+
+  const handleDelete = (id: string) => {
+    setDeleteModal({ isOpen: true, id });
+  };
+
+  const confirmDelete = () => {
+    if (deleteModal.id) {
+      if (deleteLocalContent(deleteModal.id)) {
+        const staticContent = staticContentData as ContentItem[];
+        const localContent = getLocalContent();
+        const localIds = new Set(localContent.map((item) => item.id));
+        setLocalContentIds(localIds);
+        const combined = getAllContent(staticContent);
+        setAllContent(combined);
+        setNotification({ message: "Content deleted successfully!", type: "success" });
+        setTimeout(() => setNotification(null), 3000);
+      } else {
+        setNotification({ message: "Failed to delete content.", type: "error" });
+        setTimeout(() => setNotification(null), 3000);
+      }
+    }
+    setDeleteModal({ isOpen: false, id: null });
+  };
+
+  const cancelDelete = () => {
+    setDeleteModal({ isOpen: false, id: null });
+  };
+
+  // Refresh content when localStorage changes (for new submissions)
+  useEffect(() => {
+    const refreshContent = () => {
+      const staticContent = staticContentData as ContentItem[];
+      const localContent = getLocalContent();
+      const localIds = new Set(localContent.map((item) => item.id));
+      setLocalContentIds(localIds);
+      const combined = getAllContent(staticContent);
+      setAllContent(combined);
+    };
+
+    // Refresh on storage events (from other tabs)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "submittedContent") {
+        refreshContent();
+      }
+    };
+
+    // Refresh on focus (when user comes back to tab)
+    const handleFocus = () => {
+      refreshContent();
+    };
+
+    // Custom event listener for same-tab updates
+    const handleCustomStorage = () => {
+      refreshContent();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("focus", handleFocus);
+    window.addEventListener("contentUpdated", handleCustomStorage);
+
+    // Initial load
+    refreshContent();
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("focus", handleFocus);
+      window.removeEventListener("contentUpdated", handleCustomStorage);
+    };
+  }, []);
 
   const getPageTitle = () => {
     switch (type) {
@@ -38,6 +292,10 @@ function BlogContent() {
       default:
         return "Blogs";
     }
+  };
+
+  const getCategoriesForType = () => {
+    return categoryMapByType[type] || filterCategories;
   };
 
   return (
@@ -71,7 +329,31 @@ function BlogContent() {
       {/* Filter Section */}
       <section className="px-0 py-6 md:py-8 bg-gray-50 border-b border-gray-200">
         <div className="mx-auto w-[90%] max-w-[1800px] px-4 lg:px-12">
-          <h2 className="text-base md:text-lg font-semibold text-[#2c3e50] mb-3 md:mb-4">Filter by Category</h2>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+            <h2 className="text-base md:text-lg font-semibold text-[#2c3e50]">
+              Filter by Category
+            </h2>
+            <div className="flex gap-3">
+              <Link
+                href="/write"
+                className="px-4 py-2 bg-[#f39c12] text-white text-sm font-semibold rounded-lg hover:bg-[#e67e22] transition"
+              >
+                + Write Content
+              </Link>
+              {getLocalContent().length > 0 && (
+                <button
+                  onClick={() => {
+                    const localContent = getLocalContent();
+                    exportContentAsJSON(localContent);
+                  }}
+                  className="px-4 py-2 bg-gray-200 text-[#2c3e50] text-sm font-semibold rounded-lg hover:bg-gray-300 transition"
+                  title="Export submitted content as JSON"
+                >
+                  Export Content
+                </button>
+              )}
+            </div>
+          </div>
           <div className="flex flex-wrap gap-2 md:gap-3">
             <button
               onClick={() => setSelectedFilter("")}
@@ -83,7 +365,7 @@ function BlogContent() {
             >
               All Categories
             </button>
-            {filterCategories.map((category) => (
+            {getCategoriesForType().map((category) => (
               <button
                 key={category}
                 onClick={() => setSelectedFilter(category)}
@@ -94,7 +376,7 @@ function BlogContent() {
                 }`}
               >
                 <span className="hidden sm:inline">{category}</span>
-                <span className="sm:hidden">{category.split(' ')[0]}</span>
+                <span className="sm:hidden">{category.split(" ")[0]}</span>
               </button>
             ))}
           </div>
@@ -104,15 +386,79 @@ function BlogContent() {
       {/* Content Section */}
       <section className="px-0 py-12 md:py-14">
         <div className="mx-auto w-[90%] max-w-[1800px] px-4 lg:px-12">
-          <div className="text-center py-8 md:py-12">
-            <p className="text-[#4b5563] text-base md:text-lg">
-              Stay tuned, coming soon
-            </p>
-          </div>
+          {displayedContent.length === 0 ? (
+            <div className="text-center py-12 md:py-16">
+              <p className="text-[#4b5563] text-base md:text-lg mb-4">
+                No content found.
+              </p>
+              <Link
+                href="/write"
+                className="inline-block px-6 py-3 bg-[#f39c12] text-white font-semibold rounded-lg hover:bg-[#e67e22] transition"
+              >
+                Be the first to write!
+              </Link>
+            </div>
+          ) : (
+            <>
+              <div className="mb-6 text-sm text-gray-600">
+                Showing {displayedContent.length} item
+                {displayedContent.length !== 1 ? "s" : ""}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                {displayedContent.map((item) => (
+                  <ContentCard
+                    key={item.id}
+                    item={item}
+                    onDelete={handleDelete}
+                    isLocalContent={localContentIds.has(item.id)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </section>
 
       <Footer />
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={deleteModal.isOpen}
+        title="Delete Content"
+        message="Are you sure you want to delete this content? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
+
+      {/* Notification Toast */}
+      {notification && (
+        <div
+          className={`fixed bottom-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 ${
+            notification.type === "success"
+              ? "bg-green-500 text-white"
+              : "bg-red-500 text-white"
+          }`}
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            {notification.type === "success" ? (
+              <path d="M5 13l4 4L19 7" />
+            ) : (
+              <path d="M6 18L18 6M6 6l12 12" />
+            )}
+          </svg>
+          <span className="font-medium">{notification.message}</span>
+        </div>
+      )}
     </div>
   );
 }
