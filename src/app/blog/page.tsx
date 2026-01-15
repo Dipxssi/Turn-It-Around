@@ -12,8 +12,8 @@ import {
   filterContentByCategory,
   type ContentItem,
   exportContentAsJSON,
-  getLocalContent,
-  deleteLocalContent,
+  getSupabaseContent,
+  deleteSupabaseContent,
 } from "@/lib/content";
 import { ConfirmModal } from "@/components/ConfirmModal";
 import staticContentData from "@/data/content.json";
@@ -174,7 +174,7 @@ function BlogContent() {
   const [selectedFilter, setSelectedFilter] = useState<string>("");
   const [allContent, setAllContent] = useState<ContentItem[]>([]);
   const [displayedContent, setDisplayedContent] = useState<ContentItem[]>([]);
-  const [localContentIds, setLocalContentIds] = useState<Set<string>>(new Set());
+  const [supabaseContentIds, setSupabaseContentIds] = useState<Set<string>>(new Set());
   const [deleteModal, setDeleteModal] = useState<{
     isOpen: boolean;
     id: string | null;
@@ -183,15 +183,35 @@ function BlogContent() {
     message: string;
     type: "success" | "error";
   } | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Load and combine content
+  // Load and combine content from Supabase
   useEffect(() => {
-    const staticContent = staticContentData as ContentItem[];
-    const localContent = getLocalContent();
-    const localIds = new Set(localContent.map((item) => item.id));
-    setLocalContentIds(localIds);
-    const combined = getAllContent(staticContent);
-    setAllContent(combined);
+    const loadContent = async () => {
+      try {
+        setIsLoading(true);
+        const staticContent = staticContentData as ContentItem[];
+        const combined = await getAllContent(staticContent);
+        
+        // Get IDs of content from Supabase (for delete button display)
+        const supabaseContent = await getSupabaseContent();
+        const supabaseIds = new Set(supabaseContent.map((item) => item.id));
+        setSupabaseContentIds(supabaseIds);
+        
+        setAllContent(combined);
+      } catch (error) {
+        console.error('Error loading content:', error);
+        setNotification({
+          message: 'Failed to load content. Please refresh the page.',
+          type: 'error',
+        });
+        setTimeout(() => setNotification(null), 5000);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadContent();
   }, []);
 
   // Filter content when type or filter changes
@@ -218,19 +238,33 @@ function BlogContent() {
     setDeleteModal({ isOpen: true, id });
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (deleteModal.id) {
-      if (deleteLocalContent(deleteModal.id)) {
-        const staticContent = staticContentData as ContentItem[];
-        const localContent = getLocalContent();
-        const localIds = new Set(localContent.map((item) => item.id));
-        setLocalContentIds(localIds);
-        const combined = getAllContent(staticContent);
-        setAllContent(combined);
-        setNotification({ message: "Content deleted successfully!", type: "success" });
-        setTimeout(() => setNotification(null), 3000);
-      } else {
-        setNotification({ message: "Failed to delete content.", type: "error" });
+      try {
+        const success = await deleteSupabaseContent(deleteModal.id);
+        if (success) {
+          // Reload content from Supabase
+          const staticContent = staticContentData as ContentItem[];
+          const combined = await getAllContent(staticContent);
+          setAllContent(combined);
+          
+          // Update Supabase content IDs
+          const supabaseContent = await getSupabaseContent();
+          const supabaseIds = new Set(supabaseContent.map((item) => item.id));
+          setSupabaseContentIds(supabaseIds);
+          
+          setNotification({ message: "Content deleted successfully!", type: "success" });
+          setTimeout(() => setNotification(null), 3000);
+        } else {
+          setNotification({ message: "Failed to delete content.", type: "error" });
+          setTimeout(() => setNotification(null), 3000);
+        }
+      } catch (error) {
+        console.error('Error deleting content:', error);
+        setNotification({ 
+          message: "An error occurred while deleting content.", 
+          type: "error" 
+        });
         setTimeout(() => setNotification(null), 3000);
       }
     }
@@ -241,45 +275,41 @@ function BlogContent() {
     setDeleteModal({ isOpen: false, id: null });
   };
 
-  // Refresh content when localStorage changes (for new submissions)
+  // Refresh content when page comes into focus (for new submissions from other tabs/pages)
   useEffect(() => {
-    const refreshContent = () => {
-      const staticContent = staticContentData as ContentItem[];
-      const localContent = getLocalContent();
-      const localIds = new Set(localContent.map((item) => item.id));
-      setLocalContentIds(localIds);
-      const combined = getAllContent(staticContent);
-      setAllContent(combined);
-    };
-
-    // Refresh on storage events (from other tabs)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "submittedContent") {
-        refreshContent();
+    const refreshContent = async () => {
+      try {
+        const staticContent = staticContentData as ContentItem[];
+        const combined = await getAllContent(staticContent);
+        setAllContent(combined);
+        
+        // Update Supabase content IDs
+        const supabaseContent = await getSupabaseContent();
+        const supabaseIds = new Set(supabaseContent.map((item) => item.id));
+        setSupabaseContentIds(supabaseIds);
+      } catch (error) {
+        console.error('Error refreshing content:', error);
       }
     };
 
-    // Refresh on focus (when user comes back to tab)
+    // Refresh on focus (when user comes back to tab/window)
     const handleFocus = () => {
       refreshContent();
     };
 
-    // Custom event listener for same-tab updates
-    const handleCustomStorage = () => {
-      refreshContent();
+    // Refresh when page becomes visible
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        refreshContent();
+      }
     };
 
-    window.addEventListener("storage", handleStorageChange);
     window.addEventListener("focus", handleFocus);
-    window.addEventListener("contentUpdated", handleCustomStorage);
-
-    // Initial load
-    refreshContent();
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("focus", handleFocus);
-      window.removeEventListener("contentUpdated", handleCustomStorage);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
@@ -340,18 +370,27 @@ function BlogContent() {
               >
                 + Write Content
               </Link>
-              {getLocalContent().length > 0 && (
-                <button
-                  onClick={() => {
-                    const localContent = getLocalContent();
-                    exportContentAsJSON(localContent);
-                  }}
-                  className="px-4 py-2 bg-gray-200 text-[#2c3e50] text-sm font-semibold rounded-lg hover:bg-gray-300 transition"
-                  title="Export submitted content as JSON"
-                >
-                  Export Content
-                </button>
-              )}
+              <button
+                onClick={async () => {
+                  try {
+                    const supabaseContent = await getSupabaseContent();
+                    if (supabaseContent.length > 0) {
+                      exportContentAsJSON(supabaseContent);
+                    }
+                  } catch (error) {
+                    console.error('Error exporting content:', error);
+                    setNotification({
+                      message: 'Failed to export content.',
+                      type: 'error',
+                    });
+                    setTimeout(() => setNotification(null), 3000);
+                  }
+                }}
+                className="px-4 py-2 bg-gray-200 text-[#2c3e50] text-sm font-semibold rounded-lg hover:bg-gray-300 transition"
+                title="Export submitted content as JSON"
+              >
+                Export Content
+              </button>
             </div>
           </div>
           <div className="flex flex-wrap gap-2 md:gap-3">
@@ -386,7 +425,11 @@ function BlogContent() {
       {/* Content Section */}
       <section className="px-0 py-12 md:py-14">
         <div className="mx-auto w-[90%] max-w-[1800px] px-4 lg:px-12">
-          {displayedContent.length === 0 ? (
+          {isLoading ? (
+            <div className="text-center py-12 md:py-16">
+              <p className="text-[#4b5563] text-base md:text-lg">Loading content...</p>
+            </div>
+          ) : displayedContent.length === 0 ? (
             <div className="text-center py-12 md:py-16">
               <p className="text-[#4b5563] text-base md:text-lg mb-4">
                 No content found.
@@ -410,7 +453,7 @@ function BlogContent() {
                     key={item.id}
                     item={item}
                     onDelete={handleDelete}
-                    isLocalContent={localContentIds.has(item.id)}
+                    isLocalContent={supabaseContentIds.has(item.id)}
                   />
                 ))}
               </div>

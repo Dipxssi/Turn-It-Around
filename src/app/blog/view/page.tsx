@@ -8,6 +8,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import {
   getAllContent,
+  getContentById,
   type ContentItem,
 } from "@/lib/content";
 import staticContentData from "@/data/content.json";
@@ -25,11 +26,10 @@ function BlogViewContent() {
       return;
     }
 
-    const loadContent = () => {
+    const loadContent = async () => {
       try {
         const staticContent = staticContentData as ContentItem[];
-        const allContent = getAllContent(staticContent);
-        const found = allContent.find((item) => item.id === id);
+        const found = await getContentById(id, staticContent);
 
         if (found) {
           setContent(found);
@@ -46,11 +46,6 @@ function BlogViewContent() {
     };
 
     loadContent();
-
-    // Listen for content updates
-    const handleUpdate = () => loadContent();
-    window.addEventListener("contentUpdated", handleUpdate);
-    return () => window.removeEventListener("contentUpdated", handleUpdate);
   }, [id, router]);
 
   const formatDate = (dateString: string) => {

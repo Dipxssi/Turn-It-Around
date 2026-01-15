@@ -24,8 +24,14 @@ jobs:
         run: npm ci
 
       - name: 🏗️ Build Project
+        env:
+          # Supabase environment variables (required for static export)
+          # These are baked into the static files during build
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: npm run build
         # This creates the 'out' folder because you have output: 'export' in your config
+        # Note: For static exports, NEXT_PUBLIC_ variables must be available at build time
 
       - name: 📂 Sync files to Host Africa
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5

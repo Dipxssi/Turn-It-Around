@@ -7,9 +7,10 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { ConfirmModal } from "@/components/ConfirmModal";
 import {
-  getLocalContent,
-  updateLocalContent,
-  deleteLocalContent,
+  getSupabaseContent,
+  createSupabaseContent,
+  updateSupabaseContent,
+  deleteSupabaseContent,
   type ContentItem,
 } from "@/lib/content";
 
@@ -75,18 +76,22 @@ export default function WritePage() {
     type: "success" | "error";
   } | null>(null);
 
-  // Load existing content
+  // Load existing content from Supabase
   useEffect(() => {
-    const loadContent = () => {
-      const content = getLocalContent();
-      setExistingContent(content);
+    const loadContent = async () => {
+      try {
+        const content = await getSupabaseContent();
+        setExistingContent(content);
+      } catch (error) {
+        console.error("Error loading content:", error);
+        setNotification({
+          message: "Failed to load content. Please refresh the page.",
+          type: "error",
+        });
+        setTimeout(() => setNotification(null), 3000);
+      }
     };
     loadContent();
-
-    // Listen for content updates
-    const handleUpdate = () => loadContent();
-    window.addEventListener("contentUpdated", handleUpdate);
-    return () => window.removeEventListener("contentUpdated", handleUpdate);
   }, []);
 
   // Handle image file upload
@@ -121,16 +126,6 @@ export default function WritePage() {
     }
   };
 
-  // Convert image file to base64
-  const convertImageToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -142,16 +137,19 @@ export default function WritePage() {
         .map((tag) => tag.trim())
         .filter((tag) => tag.length > 0);
 
-      // Get image URL (either from file upload or URL input)
+      // Determine image URL
       let imageUrl = formData.imageUrl;
-      if (formData.imageFile) {
-        imageUrl = await convertImageToBase64(formData.imageFile);
-      }
+      const shouldUploadImage = !!formData.imageFile;
+      const shouldDeleteOldImage = editingId && formData.imageFile;
 
       if (editingId) {
-        // Update existing content
-        const updatedContent: ContentItem = {
-          id: editingId,
+        // Update existing content in Supabase
+        const existingItem = existingContent.find((c) => c.id === editingId);
+        if (!existingItem) {
+          throw new Error("Content not found");
+        }
+
+        const updatedContent: Partial<ContentItem> = {
           type: contentType,
           title: formData.title,
           content: formData.content,
@@ -160,22 +158,34 @@ export default function WritePage() {
           tags: tagsArray,
           author: formData.author,
           imageUrl: imageUrl || "",
-          createdAt: existingContent.find((c) => c.id === editingId)?.createdAt || new Date().toISOString(),
           published: true,
         };
 
-        updateLocalContent(editingId, updatedContent);
+        await updateSupabaseContent(
+          editingId,
+          updatedContent,
+          formData.imageFile || null,
+          shouldDeleteOldImage
+        );
+
+        // Reload content list
+        const refreshedContent = await getSupabaseContent();
+        setExistingContent(refreshedContent);
+
         setSuccess(true);
+        setNotification({
+          message: "Content updated successfully!",
+          type: "success",
+        });
         setTimeout(() => {
           setViewMode("list");
           setEditingId(null);
           resetForm();
+          setNotification(null);
         }, 1500);
       } else {
-        // Create new content
-        const id = `${contentType}-${Date.now()}`;
-        const contentItem: ContentItem = {
-          id,
+        // Create new content in Supabase
+        const newContent: Omit<ContentItem, "id" | "createdAt"> = {
           type: contentType,
           title: formData.title,
           content: formData.content,
@@ -184,28 +194,35 @@ export default function WritePage() {
           tags: tagsArray,
           author: formData.author,
           imageUrl: imageUrl || "",
-          createdAt: new Date().toISOString(),
           published: true,
         };
 
-        const existing = getLocalContent();
-        existing.push(contentItem);
-        localStorage.setItem("submittedContent", JSON.stringify(existing));
-        window.dispatchEvent(new Event("contentUpdated"));
+        await createSupabaseContent(newContent, formData.imageFile || null);
+
+        // Reload content list
+        const refreshedContent = await getSupabaseContent();
+        setExistingContent(refreshedContent);
 
         setSuccess(true);
+        setNotification({
+          message: "Content created successfully!",
+          type: "success",
+        });
         setTimeout(() => {
           setViewMode("list");
           resetForm();
+          setNotification(null);
         }, 1500);
       }
     } catch (error) {
       console.error("Error submitting content:", error);
       setNotification({
-        message: "There was an error submitting your content. Please try again.",
+        message: error instanceof Error 
+          ? error.message 
+          : "There was an error submitting your content. Please try again.",
         type: "error",
       });
-      setTimeout(() => setNotification(null), 3000);
+      setTimeout(() => setNotification(null), 5000);
     } finally {
       setIsSubmitting(false);
     }
@@ -221,9 +238,9 @@ export default function WritePage() {
       category: item.category,
       tags: item.tags.join(", "),
       author: item.author,
-      imageUrl: item.imageUrl.startsWith("data:") ? "" : item.imageUrl,
+      imageUrl: item.imageUrl && !item.imageUrl.startsWith("data:") ? item.imageUrl : "",
       imageFile: null,
-      imagePreview: item.imageUrl.startsWith("data:") ? item.imageUrl : "",
+      imagePreview: item.imageUrl || "",
     });
     setViewMode("edit");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -233,14 +250,26 @@ export default function WritePage() {
     setDeleteModal({ isOpen: true, id });
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (deleteModal.id) {
-      if (deleteLocalContent(deleteModal.id)) {
-        setExistingContent(getLocalContent());
-        setNotification({ message: "Content deleted successfully!", type: "success" });
-        setTimeout(() => setNotification(null), 3000);
-      } else {
-        setNotification({ message: "Failed to delete content.", type: "error" });
+      try {
+        const success = await deleteSupabaseContent(deleteModal.id);
+        if (success) {
+          // Reload content list
+          const refreshedContent = await getSupabaseContent();
+          setExistingContent(refreshedContent);
+          setNotification({ message: "Content deleted successfully!", type: "success" });
+          setTimeout(() => setNotification(null), 3000);
+        } else {
+          setNotification({ message: "Failed to delete content.", type: "error" });
+          setTimeout(() => setNotification(null), 3000);
+        }
+      } catch (error) {
+        console.error("Error deleting content:", error);
+        setNotification({ 
+          message: "An error occurred while deleting content.", 
+          type: "error" 
+        });
         setTimeout(() => setNotification(null), 3000);
       }
     }
