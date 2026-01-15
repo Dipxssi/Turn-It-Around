@@ -16,7 +16,7 @@ import {
   deleteLocalContent,
 } from "@/lib/content";
 import { ConfirmModal } from "@/components/ConfirmModal";
-import staticContentData from "../../../data/content.json";
+import staticContentData from "@/data/content.json";
 
 const filterCategories = [
   "Governance Training",

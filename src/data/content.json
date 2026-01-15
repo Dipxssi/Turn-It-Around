@@ -1,0 +1,50 @@
+[
+  {
+    "id": "blog-1765348232908",
+    "type": "blog",
+    "title": "tetst",
+    "content": "test",
+    "excerpt": "test",
+    "category": "Strategic Planning",
+    "tags": [
+      "test"
+    ],
+    "author": "test",
+    "imageUrl": "https://app.plane.so/diginowsolutions/projects/1175bfeb-2c4a-48ee-85da-88b1dccdc055/issues/",
+    "createdAt": "2025-12-10T06:30:32.908Z",
+    "published": true
+  },
+  {
+    "id": "case-study-1765348273417",
+    "type": "case-study",
+    "title": "test case study",
+    "content": "test",
+    "excerpt": "test",
+    "category": "Success Story",
+    "tags": [
+      "test",
+      "test"
+    ],
+    "author": "test",
+    "imageUrl": "https://app.plane.so/diginowsolutions/projects/1175bfeb-2c4a-48ee-85da-88b1dccdc055/issues/",
+    "createdAt": "2025-12-10T06:31:13.417Z",
+    "published": true
+  },
+  {
+    "id": "insight-1765348311336",
+    "type": "insight",
+    "title": "test industry",
+    "content": "test",
+    "excerpt": "test",
+    "category": "Industry News",
+    "tags": [
+      "test",
+      "test",
+      "test"
+    ],
+    "author": "test",
+    "imageUrl": "https://app.plane.so/diginowsolutions/projects/1175bfeb-2c4a-48ee-85da-88b1dccdc055/issues/",
+    "createdAt": "2025-12-10T06:31:51.336Z",
+    "published": true
+  }
+]

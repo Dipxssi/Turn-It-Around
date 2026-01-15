@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Navbar } from "@/components/Navbar";
@@ -10,9 +10,9 @@ import {
   getAllContent,
   type ContentItem,
 } from "@/lib/content";
-import staticContentData from "../../../../data/content.json";
+import staticContentData from "@/data/content.json";
 
-export default function BlogViewPage() {
+function BlogViewContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const id = searchParams.get("id");
@@ -226,5 +226,23 @@ export default function BlogViewPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function BlogViewPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="bg-white text-[#1f2937] min-h-screen">
+          <Navbar />
+          <div className="min-h-screen flex items-center justify-center">
+            <p className="text-[#4b5563]">Loading...</p>
+          </div>
+          <Footer />
+        </div>
+      }
+    >
+      <BlogViewContent />
+    </Suspense>
   );
 }
