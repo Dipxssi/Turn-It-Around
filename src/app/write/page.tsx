@@ -140,7 +140,7 @@ export default function WritePage() {
       // Determine image URL
       let imageUrl = formData.imageUrl;
       const shouldUploadImage = !!formData.imageFile;
-      const shouldDeleteOldImage = editingId && formData.imageFile;
+      const shouldDeleteOldImage = !!(editingId && formData.imageFile);
 
       if (editingId) {
         // Update existing content in Supabase
