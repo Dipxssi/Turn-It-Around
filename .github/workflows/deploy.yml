@@ -1,44 +1,59 @@
+# FTP static hosting (e.g. shared hosting / Host Africa).
+# Requires STATIC_EXPORT=true so `next build` outputs to ./out/
+#
+# Tradeoff: Next.js `output: "export"` does NOT ship /api/* routes.
+# Admin, contact API, etc. need a Node host (Vercel, Railway) or a separate backend.
+
 name: Deploy to Host Africa
 
 on:
   push:
     branches:
-      - master  # ⚠️ Check: If your branch is named 'master', change this to 'master'
+      - main
+      - master
 
 jobs:
   deploy:
-    name: 🚀 Build & Deploy
+    name: Build & FTP deploy
     runs-on: ubuntu-latest
 
+    env:
+      # Required for ./out/ — without this, build uses .next/ and FTP step fails (ENOENT ./out/)
+      STATIC_EXPORT: "true"
+
+      FIREBASE_WEB_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
+      NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+      FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+      FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+      NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY: ${{ secrets.NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY }}
+
     steps:
-      - name: 🛑 Get latest code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: "20"
+          cache: npm
 
-      - name: 📦 Install Dependencies
+      - name: Install dependencies
         run: npm ci
 
-      - name: 🏗️ Build Project
-        env:
-          # Supabase environment variables (required for static export)
-          # These are baked into the static files during build
-          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
-          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      - name: Build static site (outputs to ./out/)
         run: npm run build
-        # This creates the 'out' folder because you have output: 'export' in your config
-        # Note: For static exports, NEXT_PUBLIC_ variables must be available at build time
 
-      - name: 📂 Sync files to Host Africa
+      - name: Sync files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./out/             # The folder Next.js builds your site into
-          server-dir: ./                # ⚠️ IMPORTANT: We use ./ because your FTP user is already locked inside public_html
-          dangerous-clean-slate: true   # This ensures old files are removed so your site stays clean
+          local-dir: ./out/
+          server-dir: ./
+          dangerous-clean-slate: true

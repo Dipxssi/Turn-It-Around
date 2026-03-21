@@ -25,7 +25,20 @@ The workflow [`.github/workflows/ci.yml`](./workflows/ci.yml) maps each secret t
 - Runs `npm ci` and `npm run build` on pushes to `main`, pull requests, and manual runs.
 - It does **not** deploy by itself. Use your host’s integration (below) or add a deploy job.
 
-## 3. Hosting options
+## 3. FTP / static hosting (`SamKirkland/FTP-Deploy-Action`)
+
+If you deploy to **shared hosting** (no Node.js), the workflow must:
+
+1. Set **`STATIC_EXPORT=true`** during `npm run build` so Next.js writes to **`./out/`** (not only `.next/`).  
+   Without this, FTP deploy fails with: **`ENOENT: no such file or directory, scandir './out/'`**.
+
+2. Know the **tradeoff**: static export **does not include** `app/api/**` routes. Contact form, admin sign-in, Firestore admin APIs, etc. **will not run** on pure FTP unless you point the frontend at APIs hosted elsewhere.
+
+See [`.github/workflows/deploy.yml`](./workflows/deploy.yml) — it sets `STATIC_EXPORT: "true"` and uploads `./out/`.
+
+**Extra secrets for FTP:** `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
+
+## 4. Hosting options
 
 ### Vercel (common for Next.js)
 
@@ -42,6 +55,6 @@ The workflow [`.github/workflows/ci.yml`](./workflows/ci.yml) maps each secret t
 
 - Extend `.github/workflows/ci.yml` with an SSH/rsync or Docker push step; inject secrets like `SSH_PRIVATE_KEY`, `HOST`, etc. (not included by default).
 
-## 4. PRs from forks
+## 5. PRs from forks
 
 Secrets are **not** available to workflows triggered by pull requests from forks. Builds may fail or skip deploy — that’s expected. Run CI on `main` or use branches in the same repo for full secret access.
