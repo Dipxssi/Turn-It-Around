@@ -1,0 +1,67 @@
+# Build Next.js on every push/PR. Add the secrets below in:
+# Repo → Settings → Secrets and variables → Actions → New repository secret
+#
+# See .github/DEPLOY.md for the full secret list and hosting notes.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # --- Map GitHub Secrets → env vars (same names as .env.local) ---
+    env:
+      # Firebase (client) — use the Web API key from Firebase Console → Project settings
+      FIREBASE_WEB_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
+      NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+
+      # Firebase Admin (server — Firestore, Auth verify, optional Storage)
+      FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
+      FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
+
+      # Optional — only if you use POST /api/admin/upload (cover images, etc.)
+      FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+
+      # Optional — only if you use Supabase content
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      # Recommended in production — canonical site URL (public API / server fetches)
+      NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+
+      # Optional — "true" to skip Storage for inline editor images (base64 in Firestore)
+      NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY: ${{ secrets.NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY }}
+
+      # Leave unset/false — static export disables /api routes
+      STATIC_EXPORT: ${{ secrets.STATIC_EXPORT }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # Uncomment to keep build output for debugging (large artifact).
+      # - name: Upload .next artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: next-build
+      #     path: .next
+      #     retention-days: 3

@@ -136,10 +136,15 @@ export function FeaturedServices({ services }: Props) {
   };
 
   return (
-    <section ref={sectionRef} className="bg-[#f8f9fa] px-0 py-12 md:py-16">
+    <section
+      ref={sectionRef}
+      className="bg-[#00338D] px-0 py-12 md:py-16 text-white"
+    >
       <div className="mx-auto w-[90%] max-w-[1800px] px-4 lg:px-12">
         <div className="text-center mb-8 md:mb-12 lg:mb-14">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#2c3e50]">Featured Services</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+            Featured Services
+          </h2>
         </div>
 
         {/* Desktop Grid View */}
@@ -149,36 +154,36 @@ export function FeaturedServices({ services }: Props) {
             const isActive = activeIndex === index && isVisible;
             const description = descriptions[service.title];
             return (
-              <div
+             <div
                 key={service.title}
-                className={`group flex h-full flex-col items-center gap-2 md:gap-3 rounded-xl md:rounded-2xl bg-white p-3 md:p-4 lg:p-6 text-center shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-all duration-500 ${
-                  isActive
-                    ? "bg-[#fff8f0] shadow-[0_10px_24px_rgba(243,156,18,0.18)] scale-[1.02]"
-                    : "hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(0,0,0,0.12)]"
+                className={`group flex h-full flex-col items-center gap-2 md:gap-2.5 rounded-xl md:rounded-2xl bg-white p-3 md:p-3.5 lg:p-4 text-center shadow-[0_4px_12px_rgba(0,51,141,0.10)] transition-all duration-500 border-t-[3px] border-t-[#0091DA] ${
+             isActive
+                    ? "shadow-[0_10px_24px_rgba(0,51,141,0.18)] scale-[1.02]"
+                    : "hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(0,51,141,0.16)]"
                 }`}
               >
                 <div
-                  className={`flex h-10 w-10 md:h-12 md:w-14 lg:w-14 items-center justify-center rounded-full transition-all duration-500 ${
+                  className={`flex h-10 w-10 md:h-11 md:w-12 lg:h-12 lg:w-12 items-center justify-center rounded-full transition-all duration-500 ${
                     isActive
-                      ? "bg-[#f39c12]/90 text-white"
-                      : "bg-[#fff4e3] text-slate-600"
+                      ? "bg-[#0091DA] text-white"
+                      : "bg-[rgba(0,145,218,0.10)] text-[#0091DA]"
                   }`}
                 >
                   <Icon
-                    className="h-5 w-5 md:h-6 md:w-6 lg:h-8 lg:w-8 transition-all duration-500"
+                    className="h-5 w-5 md:h-6 md:w-6 lg:h-7 lg:w-7 transition-all duration-500"
                     strokeWidth={1.5}
-                    color={isActive ? "#ffffff" : "#4b5563"}
+                    color={isActive ? "#FFFFFF" : "#0091DA"}
                   />
                 </div>
                 <h4
-                  className={`text-lg md:text-xl lg:text-2xl font-semibold transition-colors duration-500 text-center ${
-                    isActive ? "text-[#d87a00]" : "text-[#2c3e50]"
+                  className={`text-lg md:text-xl lg:text-2xl font-semibold transition-colors duration-500 text-center leading-tight ${
+                    isActive ? "text-[#00338D]" : "text-[#00338D]"
                   }`}
                 >
                   {service.title}
                 </h4>
                 {description && (
-                  <p className="text-sm md:text-base leading-relaxed text-[#4b5563] max-w-[280px]">
+                  <p className="text-sm md:text-[15px] leading-snug text-[#757575] max-w-[280px]">
                     {description}
                   </p>
                 )}
@@ -191,7 +196,7 @@ export function FeaturedServices({ services }: Props) {
         <div className="md:hidden relative">
           <div
             ref={cardContainerRef}
-            className="relative h-[400px] w-full"
+            className="relative h-[320px] w-full"
             onTouchStart={onTouchStart}
             onTouchMove={onTouchMove}
             onTouchEnd={onTouchEnd}
@@ -219,19 +224,19 @@ export function FeaturedServices({ services }: Props) {
                     pointerEvents: isCurrent ? 'auto' : 'none',
                   }}
                 >
-                  <div className="h-full w-full max-w-sm mx-auto flex flex-col items-center justify-center gap-4 rounded-2xl bg-white p-6 text-center shadow-[0_10px_40px_rgba(0,0,0,0.15)]">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f39c12]/90 text-white">
+                <div className="h-full w-full max-w-sm mx-auto flex flex-col items-center justify-center gap-3 rounded-2xl bg-white p-5 text-center shadow-[0_10px_40px_rgba(0,51,141,0.18)] border-t-[3px] border-t-[#0091DA]">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#0091DA] text-white">
                       <Icon
                         className="h-8 w-8"
                         strokeWidth={1.5}
-                        color="#ffffff"
+                        color="#FFFFFF"
                       />
                     </div>
-                    <h4 className="text-lg font-semibold text-[#2c3e50]">
+                    <h4 className="text-lg font-semibold text-[#00338D]">
                       {service.title}
                     </h4>
                     {description && (
-                      <p className="text-sm leading-relaxed text-[#4b5563] px-2">
+                      <p className="text-sm leading-snug text-[#757575] px-2">
                         {description}
                       </p>
                     )}
@@ -246,10 +251,10 @@ export function FeaturedServices({ services }: Props) {
             <button
               onClick={goToPrevious}
               disabled={currentCardIndex === 0}
-              className={`p-2 rounded-full transition ${
-                currentCardIndex === 0
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-[#f39c12] text-white hover:bg-[#e67e22]"
+                  className={`p-2 rounded-full transition ${
+                  currentCardIndex === 0
+                  ? "bg-[#E0E0E0] text-[#757575] cursor-not-allowed"
+                  : "bg-[#0091DA] text-white hover:bg-[#0077B8]"
               }`}
               aria-label="Previous card"
             >
@@ -264,8 +269,8 @@ export function FeaturedServices({ services }: Props) {
                   onClick={() => setCurrentCardIndex(index)}
                   className={`h-2 rounded-full transition-all ${
                     index === currentCardIndex
-                      ? "w-8 bg-[#f39c12]"
-                      : "w-2 bg-gray-300"
+                      ? "w-8 bg-[#0091DA]"
+                      : "w-2 bg-[#E0E0E0]"
                   }`}
                   aria-label={`Go to card ${index + 1}`}
                 />
@@ -277,8 +282,8 @@ export function FeaturedServices({ services }: Props) {
               disabled={currentCardIndex === services.length - 1}
               className={`p-2 rounded-full transition ${
                 currentCardIndex === services.length - 1
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-[#f39c12] text-white hover:bg-[#e67e22]"
+                  ? "bg-[#E0E0E0] text-[#757575] cursor-not-allowed"
+                  : "bg-[#0091DA] text-white hover:bg-[#0077B8]"
               }`}
               aria-label="Next card"
             >
@@ -287,7 +292,7 @@ export function FeaturedServices({ services }: Props) {
           </div>
 
           {/* Swipe Hint */}
-          <p className="text-center text-xs text-gray-500 mt-4">
+          <p className="text-center text-xs text-white/60 mt-4">
             Swipe left or right to explore
           </p>
         </div>

@@ -1,8 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // 🔑 Required for Hosting Africa (static hosting)
-  output: "export",
+  /**
+   * API routes (`/api/*`) are NOT included in static export builds.
+   * Set STATIC_EXPORT=true only when you need `out/` for static hosting
+   * (then admin APIs won't be in the build — use a Node host or Firebase for admin).
+   */
+  ...(process.env.STATIC_EXPORT === "true"
+    ? { output: "export" as const }
+    : {}),
   trailingSlash: true,
 
   // 🔑 Required because next/image optimization

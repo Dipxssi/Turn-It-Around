@@ -25,7 +25,7 @@ export function PartnersShowcase({ steps }: Props) {
   }, [steps.length]);
 
   return (
-    <div className="mt-6 md:mt-12 relative w-full overflow-hidden bg-[#2c3e50] min-h-[300px] sm:min-h-[350px] md:min-h-[420px]">
+    <div className="mt-6 md:mt-12 relative w-full overflow-hidden bg-[#00338D] min-h-[300px] sm:min-h-[350px] md:min-h-[420px]">
       {steps.map((step, index) => (
         <Image
           key={step.title}
@@ -49,7 +49,7 @@ export function PartnersShowcase({ steps }: Props) {
           <div className="mt-4 md:mt-6 lg:mt-7">
             <a
               href="#contact"
-              className="inline-flex items-center rounded-none bg-[#f39c12] px-8 py-2.5 md:px-10 md:py-3 lg:px-12 lg:py-3.5 text-sm md:text-base font-semibold text-white transition hover:bg-[#e67e22] shadow-lg shadow-black/25"
+              className="inline-flex items-center rounded-none bg-[#0091DA] px-8 py-2.5 md:px-10 md:py-3 lg:px-12 lg:py-3.5 text-sm md:text-base font-semibold text-white transition hover:bg-[#0077B8] shadow-lg shadow-black/25"
             >
               Contact Us Today!
             </a>

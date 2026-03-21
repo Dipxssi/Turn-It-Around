@@ -271,13 +271,130 @@ export function deleteLocalContent(id: string): boolean {
   }
 }
 
-// Get single content item by ID (async - fetches from Supabase)
+/** Plain text from HTML (excerpts, previews). */
+export function stripHtmlTags(html: string): string {
+  return html
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+type FirebasePublicResource = {
+  id: string;
+  title: string;
+  type: string;
+  summary: string | null;
+  content: string;
+  coverImageUrl: string | null;
+  tags: string[];
+  createdAt: string | null;
+  updatedAt?: string | null;
+};
+
+/** Map Firestore `resources` doc (public API shape) to ContentItem. */
+export function mapFirebaseResourceToContentItem(
+  r: FirebasePublicResource
+): ContentItem {
+  const summaryPlain = r.summary ? stripHtmlTags(r.summary) : "";
+  const excerpt =
+    summaryPlain || stripHtmlTags(r.content || "").slice(0, 280);
+  const createdAt = r.createdAt || new Date().toISOString();
+  const typeRaw = r.type;
+  const type: ContentItem["type"] =
+    typeRaw === "case-study"
+      ? "case-study"
+      : typeRaw === "insight"
+        ? "insight"
+        : "blog";
+  return {
+    id: r.id,
+    type,
+    title: r.title,
+    content: r.content,
+    excerpt,
+    category: r.tags?.[0] || "General",
+    tags: r.tags || [],
+    author: "Team TBS",
+    imageUrl: r.coverImageUrl || "",
+    createdAt,
+    published: true,
+  };
+}
+
+function getPublicApiBaseUrl(): string {
+  if (typeof window !== "undefined" && window.location?.origin) {
+    return window.location.origin;
+  }
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`.replace(/\/$/, "");
+  }
+  return "http://localhost:3000";
+}
+
+async function fetchFirebaseResourcesFromApi(): Promise<ContentItem[]> {
+  try {
+    const base = getPublicApiBaseUrl();
+    const res = await fetch(`${base}/api/public/resources`, {
+      cache: "no-store",
+    });
+    if (!res.ok) {
+      console.warn("Public resources list failed:", res.status);
+      return [];
+    }
+    const data = (await res.json()) as {
+      resources?: FirebasePublicResource[];
+    };
+    const list = data.resources || [];
+    return list.map(mapFirebaseResourceToContentItem);
+  } catch (e) {
+    console.error("fetchFirebaseResourcesFromApi:", e);
+    return [];
+  }
+}
+
+async function fetchFirebaseResourceByIdPublic(
+  id: string
+): Promise<ContentItem | null> {
+  try {
+    const base = getPublicApiBaseUrl();
+    const res = await fetch(`${base}/api/public/resources/${id}`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { resource?: FirebasePublicResource };
+    if (!data.resource) return null;
+    return mapFirebaseResourceToContentItem(data.resource);
+  } catch {
+    return null;
+  }
+}
+
+function mergeContentById(sources: ContentItem[][]): ContentItem[] {
+  const map = new Map<string, ContentItem>();
+  for (const arr of sources) {
+    for (const item of arr) {
+      map.set(item.id, item);
+    }
+  }
+  return Array.from(map.values()).sort(
+    (a, b) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+}
+
+// Get single content item by ID (async — static + Supabase + Firestore admin)
 export async function getContentById(
   id: string,
   staticContent: ContentItem[]
 ): Promise<ContentItem | null> {
   const allContent = await getAllContent(staticContent);
-  return allContent.find((item) => item.id === id) || null;
+  const fromList = allContent.find((item) => item.id === id);
+  if (fromList) return fromList;
+  return fetchFirebaseResourceByIdPublic(id);
 }
 
 // Legacy synchronous version
@@ -289,25 +406,22 @@ export function getContentByIdSync(
   return allContent.find((item) => item.id === id) || null;
 }
 
-// Combine static content (from JSON file) with Supabase content
+// Combine static JSON + Supabase + Firestore admin resources (deduped by id)
 export async function getAllContent(staticContent: ContentItem[]): Promise<ContentItem[]> {
   try {
-    // Fetch content from Supabase
-    const supabaseContent = await getSupabaseContent();
-    
-    // Combine static content with Supabase content and sort by date (newest first)
-    const allContent = [...staticContent, ...supabaseContent];
-    return allContent.sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    const [supabaseContent, firebaseContent] = await Promise.all([
+      getSupabaseContent(),
+      fetchFirebaseResourcesFromApi(),
+    ]);
+    return mergeContentById([
+      staticContent,
+      supabaseContent,
+      firebaseContent,
+    ]);
   } catch (error) {
-    console.error('Error fetching content from Supabase:', error);
-    // Fallback to static content + localStorage if Supabase fails
+    console.error("Error fetching content:", error);
     const localContent = getLocalContent();
-    const allContent = [...staticContent, ...localContent];
-    return allContent.sort(
-      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    );
+    return mergeContentById([staticContent, localContent]);
   }
 }
 

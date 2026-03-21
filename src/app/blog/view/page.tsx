@@ -80,12 +80,15 @@ function BlogViewContent() {
     }
   };
 
+  const contentLooksLikeHtml = (text: string) =>
+    typeof text === "string" && /<[a-z][\s\S]*>/i.test(text);
+
   if (loading) {
     return (
-      <div className="bg-white text-[#1f2937] min-h-screen">
+      <div className="bg-white text-[#1A1A1A] min-h-screen">
         <Navbar />
         <div className="min-h-screen flex items-center justify-center">
-          <p className="text-[#4b5563]">Loading...</p>
+          <p className="text-[#757575]">Loading...</p>
         </div>
         <Footer />
       </div>
@@ -94,16 +97,16 @@ function BlogViewContent() {
 
   if (!content) {
     return (
-      <div className="bg-white text-[#1f2937] min-h-screen">
+      <div className="bg-white text-[#1A1A1A] min-h-screen">
         <Navbar />
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-[#2c3e50] mb-4">
+            <h1 className="text-2xl font-bold text-[#00338D] mb-4">
               Content Not Found
             </h1>
             <Link
               href="/blog"
-              className="text-[#f39c12] hover:underline"
+              className="text-[#0091DA] hover:underline"
             >
               Back to Blog
             </Link>
@@ -115,7 +118,7 @@ function BlogViewContent() {
   }
 
   return (
-    <div className="bg-white text-[#1f2937] min-h-screen">
+    <div className="bg-white text-[#1A1A1A] min-h-screen">
       <Navbar />
 
       {/* Hero Section */}
@@ -130,7 +133,7 @@ function BlogViewContent() {
               unoptimized
             />
           </div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#1e3a5f]/70 via-[#1e3a5f]/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#002A6E]/70 via-[#002A6E]/50 to-transparent" />
         </section>
       )}
 
@@ -140,7 +143,7 @@ function BlogViewContent() {
           {/* Back Button */}
           <Link
             href={getBackUrl()}
-            className="inline-flex items-center gap-2 text-[#f39c12] hover:underline mb-6"
+            className="inline-flex items-center gap-2 text-[#0091DA] hover:underline mb-6"
           >
             <svg
               className="w-5 h-5"
@@ -159,17 +162,17 @@ function BlogViewContent() {
           {/* Header */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-[#f39c12]/10 text-[#f39c12] text-sm font-semibold rounded-full">
+              <span className="px-3 py-1 bg-[#0091DA]/10 text-[#0091DA] text-sm font-semibold rounded-full">
                 {getTypeLabel(content.type)}
               </span>
-              <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm font-semibold rounded-full">
+              <span className="px-3 py-1 bg-[#F2F2F2] text-[#757575] text-sm font-semibold rounded-full border border-[#E0E0E0]">
                 {content.category}
               </span>
             </div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#2c3e50] mb-4">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#00338D] mb-4">
               {content.title}
             </h1>
-            <div className="flex items-center gap-4 text-sm text-gray-600">
+            <div className="flex items-center gap-4 text-sm text-[#757575]">
               <span>By {content.author}</span>
               <span>•</span>
               <span>{formatDate(content.createdAt)}</span>
@@ -178,11 +181,11 @@ function BlogViewContent() {
 
           {/* Tags */}
           {content.tags && content.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-gray-200">
+            <div className="flex flex-wrap gap-2 mb-8 pb-8 border-b border-[#E0E0E0]">
               {content.tags.map((tag, idx) => (
                 <span
                   key={idx}
-                  className="px-3 py-1 bg-gray-100 text-gray-600 text-sm rounded-full"
+                  className="px-3 py-1 bg-[#F2F2F2] text-[#757575] text-sm rounded-full border border-[#E0E0E0]"
                 >
                   #{tag}
                 </span>
@@ -190,30 +193,31 @@ function BlogViewContent() {
             </div>
           )}
 
-          {/* Content */}
-          <article className="prose prose-lg max-w-none mb-12">
-            <div className="text-gray-700 leading-relaxed whitespace-pre-line">
-              {content.content.split("\n").map((paragraph, idx) => (
-                <p key={idx} className="mb-4">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </article>
+          {/* Content — admin/Tiptap posts are HTML */}
+          {contentLooksLikeHtml(content.content) ? (
+            <article
+              className="prose prose-lg max-w-none mb-12 prose-headings:text-[#00338D] prose-a:text-[#0091DA] prose-img:rounded-lg"
+              dangerouslySetInnerHTML={{ __html: content.content }}
+            />
+          ) : (
+            <article className="prose prose-lg max-w-none mb-12">
+              <div className="text-[#1A1A1A] leading-relaxed whitespace-pre-line">
+                {content.content.split("\n").map((paragraph, idx) => (
+                  <p key={idx} className="mb-4">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </article>
+          )}
 
           {/* Footer Actions */}
-          <div className="pt-8 border-t border-gray-200 flex gap-4">
+          <div className="pt-8 border-t border-[#E0E0E0] flex gap-4">
             <Link
               href={getBackUrl()}
-              className="px-6 py-3 bg-gray-200 text-[#2c3e50] font-semibold rounded-lg hover:bg-gray-300 transition"
+              className="px-6 py-3 bg-white text-[#00338D] border border-[#00338D] font-semibold rounded-lg hover:bg-[#00338D] hover:text-white transition"
             >
               View More {getTypeLabel(content.type)}s
-            </Link>
-            <Link
-              href="/write"
-              className="px-6 py-3 bg-[#f39c12] text-white font-semibold rounded-lg hover:bg-[#e67e22] transition"
-            >
-              Write Your Own
             </Link>
           </div>
         </div>
@@ -228,10 +232,10 @@ export default function BlogViewPage() {
   return (
     <Suspense
       fallback={
-        <div className="bg-white text-[#1f2937] min-h-screen">
+        <div className="bg-white text-[#1A1A1A] min-h-screen">
           <Navbar />
           <div className="min-h-screen flex items-center justify-center">
-            <p className="text-[#4b5563]">Loading...</p>
+            <p className="text-[#757575]">Loading...</p>
           </div>
           <Footer />
         </div>

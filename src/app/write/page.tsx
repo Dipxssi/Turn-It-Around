@@ -326,7 +326,7 @@ export default function WritePage() {
   };
 
   return (
-    <div className="bg-white text-[#1f2937] min-h-screen">
+    <div className="bg-white text-[#1A1A1A] min-h-screen">
       <Navbar />
 
       {/* Hero Section */}
@@ -335,10 +335,10 @@ export default function WritePage() {
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: "url('/blogs.png')" }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#1e3a5f]/50 via-[#1e3a5f]/30 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#002A6E]/50 via-[#002A6E]/30 to-transparent" />
         <div className="relative mx-auto flex w-[90%] max-w-[1800px] flex-col gap-3 md:gap-4 text-left px-4 lg:px-12">
-          <div className="relative backdrop-blur-sm bg-[#1e3a5f]/40 rounded-xl p-6 md:p-8 border border-white/10 shadow-2xl max-w-4xl">
-            <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#f39c12] font-semibold drop-shadow-md">
+          <div className="relative backdrop-blur-sm bg-[#002A6E]/40 rounded-xl p-6 md:p-8 border border-white/10 shadow-2xl max-w-4xl">
+            <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#0091DA] font-semibold drop-shadow-md">
               Content Management
             </p>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3rem] font-extrabold leading-tight lg:leading-[1.1] mt-2 md:mt-3 drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)] [text-shadow:_1px_1px_3px_rgba(0,0,0,0.7)]">
@@ -364,7 +364,7 @@ export default function WritePage() {
             <div className="mb-8 flex gap-4">
               <button
                 onClick={() => setViewMode("create")}
-                className="px-6 py-3 bg-[#f39c12] text-white font-semibold rounded-lg hover:bg-[#e67e22] transition"
+                className="px-6 py-3 bg-[#0091DA] text-white font-semibold rounded-lg hover:bg-[#0077B8] transition"
               >
                 + Create New Content
               </button>
@@ -378,7 +378,7 @@ export default function WritePage() {
                   setViewMode("list");
                   resetForm();
                 }}
-                className="flex items-center gap-2 text-[#f39c12] hover:underline"
+                className="flex items-center gap-2 text-[#0091DA] hover:underline"
               >
                 <svg
                   className="w-5 h-5"
@@ -410,12 +410,12 @@ export default function WritePage() {
             <div>
               {existingContent.length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-[#4b5563] text-lg mb-4">
+                  <p className="text-[#757575] text-lg mb-4">
                     No content submitted yet.
                   </p>
                   <button
                     onClick={() => setViewMode("create")}
-                    className="px-6 py-3 bg-[#f39c12] text-white font-semibold rounded-lg hover:bg-[#e67e22] transition"
+                    className="px-6 py-3 bg-[#0091DA] text-white font-semibold rounded-lg hover:bg-[#0077B8] transition"
                   >
                     Create Your First Content
                   </button>
@@ -425,7 +425,7 @@ export default function WritePage() {
                   {existingContent.map((item) => (
                     <div
                       key={item.id}
-                      className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
+                      className="bg-white border border-[#E0E0E0] rounded-xl overflow-hidden hover:shadow-lg transition-shadow"
                     >
                       {item.imageUrl && (
                         <div className="relative h-48 w-full overflow-hidden">
@@ -440,26 +440,26 @@ export default function WritePage() {
                       )}
                       <div className="p-6">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="px-2 py-1 bg-[#f39c12]/10 text-[#f39c12] text-xs font-semibold rounded-full">
+                          <span className="px-2 py-1 bg-[#0091DA]/10 text-[#0091DA] text-xs font-semibold rounded-full">
                             {getTypeLabel(item.type)}
                           </span>
-                          <span className="px-2 py-1 bg-gray-100 text-gray-600 text-xs font-semibold rounded-full">
+                          <span className="px-2 py-1 bg-[#F2F2F2] text-[#757575] text-xs font-semibold rounded-full border border-[#E0E0E0]">
                             {item.category}
                           </span>
                         </div>
-                        <h3 className="text-lg font-bold text-[#2c3e50] mb-2">
+                        <h3 className="text-lg font-bold text-[#00338D] mb-2">
                           {item.title}
                         </h3>
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        <p className="text-[#757575] text-sm mb-4 line-clamp-2">
                           {item.excerpt}
                         </p>
-                        <div className="text-xs text-gray-500 mb-4">
+                        <div className="text-xs text-[#757575] mb-4">
                           By {item.author} • {formatDate(item.createdAt)}
                         </div>
                         <div className="flex gap-2">
                           <button
                             onClick={() => handleEdit(item)}
-                            className="flex-1 px-4 py-2 bg-[#f39c12] text-white text-sm font-semibold rounded-lg hover:bg-[#e67e22] transition"
+                            className="flex-1 px-4 py-2 bg-[#0091DA] text-white text-sm font-semibold rounded-lg hover:bg-[#0077B8] transition"
                           >
                             Edit
                           </button>
@@ -483,7 +483,7 @@ export default function WritePage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Content Type Selection */}
               <div>
-                <label className="block text-sm font-semibold text-[#2c3e50] mb-3">
+                <label className="block text-sm font-semibold text-[#00338D] mb-3">
                   Content Type <span className="text-red-500">*</span>
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -507,8 +507,8 @@ export default function WritePage() {
                           }}
                           className={`px-6 py-4 rounded-lg border-2 font-semibold transition ${
                             contentType === type
-                              ? "bg-[#f39c12] text-white border-[#f39c12]"
-                              : "bg-white text-[#2c3e50] border-gray-300 hover:border-[#f39c12]"
+                              ? "bg-[#0091DA] text-white border-[#0091DA]"
+                              : "bg-white text-[#00338D] border-[#E0E0E0] hover:border-[#0091DA]"
                           }`}
                         >
                           {labels[type]}
@@ -523,7 +523,7 @@ export default function WritePage() {
               <div>
                 <label
                   htmlFor="title"
-                  className="block text-sm font-semibold text-[#2c3e50] mb-2"
+                  className="block text-sm font-semibold text-[#00338D] mb-2"
                 >
                   Title <span className="text-red-500">*</span>
                 </label>
@@ -534,7 +534,7 @@ export default function WritePage() {
                   value={formData.title}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f39c12] focus:border-[#f39c12] outline-none"
+                  className="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#0091DA] focus:border-[#0091DA] outline-none bg-[#F2F2F2] text-[#1A1A1A]"
                   placeholder="Enter the title of your content"
                 />
               </div>
@@ -543,7 +543,7 @@ export default function WritePage() {
               <div>
                 <label
                   htmlFor="content"
-                  className="block text-sm font-semibold text-[#2c3e50] mb-2"
+                  className="block text-sm font-semibold text-[#00338D] mb-2"
                 >
                   Content <span className="text-red-500">*</span>
                 </label>
@@ -554,7 +554,7 @@ export default function WritePage() {
                   onChange={handleChange}
                   required
                   rows={10}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f39c12] focus:border-[#f39c12] outline-none resize-y"
+                  className="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#0091DA] focus:border-[#0091DA] outline-none resize-y bg-[#F2F2F2] text-[#1A1A1A]"
                   placeholder="Write your content here..."
                 />
               </div>
@@ -563,7 +563,7 @@ export default function WritePage() {
               <div>
                 <label
                   htmlFor="excerpt"
-                  className="block text-sm font-semibold text-[#2c3e50] mb-2"
+                  className="block text-sm font-semibold text-[#00338D] mb-2"
                 >
                   Excerpt (Short Description)
                 </label>
@@ -573,7 +573,7 @@ export default function WritePage() {
                   value={formData.excerpt}
                   onChange={handleChange}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f39c12] focus:border-[#f39c12] outline-none resize-y"
+                  className="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#0091DA] focus:border-[#0091DA] outline-none resize-y bg-[#F2F2F2] text-[#1A1A1A]"
                   placeholder="A brief summary (will auto-generate if left empty)"
                 />
               </div>
@@ -582,7 +582,7 @@ export default function WritePage() {
               <div>
                 <label
                   htmlFor="category"
-                  className="block text-sm font-semibold text-[#2c3e50] mb-2"
+                  className="block text-sm font-semibold text-[#00338D] mb-2"
                 >
                   Category <span className="text-red-500">*</span>
                 </label>
@@ -592,7 +592,7 @@ export default function WritePage() {
                   value={formData.category}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f39c12] focus:border-[#f39c12] outline-none bg-white"
+                  className="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#0091DA] focus:border-[#0091DA] outline-none bg-[#F2F2F2] text-[#1A1A1A]"
                 >
                   <option value="">Select a category</option>
                   {categoriesByType[contentType].map((cat) => (
@@ -607,7 +607,7 @@ export default function WritePage() {
               <div>
                 <label
                   htmlFor="tags"
-                  className="block text-sm font-semibold text-[#2c3e50] mb-2"
+                  className="block text-sm font-semibold text-[#00338D] mb-2"
                 >
                   Tags (comma-separated)
                 </label>
@@ -617,7 +617,7 @@ export default function WritePage() {
                   name="tags"
                   value={formData.tags}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f39c12] focus:border-[#f39c12] outline-none"
+                  className="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#0091DA] focus:border-[#0091DA] outline-none bg-[#F2F2F2] text-[#1A1A1A]"
                   placeholder="e.g., governance, strategy, finance"
                 />
               </div>
@@ -626,7 +626,7 @@ export default function WritePage() {
               <div>
                 <label
                   htmlFor="author"
-                  className="block text-sm font-semibold text-[#2c3e50] mb-2"
+                  className="block text-sm font-semibold text-[#00338D] mb-2"
                 >
                   Author <span className="text-red-500">*</span>
                 </label>
@@ -637,32 +637,32 @@ export default function WritePage() {
                   value={formData.author}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f39c12] focus:border-[#f39c12] outline-none"
+                  className="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#0091DA] focus:border-[#0091DA] outline-none bg-[#F2F2F2] text-[#1A1A1A]"
                   placeholder="Your name"
                 />
               </div>
 
               {/* Image Upload */}
               <div>
-                <label className="block text-sm font-semibold text-[#2c3e50] mb-2">
-                  Image <span className="text-gray-500 text-xs">(Optional)</span>
+                <label className="block text-sm font-semibold text-[#00338D] mb-2">
+                  Image <span className="text-[#757575] text-xs">(Optional)</span>
                 </label>
                 <div className="space-y-4">
                   {/* File Upload */}
                   <div>
-                    <label className="block text-sm text-gray-600 mb-2">
+                    <label className="block text-sm text-[#757575] mb-2">
                       Upload from device:
                     </label>
                     <input
                       type="file"
                       accept="image/*"
                       onChange={handleImageUpload}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f39c12] focus:border-[#f39c12] outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#f39c12] file:text-white hover:file:bg-[#e67e22] file:cursor-pointer"
+                      className="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#0091DA] focus:border-[#0091DA] outline-none bg-[#F2F2F2] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#0091DA] file:text-white hover:file:bg-[#0077B8] file:cursor-pointer"
                     />
                     {formData.imagePreview && (
                       <div className="mt-4">
-                        <p className="text-sm text-gray-600 mb-2">Preview:</p>
-                        <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-300">
+                        <p className="text-sm text-[#757575] mb-2">Preview:</p>
+                        <div className="relative w-full h-48 rounded-lg overflow-hidden border border-[#E0E0E0]">
                           <Image
                             src={formData.imagePreview}
                             alt="Preview"
@@ -690,14 +690,14 @@ export default function WritePage() {
 
                   {/* OR Divider */}
                   <div className="flex items-center gap-4">
-                    <div className="flex-1 border-t border-gray-300"></div>
-                    <span className="text-sm text-gray-500">OR</span>
-                    <div className="flex-1 border-t border-gray-300"></div>
+                    <div className="flex-1 border-t border-[#E0E0E0]"></div>
+                    <span className="text-sm text-[#757575]">OR</span>
+                    <div className="flex-1 border-t border-[#E0E0E0]"></div>
                   </div>
 
                   {/* URL Input */}
                   <div>
-                    <label className="block text-sm text-gray-600 mb-2">
+                    <label className="block text-sm text-[#757575] mb-2">
                       Enter image URL:
                     </label>
                     <input
@@ -707,11 +707,11 @@ export default function WritePage() {
                       value={formData.imageUrl}
                       onChange={handleChange}
                       disabled={!!formData.imageFile}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f39c12] focus:border-[#f39c12] outline-none disabled:bg-gray-100 disabled:cursor-not-allowed"
+                      className="w-full px-4 py-3 border border-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#0091DA] focus:border-[#0091DA] outline-none bg-[#F2F2F2] disabled:bg-[#F2F2F2] disabled:opacity-60 disabled:cursor-not-allowed"
                       placeholder="https://example.com/image.jpg"
                     />
                     {formData.imageFile && (
-                      <p className="mt-1 text-xs text-gray-500">
+                      <p className="mt-1 text-xs text-[#757575]">
                         Clear uploaded image to use URL instead
                       </p>
                     )}
@@ -724,7 +724,7 @@ export default function WritePage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-8 py-3 bg-[#f39c12] text-white font-semibold rounded-lg hover:bg-[#e67e22] transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-3 bg-[#0091DA] text-white font-semibold rounded-lg hover:bg-[#0077B8] transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting
                     ? "Saving..."
@@ -738,7 +738,7 @@ export default function WritePage() {
                     setViewMode("list");
                     resetForm();
                   }}
-                  className="px-8 py-3 bg-gray-200 text-[#2c3e50] font-semibold rounded-lg hover:bg-gray-300 transition"
+                  className="px-8 py-3 bg-white text-[#00338D] border border-[#00338D] font-semibold rounded-lg hover:bg-[#00338D] hover:text-white transition"
                 >
                   Cancel
                 </button>

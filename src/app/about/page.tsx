@@ -1,325 +1,503 @@
 "use client";
 
-import Image from "next/image";
-import { Navbar } from "@/components/Navbar";
+import Link from "next/link";
+import { NavBar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { Target, Eye, Globe, BarChart3, Shield, TrendingUp } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/Button";
+import { PageHero } from "@/components/PageHero";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 export default function AboutUs() {
-  const missionRef = useRef<HTMLDivElement | null>(null);
-  const visionRef = useRef<HTMLDivElement | null>(null);
-  const approachRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const whoWeAreTextRef = useRef<HTMLDivElement | null>(null);
-
-  const [missionVisible, setMissionVisible] = useState(false);
-  const [visionVisible, setVisionVisible] = useState(false);
-  const [missionBounce, setMissionBounce] = useState(false);
-  const [visionBounce, setVisionBounce] = useState(false);
-  const [approachVisible, setApproachVisible] = useState<boolean[]>([]);
-  const [whoWeAreTextVisible, setWhoWeAreTextVisible] = useState(false);
-
-  const approachSections = [
-    {
-      icon: Globe,
-      title: "Global Standards, Local Execution",
-      content: "Our methods are guided by global best practices, but our strength lies in our ability to localize these standards and customize them to your context.",
-      bullets: [
-        "Business process improvement",
-        "Financial advisory",
-        "Operations restructuring",
-        "Strategic growth planning"
-      ]
-    },
-    {
-      icon: BarChart3,
-      title: "Data-Backed Decision Making",
-      content: "We approach every engagement with fresh insight and data-backed decision-making to craft strategies that deliver real transformation.",
-      bullets: [
-        "Comprehensive analysis",
-        "Evidence-based solutions",
-        "Measurable outcomes",
-        "Continuous optimization"
-      ]
-    },
-    {
-      icon: Shield,
-      title: "Trust & Confidentiality",
-      content: "We value trust, confidentiality, and agility. Every member of our team upholds the highest ethical standards.",
-      bullets: [
-        "Absolute discretion",
-        "Ethical standards",
-        "Excellence-driven culture",
-        "Accountability & results"
-      ]
-    },
-    {
-      icon: TrendingUp,
-      title: "Growth with Intentional Strategy",
-      content: "In today's competitive market, growth isn't accidental—it's intentional. It's powered by clear strategies, actionable insights, and the right support.",
-      bullets: [
-        "Targeted interventions",
-        "Continuous optimization",
-        "Strategic partnership",
-        "Sustainable scaling"
-      ]
-    }
-  ];
-
-  useEffect(() => {
-    setApproachVisible(new Array(approachSections.length).fill(false));
-  }, [approachSections.length]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.target === missionRef.current && entry.isIntersecting) {
-            setMissionVisible(true);
-          }
-          if (entry.target === visionRef.current && entry.isIntersecting) {
-            setVisionVisible(true);
-          }
-          if (entry.target === whoWeAreTextRef.current && entry.isIntersecting) {
-            setWhoWeAreTextVisible(true);
-          }
-          const idx = approachRefs.current.findIndex((node) => node === entry.target);
-          if (idx !== -1 && entry.isIntersecting) {
-            setApproachVisible((prev) => {
-              const next = [...prev];
-              next[idx] = true;
-              return next;
-            });
-          }
-        });
-      },
-      { threshold: 0.3, rootMargin: "0px 0px -10% 0px" }
-    );
-
-    if (missionRef.current) observer.observe(missionRef.current);
-    if (visionRef.current) observer.observe(visionRef.current);
-    if (whoWeAreTextRef.current) observer.observe(whoWeAreTextRef.current);
-    approachRefs.current.forEach((node) => node && observer.observe(node));
-
-    return () => observer.disconnect();
-  }, []);
-
-  const handleMissionClick = () => {
-    setMissionBounce(true);
-    setTimeout(() => setMissionBounce(false), 500);
-  };
-
-  const handleVisionClick = () => {
-    setVisionBounce(true);
-    setTimeout(() => setVisionBounce(false), 500);
-  };
+  const missionVisionRef = useScrollReveal();
+  const storyRef = useScrollReveal();
+  const valuesRef = useScrollReveal();
+  const differenceRef = useScrollReveal();
+  const leadRef = useScrollReveal();
+  const ctaRef = useScrollReveal();
 
   return (
-    <div id="top" className="bg-white text-[#2c3e50]">
-      <Navbar />
+    <div className="bg-white text-[var(--navy)]">
+      <NavBar />
 
-      <main className="bg-white pb-12 md:pb-24 pt-8 md:pt-16">
-        {/* Who We Are Section */}
-        <section className="relative px-0 py-12 md:py-16 lg:py-20 overflow-hidden flex items-center justify-center min-h-[40vh] md:min-h-[50vh]">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('/about.png')" }}
-          />
-          <div className="absolute inset-0 bg-black/40" />
-          <div className="relative z-10 mx-auto w-[90%] max-w-[1800px] px-4 text-center lg:px-12">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-100 drop-shadow-sm">
-              <span className="text-gray-100">Who</span>{" "}
-              <span className="text-amber-600">We</span>{" "}
-              <span className="text-gray-100">Are</span>
-            </h1>
-          </div>
-        </section>
-        
-        {/* Who We Are Text */}
-        <section className="relative px-0 py-12 md:py-16 overflow-hidden bg-gradient-to-br from-[#f8f9fa] via-[#f1f3f6] to-[#e9ecef]">
-          {/* Background decorative elements */}
-          <div className="absolute inset-0 opacity-30">
-            <div className={`absolute top-0 right-0 w-64 h-64 bg-[#f39c12]/10 rounded-full blur-3xl transition-all duration-1000 ${
-              whoWeAreTextVisible ? "scale-100 opacity-30" : "scale-50 opacity-0"
-            }`}></div>
-            <div className={`absolute bottom-0 left-0 w-96 h-96 bg-[#2c3e50]/5 rounded-full blur-3xl transition-all duration-1000 delay-300 ${
-              whoWeAreTextVisible ? "scale-100 opacity-30" : "scale-50 opacity-0"
-            }`}></div>
-          </div>
-          
-          <div ref={whoWeAreTextRef} className="relative mx-auto w-[90%] max-w-[1800px] px-4 lg:px-12">
-            <div className={`relative bg-white/80 backdrop-blur-sm rounded-2xl border-l-4 border-[#f39c12] shadow-lg p-8 md:p-12 lg:p-16 transition-all duration-700 hover:shadow-xl hover:scale-[1.01] ${
-              whoWeAreTextVisible 
-                ? "opacity-100 translate-y-0" 
-                : "opacity-0 translate-y-8"
-            }`}>
-              {/* Icon and decorative line */}
-              <div className="flex items-start gap-6 mb-6">
-                <div className={`flex-shrink-0 flex items-center justify-center w-16 h-16 rounded-full bg-[#f39c12]/15 border-2 border-[#f39c12]/30 transition-all duration-700 delay-200 hover:scale-110 hover:bg-[#f39c12]/25 hover:border-[#f39c12]/50 ${
-                  whoWeAreTextVisible 
-                    ? "opacity-100 scale-100 rotate-0" 
-                    : "opacity-0 scale-50 -rotate-12"
-                }`}>
-                  <svg className="w-6 h-6 md:w-8 md:h-8 text-[#f39c12] transition-transform duration-300 hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                  </svg>
-                </div>
-                <div className="flex-1 pt-2">
-                  <div className={`h-1 bg-gradient-to-r from-[#f39c12] to-[#f39c12]/50 rounded-full mb-4 transition-all duration-700 delay-300 ${
-                    whoWeAreTextVisible 
-                      ? "w-20 opacity-100" 
-                      : "w-0 opacity-0"
-                  }`}></div>
-                </div>
-              </div>
-              
-              <p className={`text-base md:text-xl lg:text-2xl text-[#2c3e50] leading-[1.6] md:leading-[1.7] text-left transition-all duration-700 delay-400 ${
-                whoWeAreTextVisible 
-                  ? "opacity-100 translate-y-0" 
-                  : "opacity-0 translate-y-8"
-              }`}>
-                Turnitaround Business Solutions (TBS) is a strategic advisory and capacity-building firm dedicated to strengthening NGOs, social enterprises, SMEs, and mission-driven businesses through robust systems, sustainable operational structures, and transparent financial frameworks.
-              </p>
-            </div>
-          </div>
-        </section>
+      <main>
+        {/* SECTION 1: HERO */}
+        <PageHero
+          eyebrow="Who We Are"
+          headline="A Strategic Partner Built for Your Organization"
+          subtext="Dedicated to strengthening NGOs, social enterprises, SMEs, and mission-driven businesses."
+          imagePlaceholder="TBS Leadership Team"
+          imageUrl="/about.png"
+        />
 
-        {/* Mission & Vision */}
-        <section className="relative px-0 py-12 md:py-16 overflow-hidden bg-[#f8f9fa]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(243,156,18,0.08),transparent_45%),radial-gradient(circle_at_bottom_right,rgba(44,62,80,0.08),transparent_45%)]" />
-          <div className="relative mx-auto w-[90%] max-w-[1800px] px-4 lg:px-12">
-            <div className="text-center mb-6 md:mb-10">
-              <p className="text-xs md:text-sm uppercase tracking-[0.3em] md:tracking-[0.35em] text-[#f39c12]">What Drives Us</p>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#2c3e50] mt-1 md:mt-2">Mission & Vision</h2>
-            </div>
-            <div className="grid grid-cols-1 items-stretch gap-4 md:gap-6 lg:gap-8 md:grid-cols-2">
-            <div
-              ref={missionRef}
-              onClick={handleMissionClick}
-              className={`group cursor-pointer h-full flex flex-col gap-4 md:gap-6 rounded-2xl md:rounded-3xl bg-gradient-to-br from-white to-gray-100 p-[1px] transition-all duration-300 ${
-                missionVisible ? "animate-slide-in-left" : "opacity-0 -translate-x-[50px]"
-              } ${missionBounce ? "animate-bounce-tap" : ""}`}
-            >
-              <div className="h-full flex flex-col rounded-2xl md:rounded-3xl bg-white/95 px-4 py-6 md:px-8 md:py-10 shadow-[0_25px_60px_rgba(17,24,39,0.12)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl">
-                <div className="flex items-center gap-2 md:gap-3 mb-2">
-                  <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-[#f39c12]/20 text-[#f39c12] border border-gray-200">
-                    <Target className="h-5 w-5 md:h-7 md:w-7" />
-                  </div>
-                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-[#2c3e50]">Our Mission</h2>
-                </div>
-                <p
-                  className="text-base md:text-lg leading-6 md:leading-7 text-gray-700 tracking-wide opacity-0"
-                  style={{ animation: missionVisible ? "fadeInUp 0.8s ease-out 0.2s forwards" : undefined }}
-                >
+        {/* SECTION 2: MISSION & VISION */}
+        <section
+          ref={missionVisionRef}
+          className="bg-[var(--light-grey)] py-[100px] px-4 md:px-6"
+        >
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            {/* Mission */}
+            <div className="reveal bg-[var(--navy)] p-12 flex flex-col justify-between">
+              <div>
+                <p className="font-body text-[11px] text-[#0091DA] uppercase tracking-[0.15em]">
+                  Our Mission
+                </p>
+                <div className="h-[3px] w-10 bg-[#0091DA] mt-4 mb-8" />
+                <p className="font-heading italic text-[26px] leading-[1.6] text-white">
                   Empowering vision. Strengthening systems. Sustaining success.
                 </p>
               </div>
             </div>
 
-            <div
-              ref={visionRef}
-              onClick={handleVisionClick}
-              className={`group cursor-pointer h-full flex flex-col gap-4 md:gap-6 rounded-2xl md:rounded-3xl bg-gradient-to-br from-white to-gray-100 p-[1px] transition-all duration-300 ${
-                visionVisible ? "animate-slide-in-right" : "opacity-0 translate-x-[50px]"
-              } ${visionBounce ? "animate-bounce-tap" : ""}`}
-            >
-              <div className="h-full flex flex-col rounded-2xl md:rounded-3xl bg-white/95 px-4 py-6 md:px-8 md:py-10 shadow-[0_25px_60px_rgba(17,24,39,0.12)] transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-xl">
-                <div className="flex items-center gap-2 md:gap-3 mb-2">
-                  <div className="flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full bg-[#2c3e50]/15 text-[#2c3e50] border border-gray-200">
-                    <Eye className="h-5 w-5 md:h-7 md:w-7" />
-                  </div>
-                  <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-[#2c3e50]">Our Vision</h2>
-                </div>
-                <p
-                  className="text-base md:text-lg leading-6 md:leading-7 text-gray-700 tracking-wide opacity-0"
-                  style={{ animation: visionVisible ? "fadeInUp 0.8s ease-out 0.3s forwards" : undefined }}
-                >
-                  To be the trusted partner that enables organizations to achieve sustainable growth, measurable impact, and lasting resilience.
+            {/* Vision */}
+            <div className="reveal bg-[#0091DA] p-12 flex flex-col justify-between">
+              <div>
+                <p className="font-body text-[11px] text-[var(--navy)] uppercase tracking-[0.15em]">
+                  Our Vision
+                </p>
+                <div className="h-[3px] w-10 bg-[var(--navy)] mt-4 mb-8" />
+                <p className="font-heading italic text-[26px] leading-[1.6] text-[var(--navy)]">
+                  To be the trusted partner that enables organizations to
+                  achieve sustainable growth, measurable impact, and lasting
+                  resilience.
                 </p>
               </div>
             </div>
           </div>
-          </div>
         </section>
 
-        {/* Our Approach Section */}
-        <section className="relative px-0 py-12 md:py-16 overflow-hidden min-h-[50vh] md:min-h-[60vh]">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: "url('/approach.png')" }}
-          />
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
-          <div className="relative z-10 mx-auto w-[90%] max-w-[1800px] px-4 lg:px-12 py-12 md:py-16 lg:py-20">
-            <div className="text-center mb-8 md:mb-12 lg:mb-16">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-3 md:mb-4">Our Approach</h2>
-              <p className="text-base md:text-lg lg:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed px-2">
-                At TurnItAround Business Solutions, our approach is rooted in a deep understanding of how businesses evolve, adapt, and thrive in a fast-changing environment. We don't believe in one-size-fits-all solutions—instead, we immerse ourselves in your operations, challenges, and goals to craft strategies that deliver real transformation.
+        {/* SECTION 3: OUR STORY */}
+        <section
+          ref={storyRef}
+          className="bg-white py-[100px] px-4 md:px-6"
+        >
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[60%_40%] gap-12">
+            {/* Left */}
+            <div className="space-y-6">
+              <p className="reveal font-body text-[12px] text-[#0091DA] uppercase">
+                Our Story
               </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-10 max-w-[1400px] mx-auto">
-              {approachSections.map((section, idx) => {
-                const Icon = section.icon;
-                return (
-                  <div
-                    key={idx}
-                    ref={(el) => {
-                      approachRefs.current[idx] = el;
-                    }}
-                    className={`opacity-0 will-change-transform bg-white/95 backdrop-blur-sm rounded-xl md:rounded-2xl p-5 md:p-6 lg:p-8 shadow-xl ${
-                      approachVisible[idx]
-                        ? idx % 2 === 0
-                          ? "animate-slide-in-left"
-                          : "animate-slide-in-right"
-                        : idx % 2 === 0
-                        ? "-translate-x-[30px]"
-                        : "translate-x-[30px]"
-                    }`}
-                    style={{ animationDelay: approachVisible[idx] ? `${idx * 0.15}s` : undefined }}
-                  >
-                    <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
-                      <div className="flex h-10 w-10 md:h-12 md:w-12 flex-shrink-0 items-center justify-center rounded-full bg-[#f39c12]/15 text-[#f39c12]">
-                        <Icon className="h-5 w-5 md:h-6 md:w-6" />
-                      </div>
-                      <h3 className="text-lg md:text-xl font-semibold text-[#2c3e50]">{section.title}</h3>
-                    </div>
-                    <p className="text-base md:text-lg leading-relaxed text-gray-700 mb-3 md:mb-4">
-                      {section.content}
-                    </p>
-                    <ul className="space-y-1.5 md:space-y-2">
-                      {section.bullets.map((bullet, bulletIdx) => (
-                        <li key={bulletIdx} className="flex items-start gap-2 text-gray-700">
-                          <span className="text-[#f39c12] mt-0.5 md:mt-1">•</span>
-                          <span className="text-sm md:text-base leading-relaxed">{bullet}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="px-0 py-12 md:py-16">
-          <div
-            className="relative mx-auto w-[90%] max-w-[1800px] overflow-hidden rounded-xl md:rounded-2xl bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 px-4 py-8 md:px-6 md:py-12 lg:py-14 text-white shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] lg:px-12"
-          >
-            <div className="text-center mb-6 md:mb-8">
-              <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-semibold tracking-tight text-white mb-3 md:mb-4">
-                Professional Turnaround Services for Business Growth
+              <h2 className="reveal font-heading text-[40px] leading-[1.2] text-[var(--navy)]">
+                Built for the Organizations That Matter Most
               </h2>
-              <p className="mt-3 md:mt-4 text-sm md:text-base lg:text-lg text-slate-200 leading-relaxed max-w-2xl mx-auto">
-                Turnitaround offers structured, data-driven business solutions, enabling companies to overcome operational challenges, enhance performance, and achieve sustainable, long-term growth.
-              </p>
+              <div className="reveal space-y-5 font-body text-[16px] text-[var(--text-muted)] leading-[1.8]">
+                <p>
+                  Turnitaround Business Solutions (TBS) is a strategic advisory
+                  and capacity-building firm dedicated to strengthening NGOs,
+                  social enterprises, SMEs, and mission-driven businesses
+                  through robust systems, sustainable operational structures,
+                  and transparent financial frameworks.
+                </p>
+                <p>
+                  Our approach is rooted in a deep understanding of how
+                  businesses evolve, adapt, and thrive in a fast-changing
+                  environment. We don't believe in one-size-fits-all
+                  solutions—instead, we immerse ourselves in your operations,
+                  challenges, and goals to craft strategies that deliver real
+                  transformation.
+                </p>
+                <p>
+                  We value trust, confidentiality, and agility. Every member of
+                  our team upholds the highest ethical standards, ensuring that
+                  all client information is handled with absolute discretion.
+                  Our culture is driven by excellence, accountability, and a
+                  commitment to results.
+                </p>
+              </div>
+              <div className="reveal pt-2">
+                <Button href="/contact" variant="primary" className="h-12 px-7">
+                  Contact Us Today
+                </Button>
+              </div>
             </div>
-            <div className="text-center mt-6 md:mt-8">
-              <a
-                href="/contact"
-                className="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-5 py-2.5 md:px-6 md:py-3 text-sm md:text-base font-medium text-white transition hover:bg-amber-600 shadow-md"
+
+            {/* Right */}
+            <div className="space-y-8">
+              <div className="reveal bg-[var(--navy)] p-8 border-l-4 border-[var(--blue)]">
+                <p className="font-heading italic text-[20px] text-white leading-[1.7]">
+                  \"Growth isn't accidental—it's intentional. It's powered by
+                  clear strategies, actionable insights, and the right support.\"
+                </p>
+              </div>
+
+              <div className="reveal space-y-4">
+                {[
+                  "ICPAK-Certified Financial Professionals",
+                  "Ph.D.-Led Strategic Advisory",
+                  "Serving NGOs, SMEs & Social Enterprises",
+                ].map((item) => (
+                  <div key={item} className="flex items-start gap-3">
+                    <span className="text-[#0091DA] mt-0.5">✓</span>
+                    <span className="font-body text-[14px] text-[var(--navy)]">
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 4: OUR VALUES */}
+        <section
+          ref={valuesRef}
+          style={{ backgroundColor: "#00338D", padding: "100px 0" }}
+        >
+          <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 32px" }}>
+            {/* Header */}
+            <div style={{ textAlign: "center", marginBottom: "64px" }}>
+              <p
+                style={{
+                  fontFamily: "var(--font-dm-sans)",
+                  fontSize: "12px",
+                  color: "#0091DA",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.15em",
+                  marginBottom: "12px",
+                }}
               >
-                Contact Us Today <span aria-hidden="true">→</span>
-              </a>
+                Our Core Values
+              </p>
+              <h2
+                style={{
+                  fontFamily: "var(--font-playfair)",
+                  fontSize: "42px",
+                  color: "#FFFFFF",
+                  margin: 0,
+                }}
+              >
+                What We Stand For
+              </h2>
+            </div>
+
+            {/* 2x2 Card Grid */}
+            <div
+              className="values-grid"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "2px",
+              }}
+            >
+              {[
+                {
+                  number: "01",
+                  title: "Trust",
+                  body: "We build lasting relationships grounded in honesty, reliability, and transparent communication with every client.",
+                  icon: (
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M10 2L3 5.5v5c0 4.5 3.25 8.75 7 9.95 3.75-1.2 7-5.45 7-9.95v-5L10 2z"
+                        stroke="#0091DA"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M7 10l2 2 4-4"
+                        stroke="#0091DA"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ),
+                },
+                {
+                  number: "02",
+                  title: "Confidentiality",
+                  body: "All client information is handled with absolute discretion. Our ethical standards are non-negotiable.",
+                  icon: (
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <rect
+                        x="4"
+                        y="9"
+                        width="12"
+                        height="9"
+                        rx="1.5"
+                        stroke="#0091DA"
+                        strokeWidth="1.5"
+                      />
+                      <path
+                        d="M7 9V6.5a3 3 0 016 0V9"
+                        stroke="#0091DA"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                      />
+                      <circle cx="10" cy="13.5" r="1.5" fill="#0091DA" />
+                    </svg>
+                  ),
+                },
+                {
+                  number: "03",
+                  title: "Agility",
+                  body: "We adapt quickly to changing environments, delivering responsive strategies that meet you where you are.",
+                  icon: (
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M3 10h14M13 5l5 5-5 5"
+                        stroke="#0091DA"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ),
+                },
+                {
+                  number: "04",
+                  title: "Excellence",
+                  body: "Our culture is driven by accountability and a relentless commitment to results that matter.",
+                  icon: (
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M10 2l2.39 4.84 5.34.78-3.86 3.76.91 5.32L10 14.27l-4.78 2.53.91-5.32L2.27 7.62l5.34-.78L10 2z"
+                        stroke="#0091DA"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  ),
+                },
+              ].map((value) => (
+                <div
+                  key={value.title}
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    padding: "48px 40px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "16px",
+                    borderTop: "3px solid #0091DA",
+                    transition: "all 0.3s ease",
+                    cursor: "default",
+                  }}
+                  onMouseEnter={(e) => {
+                    const el = e.currentTarget as HTMLDivElement;
+                    el.style.backgroundColor = "#F2F2F2";
+                    el.style.borderTopColor = "#00338D";
+                  }}
+                  onMouseLeave={(e) => {
+                    const el = e.currentTarget as HTMLDivElement;
+                    el.style.backgroundColor = "#FFFFFF";
+                    el.style.borderTopColor = "#0091DA";
+                  }}
+                >
+                  {/* Top row — icon + number */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {/* Icon box */}
+                    <div
+                      style={{
+                        width: "52px",
+                        height: "52px",
+                        backgroundColor: "#EEF4FB",
+                        borderRadius: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {value.icon}
+                    </div>
+
+                    {/* Number */}
+                    <span
+                      style={{
+                        fontFamily: "var(--font-dm-sans)",
+                        fontSize: "12px",
+                        color: "#E0E0E0",
+                        letterSpacing: "0.1em",
+                      }}
+                    >
+                      {value.number}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-playfair)",
+                      fontSize: "26px",
+                      color: "#00338D",
+                      margin: 0,
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    {value.title}
+                  </h3>
+
+                  {/* Blue divider */}
+                  <div
+                    style={{
+                      width: "40px",
+                      height: "2px",
+                      backgroundColor: "#0091DA",
+                    }}
+                  />
+
+                  {/* Body */}
+                  <p
+                    style={{
+                      fontFamily: "var(--font-dm-sans)",
+                      fontSize: "15px",
+                      color: "#757575",
+                      lineHeight: 1.75,
+                      margin: 0,
+                    }}
+                  >
+                    {value.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Mobile */}
+          <style>{`
+            @media (max-width: 768px) {
+              .values-grid {
+                grid-template-columns: 1fr !important;
+              }
+            }
+          `}</style>
+        </section>
+
+        {/* SECTION 5: WHY CHOOSE TBS */}
+        <section
+          ref={differenceRef}
+          className="bg-[var(--light-grey)] py-[100px] px-4 md:px-6"
+        >
+          <div className="max-w-6xl mx-auto">
+            <h2 className="reveal font-heading text-[40px] text-center text-[var(--navy)] mb-16">
+              The Turnitaround Difference
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {[
+                {
+                  title: "Global Standards, Local Context",
+                  body: "We apply international best practices but customize every strategy to your specific organizational context, sector, and region.",
+                  icon: (
+                    <span className="relative w-10 h-10 block">
+                      <span className="absolute inset-0 rounded-full border-2 border-[var(--blue)]" />
+                      <span className="absolute inset-2 rounded-full border border-[var(--blue)]/70" />
+                      <span className="absolute left-1/2 top-0 bottom-0 w-px bg-[#0091DA]/70 -translate-x-1/2" />
+                      <span className="absolute top-1/2 left-0 right-0 h-px bg-[#0091DA]/70 -translate-y-1/2" />
+                    </span>
+                  ),
+                },
+                {
+                  title: "Data-Backed Decisions",
+                  body: "Every strategy is grounded in fresh insight, evidence, and measurable outcomes. No guesswork.",
+                  icon: (
+                    <span className="relative w-10 h-10 block">
+                      <span className="absolute bottom-0 left-1 w-2 h-4 bg-[#0091DA]" />
+                      <span className="absolute bottom-0 left-4 w-2 h-7 bg-[#0091DA]/80" />
+                      <span className="absolute bottom-0 left-7 w-2 h-10 bg-[#0091DA]/60" />
+                    </span>
+                  ),
+                },
+                {
+                  title: "Ethical & Discreet",
+                  body: "Every member of our team upholds the highest ethical standards. All client information is handled with absolute discretion.",
+                  icon: (
+                    <span
+                      className="w-10 h-10 bg-[#0091DA] block"
+                      style={{
+                        clipPath:
+                          "polygon(50% 0%, 90% 30%, 90% 75%, 50% 100%, 10% 75%, 10% 30%)",
+                      }}
+                    />
+                  ),
+                },
+              ].map((col) => (
+                <div key={col.title} className="reveal">
+                  <div className="w-10 h-[2px] bg-[#0091DA] mb-4" />
+                  {col.icon}
+                  <h3 className="font-heading text-[22px] text-[var(--navy)] mt-5">
+                    {col.title}
+                  </h3>
+                  <p className="font-body text-[15px] text-[var(--text-muted)] leading-[1.7] mt-3">
+                    {col.body}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 6: LEAD CONSULTANT */}
+        <section
+          ref={leadRef}
+          className="bg-white py-20 px-4 md:px-6"
+        >
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-[40%_60%] gap-12 items-start">
+            {/* Left */}
+            <div className="reveal">
+              <div className="w-[280px] h-[320px] border-2 border-[var(--blue)] bg-[var(--navy)]/5 flex items-center justify-center">
+                <p className="font-body text-[13px] text-[var(--text-muted)]">
+                  Dr. Albert Simiyu
+                </p>
+              </div>
+            </div>
+
+            {/* Right */}
+            <div className="space-y-5">
+              <p className="reveal font-body text-[12px] text-[#0091DA] uppercase">
+                Meet Our Lead Consultant
+              </p>
+              <h2 className="reveal font-heading text-[36px] text-[var(--navy)]">
+                Dr. Albert Simiyu
+              </h2>
+              <p className="reveal font-body text-[15px] text-[var(--text-muted)]">
+                Ph.D. in Entrepreneurship &amp; Small Business Management
+              </p>
+              <div className="reveal h-[3px] w-10 bg-[#0091DA]" />
+              <p className="reveal font-body text-[16px] text-[var(--text-muted)] leading-[1.8]">
+                Dr. Albert Simiyu brings unmatched expertise and hands-on
+                experience in guiding both NGOs and SMEs through strategic
+                transformation and financial growth. As an ICPAK-certified
+                professional, he leads every engagement with a commitment to
+                practical, results-driven solutions tailored to your
+                organization's unique needs.
+              </p>
+              <div className="reveal flex flex-wrap gap-3 pt-2">
+                {["Ph.D. Entrepreneurship", "ICPAK Certified"].map((b) => (
+                  <span
+                    key={b}
+                    className="inline-flex items-center px-4 py-1 rounded-full border border-[var(--navy)] font-body text-[13px] text-[var(--navy)]"
+                  >
+                    {b}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 7: CTA */}
+        <section
+          ref={ctaRef}
+          className="bg-[var(--navy)] py-20 px-4 md:px-6 text-white"
+        >
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            <h2 className="reveal font-heading text-[40px] text-white">
+              Ready to work with us?
+            </h2>
+            <p className="reveal font-body text-[17px] text-white/70">
+              Let's build your organization's roadmap together.
+            </p>
+            <div className="reveal flex justify-center">
+              <Button href="/contact" variant="primary" className="h-12 px-7">
+                Get in Touch
+              </Button>
             </div>
           </div>
         </section>
