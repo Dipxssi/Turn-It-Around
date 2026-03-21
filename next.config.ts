@@ -3,8 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /**
    * API routes (`/api/*`) are NOT included in static export builds.
-   * Set STATIC_EXPORT=true only when you need `out/` for static hosting
-   * (then admin APIs won't be in the build — use a Node host or Firebase for admin).
+   * Set STATIC_EXPORT=true only when you need `out/` for static hosting (FTP).
+   * For FTP, use `npm run build:static` — it temporarily moves `src/app/api` aside
+   * because Route Handlers cannot be exported. Full APIs need `next start` on a Node host.
    */
   ...(process.env.STATIC_EXPORT === "true"
     ? { output: "export" as const }

@@ -29,12 +29,14 @@ The workflow [`.github/workflows/ci.yml`](./workflows/ci.yml) maps each secret t
 
 If you deploy to **shared hosting** (no Node.js), the workflow must:
 
-1. Set **`STATIC_EXPORT=true`** during `npm run build` so Next.js writes to **`./out/`** (not only `.next/`).  
-   Without this, FTP deploy fails with: **`ENOENT: no such file or directory, scandir './out/'`**.
+1. Produce **`./out/`** — Next only writes there when **`output: "export"`**, which this repo enables with **`STATIC_EXPORT=true`** (see `next.config.ts`).  
+   Without that, FTP deploy fails with **`ENOENT: scandir './out/'`**.
 
-2. Know the **tradeoff**: static export **does not include** `app/api/**` routes. Contact form, admin sign-in, Firestore admin APIs, etc. **will not run** on pure FTP unless you point the frontend at APIs hosted elsewhere.
+2. **Route Handlers are incompatible with static export** — Next.js will error on `app/api/**` (e.g. missing `generateStaticParams`). This repo uses **`npm run build:static`** ([`scripts/build-static.mjs`](../scripts/build-static.mjs)), which **temporarily moves `src/app/api` to `.api-static-stash/`** at the project root (not under `app/`, or Next would still compile it), clears `.next`, runs `next build --webpack`, then restores. Your deployed **FTP site has no `/api` routes**.
 
-See [`.github/workflows/deploy.yml`](./workflows/deploy.yml) — it sets `STATIC_EXPORT: "true"` and uploads `./out/`.
+3. **Tradeoff**: contact form, admin, Firestore APIs, etc. **do not run** on pure FTP. Host APIs on **Vercel/Node** or another backend, or use a **Node host** for the full app (`next start`, no static export).
+
+See [`.github/workflows/deploy.yml`](./workflows/deploy.yml) — it runs **`npm run build:static`** and uploads **`./out/`**.
 
 **Extra secrets for FTP:** `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
 

@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# Stashed API routes during `npm run build:static` (see scripts/build-static.mjs)
+.api-static-stash/
+
 # production
 /build
 
