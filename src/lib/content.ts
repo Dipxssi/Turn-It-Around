@@ -1,5 +1,6 @@
 // Utility functions for managing content with Supabase
 
+import { apiUrl } from "./api-base-url";
 import { supabase } from './supabase';
 import { uploadImageToSupabase, deleteImageFromSupabase } from './supabase-storage';
 
@@ -322,23 +323,9 @@ export function mapFirebaseResourceToContentItem(
   };
 }
 
-function getPublicApiBaseUrl(): string {
-  if (typeof window !== "undefined" && window.location?.origin) {
-    return window.location.origin;
-  }
-  if (process.env.NEXT_PUBLIC_SITE_URL) {
-    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
-  }
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`.replace(/\/$/, "");
-  }
-  return "http://localhost:3000";
-}
-
 async function fetchFirebaseResourcesFromApi(): Promise<ContentItem[]> {
   try {
-    const base = getPublicApiBaseUrl();
-    const res = await fetch(`${base}/api/public/resources`, {
+    const res = await fetch(apiUrl("/api/public/resources"), {
       cache: "no-store",
     });
     if (!res.ok) {
@@ -360,8 +347,7 @@ async function fetchFirebaseResourceByIdPublic(
   id: string
 ): Promise<ContentItem | null> {
   try {
-    const base = getPublicApiBaseUrl();
-    const res = await fetch(`${base}/api/public/resources/${id}`, {
+    const res = await fetch(apiUrl(`/api/public/resources/${id}`), {
       cache: "no-store",
     });
     if (!res.ok) return null;

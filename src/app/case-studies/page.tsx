@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { NavBar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
+import { apiUrl } from "@/lib/api-base-url";
 
 // Type definition
 type CaseStudy = {
@@ -29,7 +30,7 @@ export default function CaseStudies() {
   const [activeFilter, setActiveFilter] = useState("All");
 
   useEffect(() => {
-    fetch("/api/case-studies")
+    fetch(apiUrl("/api/case-studies"))
       .then((r) => r.json())
       .then((data) => {
         // Filter out test data and only show published items

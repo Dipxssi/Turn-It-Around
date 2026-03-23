@@ -26,6 +26,7 @@ import {
   Link as LinkIcon,
   ImageIcon,
 } from "lucide-react";
+import { apiUrl } from "@/lib/api-base-url";
 
 const DEFAULT_MAX_EMBED_BYTES = 350 * 1024;
 
@@ -197,7 +198,7 @@ export function MediumLikeEditor({
         try {
           const formData = new FormData();
           formData.append("file", file);
-          const res = await fetch("/api/admin/upload", {
+          const res = await fetch(apiUrl("/api/admin/upload"), {
             method: "POST",
             headers: { Authorization: `Bearer ${authToken}` },
             body: formData,

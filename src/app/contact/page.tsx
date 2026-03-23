@@ -6,6 +6,7 @@ import { NavBar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { apiUrl } from "@/lib/api-base-url";
 
 type FormValues = {
   name: string;
@@ -73,7 +74,7 @@ export default function ContactPage() {
     setSubmitError(null);
 
     try {
-      const response = await fetch("/api/inquiries", {
+      const response = await fetch(apiUrl("/api/inquiries"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -175,9 +176,9 @@ export default function ContactPage() {
                     Call Us
                   </p>
                   <p className="font-body text-[15px] text-[var(--navy)] mt-1">
-                    (+254) 0751 216 699
+                    (+254) 751 216 699
                     <br />
-                    (+254) 0789 217 201
+                    (+254) 789 217 201
                   </p>
                 </div>
               </div>
@@ -481,10 +482,10 @@ export default function ContactPage() {
             }}
           />
           <h3 className="font-heading text-[20px] text-white">
-            Utalii House, Central Business District (CBD), Nairobi
+            Utalii House, Utalii Street, Central Business District (CBD), Nairobi, Kenya.
           </h3>
           <p className="font-body text-[14px] text-white/75">
-            Utalii House, Utalii Street, Central Business District (CBD), Nairobi, Kenya
+            Utalii House, Utalii Street, Central Business District (CBD), Nairobi, Kenya.
           </p>
           <a
             href="https://www.google.com/maps/place/Utalii+House/@-1.2834278,36.8162267,21z/data=!4m6!3m5!1s0x182f10d22f42bf35:0x449d7ec7b378dfeb!8m2!3d-1.2834571!4d36.8162253!16s%2Fg%2F1tcy_8t1?entry=ttu&g_ep=EgoyMDI2MDMxNS4wIKXMDSoASAFQAw%3D%3D"

@@ -88,16 +88,12 @@ export function Footer() {
               Contact
             </h4>
             <div className="flex flex-col gap-2 text-sm font-body text-white/65">
-              <p>
-                Utalii House, 2nd Floor, Tower 3<br />
-                Waiyaki Way, Westlands<br />
-                Nairobi, Kenya
-              </p>
+              <p>Utalii House, Utalii Street, Central Business District (CBD), Nairobi, Kenya.</p>
               <a
                 href="tel:+254751216699"
                 className="hover:text-[#0091DA] transition-[all_0.3s_ease]"
               >
-                (+254) 0751 216 699
+                (+254) 751 216 699
               </a>
               <a
                 href="mailto:info@turnitaroundbusiness.com"

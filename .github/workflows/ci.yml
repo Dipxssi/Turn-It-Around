@@ -36,6 +36,9 @@ jobs:
       # Recommended in production — canonical site URL (public API / server fetches)
       NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
 
+      # Optional — when static site + API on Vercel (see .github/DEPLOY.md)
+      NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+
       # Optional — "true" to skip Storage for inline editor images (base64 in Firestore)
       NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY: ${{ secrets.NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY }}
 

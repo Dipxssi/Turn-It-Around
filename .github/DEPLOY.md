@@ -15,8 +15,9 @@
 | `NEXT_PUBLIC_SUPABASE_URL` | Optional | Only if you use Supabase. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Optional | Only if you use Supabase. |
 | `NEXT_PUBLIC_SITE_URL` | Recommended | Production URL, e.g. `https://yourdomain.com` (no trailing slash). |
+| `NEXT_PUBLIC_API_BASE_URL` | **Required for FTP + working admin/forms** | If the **marketing site** is static (FTP) but APIs run on **Vercel** (same repo, Node build), set this to the **API app URL**, e.g. `https://your-app.vercel.app` (no trailing slash). Baked in at **build** time — rebuild the static site after setting it. |
 | `NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY` | Optional | Set to `true` if you skip Storage for inline images. |
-| `STATIC_EXPORT` | Optional | Leave **empty** or `false` — this app needs **`/api/*`** routes; do **not** set `true` unless you know you’re not using API routes. |
+| `STATIC_EXPORT` | Optional | Leave **empty** or **false** for full-stack deploys. For FTP-only static output, **`build:static`** sets this during the build script. |
 
 The workflow [`.github/workflows/ci.yml`](./workflows/ci.yml) maps each secret to the same-named environment variable during `npm run build`.
 
@@ -34,11 +35,25 @@ If you deploy to **shared hosting** (no Node.js), the workflow must:
 
 2. **Route Handlers are incompatible with static export** — Next.js will error on `app/api/**` (e.g. missing `generateStaticParams`). This repo uses **`npm run build:static`** ([`scripts/build-static.mjs`](../scripts/build-static.mjs)), which **temporarily moves `src/app/api` to `.api-static-stash/`** at the project root (not under `app/`, or Next would still compile it), clears `.next`, runs `next build --webpack`, then restores. Your deployed **FTP site has no `/api` routes**.
 
-3. **Tradeoff**: contact form, admin, Firestore APIs, etc. **do not run** on pure FTP. Host APIs on **Vercel/Node** or another backend, or use a **Node host** for the full app (`next start`, no static export).
+3. **Making admin & contact work (split deploy)**  
+   - Deploy the **same Next.js repo** again on **Vercel** (or any Node host) with a normal **`next build` + `next start`** (or Vercel default) — **do not** use `STATIC_EXPORT` there. That deployment serves **`/api/*`**.  
+   - Add GitHub secret **`NEXT_PUBLIC_API_BASE_URL`** = that deployment’s origin, e.g. `https://your-project.vercel.app`.  
+   - **Rebuild** the static FTP build so the env is inlined — then the browser calls `https://your-project.vercel.app/api/...` for admin, contact, and public blog JSON.  
+   - CORS is handled by [`src/middleware.ts`](../src/middleware.ts) on the API deployment.
+   - The FTP workflow now fails fast when `NEXT_PUBLIC_API_BASE_URL` is missing, so production does not deploy a broken admin by accident.
+
+**Extra secrets for FTP:** `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
 
 See [`.github/workflows/deploy.yml`](./workflows/deploy.yml) — it runs **`npm run build:static`** and uploads **`./out/`**.
 
-**Extra secrets for FTP:** `FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`.
+## 3.1 Production admin checklist
+
+Before expecting `/admin` to work in production, verify all 4:
+
+1. A **Node runtime deployment** of this repo exists (Vercel / Railway / Render / VPS) and serves `/api/*`.
+2. `NEXT_PUBLIC_API_BASE_URL` is set in **GitHub Actions secrets** (for FTP build) to that exact origin.
+3. The same backend env vars (`FIREBASE_*`, etc.) are set on the **API host**.
+4. You trigger a **fresh FTP deploy** after any env var change (env values are baked in at build time).
 
 ## 4. Hosting options
 

@@ -10,6 +10,7 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
+import { apiUrl } from "@/lib/api-base-url";
 
 export type ApiError = { error?: string };
 
@@ -42,8 +43,14 @@ export async function adminFetchJson<T>(response: Response): Promise<T> {
   const text = await response.text();
   const trimmed = text.trim();
   if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) {
+    const looksHtml =
+      trimmed.startsWith("<!") ||
+      trimmed.toLowerCase().startsWith("<html") ||
+      trimmed.startsWith("<");
     throw new Error(
-      `Server did not return JSON (${response.status}). Restart \`npm run dev\` after config changes. If you use static export (STATIC_EXPORT), API routes are not available — use a Node host for /api routes.`
+      looksHtml
+        ? "No API on this host (the server returned HTML, not JSON). FTP/static hosting has no /api routes. Deploy this same Next.js app on Vercel (or Node), set NEXT_PUBLIC_API_BASE_URL to that URL, and rebuild your static site so admin & forms call the API."
+        : `Server did not return JSON (${response.status}). Check NEXT_PUBLIC_API_BASE_URL and the API deployment.`
     );
   }
   return JSON.parse(text) as T;
@@ -168,7 +175,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loadResources = useCallback(async () => {
-    const response = await fetch("/api/admin/resources", {
+    const response = await fetch(apiUrl("/api/admin/resources"), {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -182,7 +189,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   }, [token]);
 
   const loadInquiries = useCallback(async () => {
-    const response = await fetch("/api/admin/inquiries", {
+    const response = await fetch(apiUrl("/api/admin/inquiries"), {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -201,7 +208,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
       setMessage(null);
       setError(null);
       try {
-        const response = await fetch(`/api/admin/inquiries/${id}/`, {
+        const response = await fetch(apiUrl(`/api/admin/inquiries/${id}/`), {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -230,7 +237,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     setMessage(null);
     setError(null);
     try {
-      const response = await fetch("/api/admin/auth/signup", {
+      const response = await fetch(apiUrl("/api/admin/auth/signup"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -267,7 +274,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     setMessage(null);
     setError(null);
     try {
-      const response = await fetch("/api/admin/auth/signin", {
+      const response = await fetch(apiUrl("/api/admin/auth/signin"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: signinEmail, password: signinPassword }),
@@ -300,7 +307,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
       const formData = new FormData();
       formData.append("file", uploadFile);
 
-      const response = await fetch("/api/admin/upload", {
+      const response = await fetch(apiUrl("/api/admin/upload"), {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -343,8 +350,8 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     };
     const isEdit = Boolean(resourceId);
     const url = isEdit
-      ? `/api/admin/resources/${resourceId}/`
-      : "/api/admin/resources";
+      ? apiUrl(`/api/admin/resources/${resourceId}/`)
+      : apiUrl("/api/admin/resources");
     const method = isEdit ? "PATCH" : "POST";
     try {
       const response = await fetch(url, {
@@ -387,7 +394,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     setMessage(null);
     setError(null);
     try {
-      const response = await fetch(`/api/admin/resources/${id}/`, {
+      const response = await fetch(apiUrl(`/api/admin/resources/${id}/`), {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

@@ -27,11 +27,23 @@ jobs:
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
       NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+      # Same app deployed on Vercel/Node — static FTP site calls APIs here (required for /admin, contact, blog data)
+      NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
       NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY: ${{ secrets.NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Validate production API origin for admin
+        shell: bash
+        run: |
+          if [ -z "${NEXT_PUBLIC_API_BASE_URL}" ]; then
+            echo "NEXT_PUBLIC_API_BASE_URL is missing."
+            echo "Set it to your Node/Vercel deployment origin so /admin can call /api in production."
+            echo "Example: https://your-project.vercel.app"
+            exit 1
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

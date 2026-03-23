@@ -861,7 +861,7 @@ function FeaturedServices() {
             Featured Services
           </h2>
           <p className="mt-4 max-w-2xl font-body text-[17px] text-white/70 leading-relaxed tracking-[0.02em]">
-            A premium suite of services built to help your leadership teams move faster with confidence, clarity, and measurable outcomes.
+            A premium suite of services built to help your organization move faster with confidence, clarity, and measurable outcomes.
           </p>
         </div>
 
@@ -1316,13 +1316,13 @@ partner.`,
       quote: `Working with TBS helped us clarify priorities and move faster.
 Their practical guidance improved decision-making across teams,
 and their support kept the implementation on track throughout the process.`,
-      author: `Name — Job Title`,
+      author: `Aisha Rahman — Chief Operating Officer`,
     },
     {
       quote: `TBS delivered a structured approach and responsive support.
 Their recommendations strengthened our operations and gave us confidence
 to sustain growth long after the engagement ended.`,
-      author: `Name — Job Title`,
+      author: `Michael Chen — Director of Strategy`,
     },
   ];
 
@@ -1459,11 +1459,11 @@ function ContactTeaser() {
             <div className="space-y-3 font-body text-[14px] text-[var(--text-muted)]">
               <div className="flex items-center gap-3">
                 <MapPin className="h-4 w-4 text-[#0091DA]" aria-hidden="true" />
-                <span>Nairobi, Kenya</span>
+                <span>Utalii House, Utalii Street, Central Business District (CBD), Nairobi, Kenya.</span>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="h-4 w-4 text-[#0091DA]" aria-hidden="true" />
-                <span>(+254) 0751 216 699</span>
+                <span>(+254) 751 216 699</span>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="h-4 w-4 text-[#0091DA]" aria-hidden="true" />
