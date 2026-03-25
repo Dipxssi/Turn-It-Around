@@ -212,7 +212,7 @@ export default function AdminBlogPage() {
               onChange={setContent}
               disabled={loading}
               placeholder="Start writing your story…"
-              authToken={token}
+              dataUrlOnly
             />
             <p className="text-xs text-[#64748b]">
               Use the toolbar for headings, quotes, lists, links, and images

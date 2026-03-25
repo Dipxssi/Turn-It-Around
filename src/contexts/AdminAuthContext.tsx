@@ -10,9 +10,27 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
-import { apiUrl } from "@/lib/api-base-url";
-
-export type ApiError = { error?: string };
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+  type QueryDocumentSnapshot,
+} from "firebase/firestore";
+import { getFirebaseAuth, getFirebaseDb, isFirebaseClientConfigured } from "@/lib/firebase-client";
 
 export type Inquiry = {
   id: string;
@@ -39,21 +57,58 @@ export type Resource = {
 
 const TOKEN_KEY = "admin_access_token";
 
-export async function adminFetchJson<T>(response: Response): Promise<T> {
-  const text = await response.text();
-  const trimmed = text.trim();
-  if (!trimmed.startsWith("{") && !trimmed.startsWith("[")) {
-    const looksHtml =
-      trimmed.startsWith("<!") ||
-      trimmed.toLowerCase().startsWith("<html") ||
-      trimmed.startsWith("<");
-    throw new Error(
-      looksHtml
-        ? "No API on this host (the server returned HTML, not JSON). FTP/static hosting has no /api routes. Deploy this same Next.js app on Vercel (or Node), set NEXT_PUBLIC_API_BASE_URL to that URL, and rebuild your static site so admin & forms call the API."
-        : `Server did not return JSON (${response.status}). Check NEXT_PUBLIC_API_BASE_URL and the API deployment.`
-    );
-  }
-  return JSON.parse(text) as T;
+function toIso(value: unknown): string | undefined {
+  if (value instanceof Timestamp) return value.toDate().toISOString();
+  if (value instanceof Date) return value.toISOString();
+  return undefined;
+}
+
+function mapResource(docSnap: QueryDocumentSnapshot): Resource {
+  const data = docSnap.data() as {
+    title?: string;
+    type?: string;
+    summary?: string | null;
+    content?: string;
+    coverImageUrl?: string | null;
+    attachmentUrl?: string | null;
+    tags?: string[];
+    createdAt?: unknown;
+  };
+
+  return {
+    id: docSnap.id,
+    title: data.title || "",
+    type: data.type || "blog",
+    summary: data.summary ?? "",
+    content: data.content || "",
+    coverImageUrl: data.coverImageUrl ?? null,
+    attachmentUrl: data.attachmentUrl ?? null,
+    tags: Array.isArray(data.tags) ? data.tags : [],
+    createdAt: toIso(data.createdAt),
+  };
+}
+
+function mapInquiry(docSnap: QueryDocumentSnapshot): Inquiry {
+  const data = docSnap.data() as {
+    name?: string;
+    organization?: string;
+    email?: string;
+    phone?: string;
+    service?: string;
+    message?: string;
+    createdAt?: unknown;
+  };
+
+  return {
+    id: docSnap.id,
+    name: data.name,
+    organization: data.organization,
+    email: data.email,
+    phone: data.phone,
+    service: data.service,
+    message: data.message,
+    createdAt: toIso(data.createdAt),
+  };
 }
 
 type AdminAuthContextValue = {
@@ -146,9 +201,32 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const isAuthenticated = Boolean(token);
 
   useEffect(() => {
-    const savedToken = window.localStorage.getItem(TOKEN_KEY);
-    if (savedToken) setToken(savedToken);
-    setAuthReady(true);
+    if (!isFirebaseClientConfigured()) {
+      setToken("");
+      setResources([]);
+      setInquiries([]);
+      setError(
+        "Admin is not configured: missing NEXT_PUBLIC_FIREBASE_API_KEY / NEXT_PUBLIC_FIREBASE_PROJECT_ID."
+      );
+      setAuthReady(true);
+      return;
+    }
+
+    const unsubscribe = onAuthStateChanged(getFirebaseAuth(), async (user) => {
+      if (!user) {
+        setToken("");
+        window.localStorage.removeItem(TOKEN_KEY);
+        setResources([]);
+        setInquiries([]);
+        setAuthReady(true);
+        return;
+      }
+      const idToken = await user.getIdToken();
+      setToken(idToken);
+      window.localStorage.setItem(TOKEN_KEY, idToken);
+      setAuthReady(true);
+    });
+    return unsubscribe;
   }, []);
 
   const authHeaders = useMemo(
@@ -165,42 +243,34 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
-    setToken("");
-    setResources([]);
-    setInquiries([]);
-    window.localStorage.removeItem(TOKEN_KEY);
-    setMessage(null);
-    setError(null);
-    setAuthMode("signin");
+    signOut(getFirebaseAuth()).finally(() => {
+      setToken("");
+      setResources([]);
+      setInquiries([]);
+      window.localStorage.removeItem(TOKEN_KEY);
+      setMessage(null);
+      setError(null);
+      setAuthMode("signin");
+    });
   }, []);
 
   const loadResources = useCallback(async () => {
-    const response = await fetch(apiUrl("/api/admin/resources"), {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const payload = await adminFetchJson<ApiError & { resources?: Resource[] }>(
-      response
+    const q = query(
+      collection(getFirebaseDb(), "resources"),
+      orderBy("createdAt", "desc")
     );
-    if (!response.ok) {
-      throw new Error(payload.error || "Failed to load resources.");
-    }
-    setResources(payload.resources || []);
-  }, [token]);
+    const snapshot = await getDocs(q);
+    setResources(snapshot.docs.map(mapResource));
+  }, []);
 
   const loadInquiries = useCallback(async () => {
-    const response = await fetch(apiUrl("/api/admin/inquiries"), {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const payload = await adminFetchJson<ApiError & { inquiries?: Inquiry[] }>(
-      response
+    const q = query(
+      collection(getFirebaseDb(), "inquiries"),
+      orderBy("createdAt", "desc")
     );
-    if (!response.ok) {
-      throw new Error(payload.error || "Failed to load inquiries.");
-    }
-    setInquiries(payload.inquiries || []);
-  }, [token]);
+    const snapshot = await getDocs(q);
+    setInquiries(snapshot.docs.map(mapInquiry));
+  }, []);
 
   const handleDeleteInquiry = useCallback(
     async (id: string): Promise<boolean> => {
@@ -208,16 +278,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
       setMessage(null);
       setError(null);
       try {
-        const response = await fetch(apiUrl(`/api/admin/inquiries/${id}/`), {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        const payload = await adminFetchJson<ApiError & { ok?: boolean }>(
-          response
-        );
-        if (!response.ok) {
-          throw new Error(payload.error || "Failed to delete inquiry.");
-        }
+        await deleteDoc(doc(getFirebaseDb(), "inquiries", id));
         setMessage("Inquiry deleted.");
         await loadInquiries();
         return true;
@@ -228,7 +289,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
       }
     },
-    [token, loadInquiries]
+    [loadInquiries]
   );
 
   const handleSignup = async (e: FormEvent) => {
@@ -237,30 +298,17 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     setMessage(null);
     setError(null);
     try {
-      const response = await fetch(apiUrl("/api/admin/auth/signup"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: signupEmail,
-          password: signupPassword,
-          fullName: signupFullName,
-        }),
-      });
-      const payload = await adminFetchJson<
-        ApiError & { session?: { access_token?: string } }
-      >(response);
-      if (!response.ok) {
-        throw new Error(payload.error || "Signup failed.");
+      const credential = await createUserWithEmailAndPassword(
+        getFirebaseAuth(),
+        signupEmail.trim(),
+        signupPassword
+      );
+      if (signupFullName.trim()) {
+        await updateProfile(credential.user, { displayName: signupFullName.trim() });
       }
-      if (payload.session?.access_token) {
-        persistToken(payload.session.access_token);
-        setMessage(null);
-      } else {
-        setMessage(
-          "Account created. Please sign in with your email and password."
-        );
-        setAuthMode("signin");
-      }
+      const idToken = await credential.user.getIdToken();
+      persistToken(idToken);
+      setMessage(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Signup failed.");
     } finally {
@@ -274,18 +322,13 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     setMessage(null);
     setError(null);
     try {
-      const response = await fetch(apiUrl("/api/admin/auth/signin"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: signinEmail, password: signinPassword }),
-      });
-      const payload = await adminFetchJson<
-        ApiError & { session?: { access_token?: string } }
-      >(response);
-      if (!response.ok || !payload.session?.access_token) {
-        throw new Error(payload.error || "Signin failed.");
-      }
-      persistToken(payload.session.access_token);
+      const credential = await signInWithEmailAndPassword(
+        getFirebaseAuth(),
+        signinEmail.trim(),
+        signinPassword
+      );
+      const idToken = await credential.user.getIdToken();
+      persistToken(idToken);
       setMessage(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Signin failed.");
@@ -296,36 +339,11 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
 
   const handleUpload = async (e: FormEvent) => {
     e.preventDefault();
-    if (!uploadFile) {
-      setError("Select a file to upload.");
-      return;
+    void e;
+    if (uploadFile) {
+      setUploadFile(null);
     }
-    setLoading(true);
-    setMessage(null);
-    setError(null);
-    try {
-      const formData = new FormData();
-      formData.append("file", uploadFile);
-
-      const response = await fetch(apiUrl("/api/admin/upload"), {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-      const payload = await adminFetchJson<
-        ApiError & { downloadUrl?: string; gsUrl?: string }
-      >(response);
-      if (!response.ok) {
-        throw new Error(payload.error || "Upload failed.");
-      }
-      const fileUrl = payload.downloadUrl || payload.gsUrl || "";
-      setUploadedUrl(fileUrl);
-      setMessage("Upload completed.");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed.");
-    } finally {
-      setLoading(false);
-    }
+    setError("Direct file upload is disabled. Insert images directly in the editor.");
   };
 
   const handleSaveResource = async (
@@ -349,22 +367,18 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
         .filter(Boolean),
     };
     const isEdit = Boolean(resourceId);
-    const url = isEdit
-      ? apiUrl(`/api/admin/resources/${resourceId}/`)
-      : apiUrl("/api/admin/resources");
-    const method = isEdit ? "PATCH" : "POST";
     try {
-      const response = await fetch(url, {
-        method,
-        headers: authHeaders,
-        body: JSON.stringify(body),
-      });
-      const payload = await adminFetchJson<ApiError>(response);
-      if (!response.ok) {
-        throw new Error(
-          payload.error ||
-            (isEdit ? "Failed to update resource." : "Failed to create resource.")
-        );
+      if (isEdit) {
+        await updateDoc(doc(getFirebaseDb(), "resources", resourceId!), {
+          ...body,
+          updatedAt: serverTimestamp(),
+        });
+      } else {
+        await addDoc(collection(getFirebaseDb(), "resources"), {
+          ...body,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        });
       }
       setMessage(isEdit ? "Resource updated." : "Resource created.");
       setTitle("");
@@ -394,16 +408,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     setMessage(null);
     setError(null);
     try {
-      const response = await fetch(apiUrl(`/api/admin/resources/${id}/`), {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const payload = await adminFetchJson<ApiError & { ok?: boolean }>(
-        response
-      );
-      if (!response.ok) {
-        throw new Error(payload.error || "Failed to delete resource.");
-      }
+      await deleteDoc(doc(getFirebaseDb(), "resources", id));
       setMessage("Resource deleted.");
       await loadResources();
       return true;

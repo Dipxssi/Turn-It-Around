@@ -2,7 +2,7 @@
 # Requires STATIC_EXPORT=true so `next build` outputs to ./out/
 #
 # Tradeoff: Next.js `output: "export"` does NOT ship /api/* routes.
-# Admin, contact API, etc. need a Node host (Vercel, Railway) or a separate backend.
+# This repo supports client-side Firebase admin/contact for FTP-only hosting.
 
 name: Deploy to Host Africa
 
@@ -18,8 +18,11 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
       FIREBASE_WEB_API_KEY: ${{ secrets.FIREBASE_WEB_API_KEY }}
       NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+      NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
       FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
       FIREBASE_CLIENT_EMAIL: ${{ secrets.FIREBASE_CLIENT_EMAIL }}
       FIREBASE_PRIVATE_KEY: ${{ secrets.FIREBASE_PRIVATE_KEY }}
@@ -27,7 +30,7 @@ jobs:
       NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
       NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
       NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
-      # Same app deployed on Vercel/Node — static FTP site calls APIs here (required for /admin, contact, blog data)
+      # Optional split-deploy API origin (when using separate Node host)
       NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
       NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY: ${{ secrets.NEXT_PUBLIC_ADMIN_IMAGES_DATA_URL_ONLY }}
 
@@ -35,20 +38,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Validate production API origin for admin
-        shell: bash
-        run: |
-          if [ -z "${NEXT_PUBLIC_API_BASE_URL}" ]; then
-            echo "NEXT_PUBLIC_API_BASE_URL is missing."
-            echo "Set it to your Node/Vercel deployment origin so /admin can call /api in production."
-            echo "Example: https://your-project.vercel.app"
-            exit 1
-          fi
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: npm
 
       - name: Install dependencies
