@@ -6,8 +6,6 @@ import { NavBar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { PageHero } from "@/components/PageHero";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { getFirebaseDb, isFirebaseClientConfigured } from "@/lib/firebase-client";
 
 type FormValues = {
   name: string;
@@ -71,26 +69,27 @@ export default function ContactPage() {
     e.preventDefault();
     if (!validate()) return;
 
-    if (!isFirebaseClientConfigured()) {
-      setSubmitError(
-        "Contact form is not configured. Missing NEXT_PUBLIC_FIREBASE_API_KEY / NEXT_PUBLIC_FIREBASE_PROJECT_ID."
-      );
-      return;
-    }
-
     setSubmitting(true);
     setSubmitError(null);
 
     try {
-      await addDoc(collection(getFirebaseDb(), "inquiries"), {
-        name: values.name.trim(),
-        organization: values.organization.trim() || null,
-        email: values.email.trim().toLowerCase(),
-        phone: values.phone.trim() || null,
-        service: values.service.trim() || null,
-        message: values.message.trim(),
-        createdAt: serverTimestamp(),
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: values.name.trim(),
+          email: values.email.trim().toLowerCase(),
+          message: values.message.trim(),
+        }),
       });
+
+      const payload = (await response.json()) as { error?: string };
+
+      if (!response.ok) {
+        throw new Error(payload.error || "Failed to submit your message.");
+      }
 
       setSubmitting(false);
       setSubmitted(true);

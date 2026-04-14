@@ -9,6 +9,12 @@
 - `FIREBASE_CLIENT_EMAIL`
 - `FIREBASE_PRIVATE_KEY`
 
+**Inquiry Email Notifications (Resend)**
+
+- `RESEND_API_KEY`
+- `RESEND_FROM_EMAIL` — must be a verified sender/domain in Resend
+- `RESEND_TO_EMAIL`
+
 **Firebase Storage (optional)**
 
 - `FIREBASE_STORAGE_BUCKET` — only needed if you use `POST /api/admin/upload` for file hosting (cover images, etc.).
@@ -49,6 +55,9 @@ Restart `npm run dev` after changing env.
 
 ## Public endpoint
 
+- `POST /api/contact`
+  - Body:
+    `{ "name":"...", "email":"...", "message":"..." }`
 - `POST /api/inquiries`
   - Body:
     `{ "name":"...", "organization":"...", "email":"...", "phone":"...", "service":"...", "message":"..." }`
