@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://turnitaroundbusiness.com";
+
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin"],
@@ -15,9 +17,30 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Turn it Around Business | Advisory & Capacity Building",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Turn it Around Business | Advisory & Capacity Building",
+    template: "%s | Turn it Around Business",
+  },
   description:
     "Next.js experience for Turn it Around Business—strategic advisory, capacity building, and financial stewardship for NGOs and SMEs.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: "Turn it Around Business",
+    title: "Turn it Around Business | Advisory & Capacity Building",
+    description:
+      "Strategic advisory, capacity building, and financial management for NGOs, SMEs, and mission-driven organizations.",
+    images: [
+      {
+        url: "/logo.png",
+        alt: "Turn it Around Business",
+      },
+    ],
+  },
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
