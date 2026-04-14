@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Image from "next/image";
 
 type PageHeroProps = {
   eyebrow: string
@@ -107,16 +108,15 @@ export function PageHero({
           }}
         >
           {imageUrl ? (
-            <img
+            <Image
               src={imageUrl}
-              alt=""
+              alt={headline}
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 60vw"
               style={{
-                width: '100%',
-                height: '100%',
                 objectFit: 'cover',
                 objectPosition: imageObjectPosition,
-                position: 'absolute',
-                inset: 0,
               }}
             />
           ) : (

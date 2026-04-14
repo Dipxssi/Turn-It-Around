@@ -182,8 +182,6 @@ export default function ContactPage() {
                   </p>
                   <p className="font-body text-[15px] text-[var(--navy)] mt-1">
                     (+254) 751 216 699
-                    <br />
-                    (+254) 789 217 201
                   </p>
                 </div>
               </div>

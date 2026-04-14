@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import React, { useEffect, useState, FormEvent } from "react";
 import { NavBar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -704,14 +705,22 @@ function Services() {
             >
               <div
                 style={{
+                  position: "relative",
                   height: "190px",
                   background: "linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02))",
-                  backgroundImage: service.image ? `url(${service.image})` : undefined,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
                 }}
                 className="service-media"
-              />
+              >
+                {service.image ? (
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                ) : null}
+              </div>
 
               <div
                 style={{
@@ -1330,46 +1339,29 @@ to sustain growth long after the engagement ended.`,
   const DISPLAY_MS = 3800;
 
   const [current, setCurrent] = useState(0);
-  const [visible, setVisible] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (isPaused) return;
 
-    const reduced = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)"
-    )?.matches;
-    if (reduced) return;
-
-    let active = true;
-    let fadeTimeoutId: number | undefined;
-    let nextTimeoutId: number | undefined;
-
-    const cycle = () => {
-      if (!active) return;
-      setVisible(false);
-
-      fadeTimeoutId = window.setTimeout(() => {
-        if (!active) return;
-        setCurrent((prev) => (prev + 1) % testimonials.length);
-        setVisible(true);
-
-        nextTimeoutId = window.setTimeout(cycle, DISPLAY_MS);
-      }, FADE_MS);
-    };
-
-    nextTimeoutId = window.setTimeout(cycle, DISPLAY_MS);
+    const intervalId = window.setInterval(() => {
+      setCurrent((prev) => (prev + 1) % testimonials.length);
+    }, DISPLAY_MS);
 
     return () => {
-      active = false;
-      if (fadeTimeoutId) window.clearTimeout(fadeTimeoutId);
-      if (nextTimeoutId) window.clearTimeout(nextTimeoutId);
+      window.clearInterval(intervalId);
     };
-  }, [testimonials.length]);
+  }, [isPaused, testimonials.length]);
 
   const { quote, author } = testimonials[current];
 
   return (
-    <section className="bg-[#00338D] py-20 text-white">
+    <section
+      className="bg-[#00338D] py-20 text-white"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       <div
         ref={revealRef}
         className="reveal max-w-3xl mx-auto px-4 md:px-6 text-center"
@@ -1397,11 +1389,9 @@ to sustain growth long after the engagement ended.`,
         </div>
 
         <div
-          style={{
-            opacity: visible ? 1 : 0,
-            transition: `opacity ${FADE_MS}ms ease`,
-            minHeight: 220, // keep the content stable while fading
-          }}
+          key={current}
+          className="testimonial-fade"
+          style={{ minHeight: 220 }}
           aria-live="polite"
         >
           <p className="font-heading italic text-[22px] text-white leading-[1.7] mb-6">
@@ -1414,6 +1404,15 @@ to sustain growth long after the engagement ended.`,
             {author}
           </div>
         </div>
+        <style>{`
+          .testimonial-fade {
+            animation: testimonialFade ${FADE_MS}ms ease both;
+          }
+          @keyframes testimonialFade {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+        `}</style>
           </div>
         </section>
   );

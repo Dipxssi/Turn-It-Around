@@ -114,8 +114,8 @@ export default function AboutUs() {
             <div className="space-y-8">
               <div className="reveal bg-[var(--navy)] p-8 border-l-4 border-[var(--blue)]">
                 <p className="font-heading italic text-[20px] text-white leading-[1.7]">
-                  \"Growth isn't accidental—it's intentional. It's powered by
-                  clear strategies, actionable insights, and the right support.\"
+                  "Growth isn't accidental—it's intentional. It's powered by
+                  clear strategies, actionable insights, and the right support."
                 </p>
               </div>
 

@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isStaticExport = process.env.STATIC_EXPORT === "true";
+
 const nextConfig: NextConfig = {
   /**
    * API routes (`/api/*`) are NOT included in static export builds.
@@ -7,7 +9,7 @@ const nextConfig: NextConfig = {
    * For FTP, use `npm run build:static` — it temporarily moves `src/app/api` aside
    * because Route Handlers cannot be exported. Full APIs need `next start` on a Node host.
    */
-  ...(process.env.STATIC_EXPORT === "true"
+  ...(isStaticExport
     ? { output: "export" as const }
     : {}),
   trailingSlash: true,
@@ -15,7 +17,9 @@ const nextConfig: NextConfig = {
   // 🔑 Required because next/image optimization
   // does NOT work on shared hosting
   images: {
-    unoptimized: true,
+    // Keep unoptimized only for static export targets.
+    // For normal production (`next start`), enable optimization for faster image delivery.
+    unoptimized: isStaticExport,
     remotePatterns: [
       {
         protocol: "https",
