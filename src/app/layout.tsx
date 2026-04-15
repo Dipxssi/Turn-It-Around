@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans } from "next/font/google";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://turnitaroundbusiness.com";
+const siteUrl = getSiteUrl();
 
 const playfairDisplay = Playfair_Display({
   variable: "--font-playfair",

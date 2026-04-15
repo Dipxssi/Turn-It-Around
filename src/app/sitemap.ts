@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
+import { getSiteUrl } from "@/lib/site-url";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://turnitaroundbusiness.com";
+const siteUrl = getSiteUrl();
+export const dynamic = "force-static";
 
 const publicPaths = [
   "/",
